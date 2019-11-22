@@ -82,12 +82,12 @@ const all = {
   asar: {
     // A glob expression, that unpacks the files with matching names to the
     // "app.asar.unpacked" directory.
-    unpack: 'WebTorrent*'
+    unpack: 'PopNetwork*'
   },
 
   // The build version of the application. Maps to the FileVersion metadata property on
   // Windows, and CFBundleVersion on Mac. Note: Windows requires the build version to
-  // start with a number. We're using the version of the underlying WebTorrent library.
+  // start with a number. We're using the version of the underlying PopNetwork library.
   buildVersion: require('webtorrent/package.json').version,
 
   // The application source directory.
@@ -122,14 +122,14 @@ const darwin = {
   arch: 'x64',
 
   // The bundle identifier to use in the application's plist (Mac only).
-  appBundleId: 'io.webtorrent.webtorrent',
+  appBundleId: 'io.popnetwork.popnetwork',
 
   // The application category type, as shown in the Finder via "View" -> "Arrange by
   // Application Category" when viewing the Applications directory (Mac only).
   appCategoryType: 'public.app-category.utilities',
 
   // The bundle identifier to use in the application helper's plist (Mac only).
-  helperBundleId: 'io.webtorrent.webtorrent-helper',
+  helperBundleId: 'io.popnetwork.popnetwork-helper',
 
   // Application icon.
   icon: config.APP_ICON + '.icns'
@@ -427,7 +427,7 @@ function buildWin32 (cb) {
         /**
          * If you hit a "GitHub API rate limit exceeded" error, set this token!
          */
-        // remoteToken: process.env.WEBTORRENT_GITHUB_API_TOKEN,
+        // remoteToken: process.env.POPNETWORK_GITHUB_API_TOKEN,
         setupExe: config.APP_NAME + 'Setup-v' + config.APP_VERSION + '.exe',
         setupIcon: config.APP_ICON + '.ico',
         signWithParams: signWithParams,
@@ -517,14 +517,14 @@ function buildLinux (cb) {
       src: filesPath + '/',
       dest: DIST_PATH,
       arch: destArch,
-      bin: 'WebTorrent',
+      bin: 'PopNetwork',
       icon: {
-        '48x48': path.join(config.STATIC_PATH, 'linux/share/icons/hicolor/48x48/apps/webtorrent-desktop.png'),
-        '256x256': path.join(config.STATIC_PATH, 'linux/share/icons/hicolor/256x256/apps/webtorrent-desktop.png')
+        '48x48': path.join(config.STATIC_PATH, 'linux/share/icons/hicolor/48x48/apps/popnetwork-desktop.png'),
+        '256x256': path.join(config.STATIC_PATH, 'linux/share/icons/hicolor/256x256/apps/popnetwork-desktop.png')
       },
       categories: ['Network', 'FileTransfer', 'P2P'],
       mimeType: ['application/x-bittorrent', 'x-scheme-handler/magnet', 'x-scheme-handler/stream-magnet'],
-      desktopTemplate: path.join(config.STATIC_PATH, 'linux/webtorrent-desktop.ejs')
+      desktopTemplate: path.join(config.STATIC_PATH, 'linux/popnetwork-desktop.ejs')
     }
 
     installer(options).then(
@@ -551,14 +551,14 @@ function buildLinux (cb) {
       src: filesPath + '/',
       dest: DIST_PATH,
       arch: destArch,
-      bin: 'WebTorrent',
+      bin: 'PopNetwork',
       icon: {
-        '48x48': path.join(config.STATIC_PATH, 'linux/share/icons/hicolor/48x48/apps/webtorrent-desktop.png'),
-        '256x256': path.join(config.STATIC_PATH, 'linux/share/icons/hicolor/256x256/apps/webtorrent-desktop.png')
+        '48x48': path.join(config.STATIC_PATH, 'linux/share/icons/hicolor/48x48/apps/popnetwork-desktop.png'),
+        '256x256': path.join(config.STATIC_PATH, 'linux/share/icons/hicolor/256x256/apps/popnetwork-desktop.png')
       },
       categories: ['Network', 'FileTransfer', 'P2P'],
       mimeType: ['application/x-bittorrent', 'x-scheme-handler/magnet', 'x-scheme-handler/stream-magnet'],
-      desktopTemplate: path.join(config.STATIC_PATH, 'linux/webtorrent-desktop.ejs')
+      desktopTemplate: path.join(config.STATIC_PATH, 'linux/popnetwork-desktop.ejs')
     }
 
     installer(options).then(

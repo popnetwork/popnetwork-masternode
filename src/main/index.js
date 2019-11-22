@@ -13,7 +13,7 @@ const menu = require('./menu')
 const State = require('../renderer/lib/state')
 const windows = require('./windows')
 
-const WEBTORRENT_VERSION = require('webtorrent/package.json').version
+const POPNETWORK_VERSION = require('webtorrent/package.json').version
 
 let shouldQuit = false
 let argv = sliceArgv(process.argv)
@@ -41,7 +41,7 @@ if (process.platform === 'win32') {
 if (!shouldQuit && !config.IS_PORTABLE) {
   // Prevent multiple instances of app from running at same time. New instances
   // signal this instance and quit. Note: This feature creates a lock file in
-  // %APPDATA%\Roaming\WebTorrent so we do not do it for the Portable App since
+  // %APPDATA%\Roaming\PopNetwork so we do not do it for the Portable App since
   // we want to be "silent" as well as "portable".
   if (!app.requestSingleInstanceLock()) {
     shouldQuit = true
@@ -82,7 +82,7 @@ function init () {
     const state = results.state
 
     windows.main.init(state, { hidden: hidden })
-    windows.webtorrent.init()
+    windows.popnetwork.init()
     menu.init()
 
     // To keep app startup fast, some code is delayed.
@@ -98,11 +98,11 @@ function init () {
     })
   }
 
-  // Enable app logging into default directory, i.e. /Library/Logs/WebTorrent
+  // Enable app logging into default directory, i.e. /Library/Logs/PopNetwork
   // on Mac, %APPDATA% on Windows, $XDG_CONFIG_HOME or ~/.config on Linux.
   app.setAppLogsPath()
 
-  app.userAgentFallback = `WebTorrent/${WEBTORRENT_VERSION} (https://webtorrent.io)`
+  app.userAgentFallback = `PopNetwork/${POPNETWORK_VERSION} (https://webtorrent.io)`
 
   app.on('open-file', onOpen)
   app.on('open-url', onOpen)
@@ -195,7 +195,7 @@ function onAppOpen (newArgv) {
 }
 
 // Remove leading args.
-// Production: 1 arg, eg: /Applications/WebTorrent.app/Contents/MacOS/WebTorrent
+// Production: 1 arg, eg: /Applications/PopNetwork.app/Contents/MacOS/PopNetwork
 // Development: 2 args, eg: electron .
 // Test: 4 args, eg: electron -r .../mocks.js .
 function sliceArgv (argv) {
@@ -221,14 +221,14 @@ function processArgv (argv) {
       // Ignore hidden argument, already being handled
     } else if (arg.startsWith('-psn')) {
       // Ignore Mac launchd "process serial number" argument
-      // Issue: https://github.com/webtorrent/webtorrent-desktop/issues/214
+      // Issue: https://github.com/popnetwork/popnetwork-desktop/issues/214
     } else if (arg.startsWith('--')) {
       // Ignore Spectron flags
     } else if (arg === 'data:,') {
       // Ignore weird Spectron argument
     } else if (arg !== '.') {
       // Ignore '.' argument, which gets misinterpreted as a torrent id, when a
-      // development copy of WebTorrent is started while a production version is
+      // development copy of PopNetwork is started while a production version is
       // running.
       torrentIds.push(arg)
     }

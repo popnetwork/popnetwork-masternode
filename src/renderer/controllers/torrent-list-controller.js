@@ -38,7 +38,7 @@ module.exports = class TorrentListController {
     const torrentKey = this.state.nextTorrentKey++
     const path = this.state.saved.prefs.downloadPath
 
-    ipcRenderer.send('wt-start-torrenting', torrentKey, torrentId, path)
+    ipcRenderer.send('pn-start-torrenting', torrentKey, torrentId, path)
 
     dispatch('backToList')
   }
@@ -73,7 +73,7 @@ module.exports = class TorrentListController {
   createTorrent (options) {
     const state = this.state
     const torrentKey = state.nextTorrentKey++
-    ipcRenderer.send('wt-create-torrent', torrentKey, options)
+    ipcRenderer.send('pn-create-torrent', torrentKey, options)
     state.location.cancel()
   }
 
@@ -105,7 +105,7 @@ module.exports = class TorrentListController {
     })
 
     function start () {
-      ipcRenderer.send('wt-start-torrenting',
+      ipcRenderer.send('pn-start-torrenting',
         s.torrentKey,
         TorrentSummary.getTorrentId(s),
         s.path,
@@ -132,7 +132,7 @@ module.exports = class TorrentListController {
       if (torrentSummary.status === 'downloading' ||
           torrentSummary.status === 'seeding') {
         torrentSummary.status = 'paused'
-        ipcRenderer.send('wt-stop-torrenting', torrentSummary.infoHash)
+        ipcRenderer.send('pn-stop-torrenting', torrentSummary.infoHash)
       }
     })
     sound.play('DISABLE')
@@ -150,7 +150,7 @@ module.exports = class TorrentListController {
 
   pauseTorrent (torrentSummary, playSound) {
     torrentSummary.status = 'paused'
-    ipcRenderer.send('wt-stop-torrenting', torrentSummary.infoHash)
+    ipcRenderer.send('pn-stop-torrenting', torrentSummary.infoHash)
 
     if (playSound) sound.play('DISABLE')
   }
@@ -187,9 +187,9 @@ module.exports = class TorrentListController {
     const torrentSummary = TorrentSummary.getByKey(this.state, infoHash)
     torrentSummary.selections[index] = !torrentSummary.selections[index]
 
-    // Let the WebTorrent process know to start or stop fetching that file
+    // Let the PopNetwork process know to start or stop fetching that file
     if (torrentSummary.status !== 'paused') {
-      ipcRenderer.send('wt-select-files', infoHash, torrentSummary.selections)
+      ipcRenderer.send('pn-select-files', infoHash, torrentSummary.selections)
     }
   }
 
@@ -203,7 +203,7 @@ module.exports = class TorrentListController {
 
   // TODO: use torrentKey, not infoHash
   deleteTorrent (infoHash, deleteData) {
-    ipcRenderer.send('wt-stop-torrenting', infoHash)
+    ipcRenderer.send('pn-stop-torrenting', infoHash)
 
     const index = this.state.saved.torrents.findIndex((x) => x.infoHash === infoHash)
 

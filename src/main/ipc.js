@@ -11,8 +11,8 @@ const log = require('./log')
 const menu = require('./menu')
 const windows = require('./windows')
 
-// Messages from the main process, to be sent once the WebTorrent process starts
-const messageQueueMainToWebTorrent = []
+// Messages from the main process, to be sent once the PopNetwork process starts
+const messageQueueMainToPopNetwork = []
 
 // Will hold modules injected from the app that will be used on fired
 // IPC events.
@@ -30,13 +30,13 @@ function init () {
     app.emit('ipcReady')
   })
 
-  ipc.once('ipcReadyWebTorrent', function (e) {
-    app.ipcReadyWebTorrent = true
-    log('sending %d queued messages from the main win to the webtorrent window',
-      messageQueueMainToWebTorrent.length)
-    messageQueueMainToWebTorrent.forEach(function (message) {
-      windows.webtorrent.send(message.name, ...message.args)
-      log('webtorrent: sent queued %s', message.name)
+  ipc.once('ipcReadyPopNetwork', function (e) {
+    app.ipcReadyPopNetwork = true
+    log('sending %d queued messages from the main win to the popnetwork window',
+      messageQueueMainToPopNetwork.length)
+    messageQueueMainToPopNetwork.forEach(function (message) {
+      windows.popnetwork.send(message.name, ...message.args)
+      log('popnetwork: sent queued %s', message.name)
     })
   })
 
@@ -222,23 +222,23 @@ function init () {
 
   const oldEmit = ipc.emit
   ipc.emit = function (name, e, ...args) {
-    // Relay messages between the main window and the WebTorrent hidden window
-    if (name.startsWith('wt-') && !app.isQuitting) {
-      if (e.sender.browserWindowOptions.title === 'webtorrent-hidden-window') {
+    // Relay messages between the main window and the PopNetwork hidden window
+    if (name.startsWith('pn-') && !app.isQuitting) {
+      if (e.sender.browserWindowOptions.title === 'popnetwork-hidden-window') {
         // Send message to main window
         windows.main.send(name, ...args)
-        log('webtorrent: got %s', name)
-      } else if (app.ipcReadyWebTorrent) {
-        // Send message to webtorrent window
-        windows.webtorrent.send(name, ...args)
-        log('webtorrent: sent %s', name)
+        log('popnetwork: got %s', name)
+      } else if (app.ipcReadyPopNetwork) {
+        // Send message to popnetwork window
+        windows.popnetwork.send(name, ...args)
+        log('popnetwork: sent %s', name)
       } else {
-        // Queue message for webtorrent window, it hasn't finished loading yet
-        messageQueueMainToWebTorrent.push({
+        // Queue message for popnetwork window, it hasn't finished loading yet
+        messageQueueMainToPopNetwork.push({
           name: name,
           args: args
         })
-        log('webtorrent: queueing %s', name)
+        log('popnetwork: queueing %s', name)
       }
       return
     }

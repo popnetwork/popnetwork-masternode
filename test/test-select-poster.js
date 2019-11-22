@@ -3,10 +3,10 @@ const test = require('tape')
 const fs = require('fs')
 const path = require('path')
 
-const WebTorrent = require('webtorrent')
+const PopNetwork = require('webtorrent')
 const torrentPoster = require('../build/renderer/lib/torrent-poster')
 
-const client = new WebTorrent()
+const client = new PopNetwork()
 
 test("get cover from: 'wiredCd.torrent'", (t) => {
   const torrentPath = path.join(__dirname, '..', 'static', 'wiredCd.torrent')

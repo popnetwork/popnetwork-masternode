@@ -124,7 +124,7 @@ function createShortcuts (cb) {
 function updateShortcuts (cb) {
   const homeDir = os.homedir()
   if (homeDir) {
-    const desktopShortcutPath = path.join(homeDir, 'Desktop', 'WebTorrent.lnk')
+    const desktopShortcutPath = path.join(homeDir, 'Desktop', 'PopNetwork.lnk')
     // If the desktop shortcut was deleted by the user, then keep it deleted.
     fs.access(desktopShortcutPath, function (err) {
       const desktopShortcutExists = !err

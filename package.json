@@ -1,17 +1,17 @@
 {
-  "name": "webtorrent-desktop",
-  "description": "WebTorrent, the streaming torrent client. For Mac, Windows, and Linux.",
+  "name": "popnetwork-desktop",
+  "description": "PopNetwork, the streaming torrent client. For Mac, Windows, and Linux.",
   "version": "0.21.0",
   "author": {
-    "name": "WebTorrent, LLC",
-    "email": "feross@webtorrent.io",
-    "url": "https://webtorrent.io"
+    "name": "PopNetwork, LLC",
+    "email": "feross@thepopnetwork.org",
+    "url": "https://thepopnetwork.org"
   },
   "bugs": {
-    "url": "https://github.com/webtorrent/webtorrent-desktop/issues"
+    "url": "https://github.com/popnetwork/popnetwork-desktop/issues"
   },
   "dependencies": {
-    "airplayer": "github:webtorrent/airplayer#fix-security",
+    "airplayer": "github:popnetwork/airplayer#fix-security",
     "application-config": "^1.0.1",
     "arch": "^2.1.1",
     "auto-launch": "^5.0.5",
@@ -72,16 +72,16 @@
   "engines": {
     "node": ">=4.0.0"
   },
-  "homepage": "https://webtorrent.io",
+  "homepage": "https://thepopnetwork.org",
   "keywords": [
     "desktop",
     "electron",
     "electron-app",
-    "hybrid webtorrent client",
+    "hybrid popnetwork client",
     "mad science",
     "torrent",
     "torrent client",
-    "webtorrent"
+    "popnetwork"
   ],
   "license": "MIT",
   "main": "index.js",
@@ -91,10 +91,10 @@
     "electron-installer-redhat": "^2.0.0"
   },
   "private": true,
-  "productName": "WebTorrent",
+  "productName": "PopNetwork",
   "repository": {
     "type": "git",
-    "url": "git://github.com/webtorrent/webtorrent-desktop.git"
+    "url": "git://github.com/popnetwork/popnetwork-desktop.git"
   },
   "scripts": {
     "build": "buble src --target chrome:71 --output build",

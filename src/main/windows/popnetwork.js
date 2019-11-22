@@ -1,4 +1,4 @@
-const webtorrent = module.exports = {
+const popnetwork = module.exports = {
   init,
   send,
   show,
@@ -11,7 +11,7 @@ const electron = require('electron')
 const config = require('../../config')
 
 function init () {
-  const win = webtorrent.win = new electron.BrowserWindow({
+  const win = popnetwork.win = new electron.BrowserWindow({
     backgroundColor: '#1E1E1E',
     center: true,
     fullscreen: false,
@@ -22,7 +22,7 @@ function init () {
     resizable: false,
     show: false,
     skipTaskbar: true,
-    title: 'webtorrent-hidden-window',
+    title: 'popnetwork-hidden-window',
     useContentSize: true,
     webPreferences: {
       nodeIntegration: true,
@@ -31,9 +31,9 @@ function init () {
     width: 150
   })
 
-  win.loadURL(config.WINDOW_WEBTORRENT)
+  win.loadURL(config.WINDOW_POPNETWORK)
 
-  // Prevent killing the WebTorrent process
+  // Prevent killing the PopNetwork process
   win.on('close', function (e) {
     if (electron.app.isQuitting) {
       return
@@ -44,21 +44,21 @@ function init () {
 }
 
 function show () {
-  if (!webtorrent.win) return
-  webtorrent.win.show()
+  if (!popnetwork.win) return
+  popnetwork.win.show()
 }
 
 function send (...args) {
-  if (!webtorrent.win) return
-  webtorrent.win.send(...args)
+  if (!popnetwork.win) return
+  popnetwork.win.send(...args)
 }
 
 function toggleDevTools () {
-  if (!webtorrent.win) return
-  if (webtorrent.win.webContents.isDevToolsOpened()) {
-    webtorrent.win.webContents.closeDevTools()
-    webtorrent.win.hide()
+  if (!popnetwork.win) return
+  if (popnetwork.win.webContents.isDevToolsOpened()) {
+    popnetwork.win.webContents.closeDevTools()
+    popnetwork.win.hide()
   } else {
-    webtorrent.win.webContents.openDevTools({ mode: 'detach' })
+    popnetwork.win.webContents.openDevTools({ mode: 'detach' })
   }
 }

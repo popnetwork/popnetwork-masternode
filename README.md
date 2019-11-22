@@ -1,10 +1,10 @@
 <h1 align="center">
   <br>
-  <a href="https://webtorrent.io">
-    <img src="https://webtorrent.io/img/WebTorrent.png" alt="WebTorrent" width="200">
+  <a href="https://thepopnetwork.org">
+    <img src="https://thepopnetwork.org/img/PopNetwork.png" alt="PopNetwork" width="200">
   </a>
   <br>
-  WebTorrent Desktop
+  PopNetwork Desktop
   <br>
   <br>
 </h1>
@@ -13,9 +13,9 @@
 
 <p align="center">
   <a href="https://discord.gg/cnXkm4Z"><img src="https://img.shields.io/discord/612575111718895616" alt="discord"></a>
-  <a href="https://travis-ci.org/webtorrent/webtorrent-desktop"><img src="https://img.shields.io/travis/webtorrent/webtorrent-desktop/master.svg" alt="travis"></a>
-  <a href="https://github.com/webtorrent/webtorrent-desktop/releases"><img src="https://img.shields.io/github/release/webtorrent/webtorrent-desktop.svg" alt="github release version"></a>
-  <a href="https://github.com/webtorrent/webtorrent-desktop/releases"><img src="https://img.shields.io/github/downloads/webtorrent/webtorrent-desktop/total.svg" alt="github release downloads"></a>
+  <a href="https://travis-ci.org/popnetwork/popnetwork-desktop"><img src="https://img.shields.io/travis/popnetwork/popnetwork-desktop/master.svg" alt="travis"></a>
+  <a href="https://github.com/popnetwork/popnetwork-desktop/releases"><img src="https://img.shields.io/github/release/popnetwork/popnetwork-desktop.svg" alt="github release version"></a>
+  <a href="https://github.com/popnetwork/popnetwork-desktop/releases"><img src="https://img.shields.io/github/downloads/popnetwork/popnetwork-desktop/total.svg" alt="github release downloads"></a>
   <a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="Standard - JavaScript Style Guide"></a>
 </p>
 
@@ -23,19 +23,19 @@
 
 ### Recommended Install
 
-Download the latest version of WebTorrent Desktop from
-[the official website](https://webtorrent.io/desktop/):
+Download the latest version of PopNetwork Desktop from
+[the official website](https://thepopnetwork.org/desktop/):
 
-### [✨ Download WebTorrent Desktop ✨](https://webtorrent.io/desktop/)
+### [✨ Download PopNetwork Desktop ✨](https://thepopnetwork.org/desktop/)
 
 ### Advanced Install
 
-- Download specific installer files from the [GitHub releases](https://github.com/webtorrent/webtorrent-desktop/releases) page.
+- Download specific installer files from the [GitHub releases](https://github.com/popnetwork/popnetwork-desktop/releases) page.
 
 - Use [Homebrew-Cask](https://github.com/caskroom/homebrew-cask) to install from the command line:
 
   ```
-  $ brew cask install webtorrent
+  $ brew cask install popnetwork
   ```
 
 - Try the (unstable) development version by cloning the Git repository. See the
@@ -44,8 +44,8 @@ Download the latest version of WebTorrent Desktop from
 ## Screenshots
 
 <p align="center">
-  <img src="https://webtorrent.io/img/screenshot-player3.png" alt="screenshot" align="center">
-  <img src="https://webtorrent.io/img/screenshot-main.png" width="612" height="749" alt="screenshot" align="center">
+  <img src="https://thepopnetwork.org/img/screenshot-player3.png" alt="screenshot" align="center">
+  <img src="https://thepopnetwork.org/img/screenshot-main.png" width="612" height="749" alt="screenshot" align="center">
 </p>
 
 ## How to Contribute
@@ -53,8 +53,8 @@ Download the latest version of WebTorrent Desktop from
 ### Get the code
 
 ```
-$ git clone https://github.com/webtorrent/webtorrent-desktop.git
-$ cd webtorrent-desktop
+$ git clone https://github.com/popnetwork/popnetwork-desktop.git
+$ cd popnetwork-desktop
 $ npm install
 ```
 
@@ -178,7 +178,7 @@ https://material-ui.com/getting-started
 
 ### Privacy
 
-WebTorrent Desktop collects some basic usage stats to help us make the app better.
+PopNetwork Desktop collects some basic usage stats to help us make the app better.
 For example, we track how well the play button works. How often does it succeed?
 Time out? Show a missing codec error?
 
@@ -187,4 +187,4 @@ torrents you add.
 
 ## License
 
-MIT. Copyright (c) [WebTorrent, LLC](https://webtorrent.io).
+MIT. Copyright (c) [PopNetwork, LLC](https://thepopnetwork.org).

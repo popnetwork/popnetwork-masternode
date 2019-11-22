@@ -1,15 +1,15 @@
-const appConfig = require('application-config')('WebTorrent')
+const appConfig = require('application-config')('PopNetwork')
 const path = require('path')
 const electron = require('electron')
 const arch = require('arch')
 
-const APP_NAME = 'WebTorrent'
-const APP_TEAM = 'WebTorrent, LLC'
+const APP_NAME = 'PopNetwork'
+const APP_TEAM = 'PopNetwork, LLC'
 const APP_VERSION = require('../package.json').version
 
 const IS_TEST = isTest()
 const PORTABLE_PATH = IS_TEST
-  ? path.join(process.platform === 'win32' ? 'C:\\Windows\\Temp' : '/tmp', 'WebTorrentTest')
+  ? path.join(process.platform === 'win32' ? 'C:\\Windows\\Temp' : '/tmp', 'PopNetworkTest')
   : path.join(path.dirname(process.execPath), 'Portable Settings')
 const IS_PRODUCTION = isProduction()
 const IS_PORTABLE = isPortable()
@@ -18,14 +18,14 @@ const UI_HEADER_HEIGHT = 38
 const UI_TORRENT_HEIGHT = 100
 
 module.exports = {
-  ANNOUNCEMENT_URL: 'https://webtorrent.io/desktop/announcement',
-  AUTO_UPDATE_URL: 'https://webtorrent.io/desktop/update',
-  CRASH_REPORT_URL: 'https://webtorrent.io/desktop/crash-report',
-  TELEMETRY_URL: 'https://webtorrent.io/desktop/telemetry',
+  ANNOUNCEMENT_URL: 'https://thepopnetwork.org/desktop/announcement',
+  AUTO_UPDATE_URL: 'https://thepopnetwork.org/desktop/update',
+  CRASH_REPORT_URL: 'https://thepopnetwork.org/desktop/crash-report',
+  TELEMETRY_URL: 'https://thepopnetwork.org/desktop/telemetry',
 
   APP_COPYRIGHT: 'Copyright © 2014-2019 ' + APP_TEAM,
-  APP_FILE_ICON: path.join(__dirname, '..', 'static', 'WebTorrentFile'),
-  APP_ICON: path.join(__dirname, '..', 'static', 'WebTorrent'),
+  APP_FILE_ICON: path.join(__dirname, '..', 'static', 'PopNetwork'),
+  APP_ICON: path.join(__dirname, '..', 'static', 'PopNetwork'),
   APP_NAME: APP_NAME,
   APP_TEAM: APP_TEAM,
   APP_VERSION: APP_VERSION,
@@ -70,13 +70,13 @@ module.exports = {
 
   DEFAULT_DOWNLOAD_PATH: getDefaultDownloadPath(),
 
-  GITHUB_URL: 'https://github.com/webtorrent/webtorrent-desktop',
-  GITHUB_URL_ISSUES: 'https://github.com/webtorrent/webtorrent-desktop/issues',
-  GITHUB_URL_RAW: 'https://raw.githubusercontent.com/webtorrent/webtorrent-desktop/master',
-  GITHUB_URL_RELEASES: 'https://github.com/webtorrent/webtorrent-desktop/releases',
+  GITHUB_URL: 'https://github.com/popnetwork/popnetwork-desktop',
+  GITHUB_URL_ISSUES: 'https://github.com/popnetwork/popnetwork-desktop/issues',
+  GITHUB_URL_RAW: 'https://raw.githubusercontent.com/popnetwork/popnetwork-desktop/master',
+  GITHUB_URL_RELEASES: 'https://github.com/popnetwork/popnetwork-desktop/releases',
 
-  HOME_PAGE_URL: 'https://webtorrent.io',
-  TWITTER_PAGE_URL: 'https://twitter.com/WebTorrentApp',
+  HOME_PAGE_URL: 'https://thepopnetwork.org',
+  TWITTER_PAGE_URL: 'https://twitter.com/PopNetworkApp',
 
   IS_PORTABLE: IS_PORTABLE,
   IS_PRODUCTION: IS_PRODUCTION,
@@ -91,7 +91,7 @@ module.exports = {
 
   WINDOW_ABOUT: 'file://' + path.join(__dirname, '..', 'static', 'about.html'),
   WINDOW_MAIN: 'file://' + path.join(__dirname, '..', 'static', 'main.html'),
-  WINDOW_WEBTORRENT: 'file://' + path.join(__dirname, '..', 'static', 'webtorrent.html'),
+  WINDOW_POPNETWORK: 'file://' + path.join(__dirname, '..', 'static', 'popnetwork.html'),
 
   WINDOW_INITIAL_BOUNDS: {
     width: 500,

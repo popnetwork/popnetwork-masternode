@@ -50,7 +50,7 @@ function installWin32 () {
   const log = require('./log')
 
   const iconPath = path.join(
-    process.resourcesPath, 'app.asar.unpacked', 'static', 'WebTorrentFile.ico'
+    process.resourcesPath, 'app.asar.unpacked', 'static', 'PopNetwork.ico'
   )
   registerProtocolHandlerWin32(
     'magnet',

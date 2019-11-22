@@ -1,4 +1,4 @@
-// To keep the UI snappy, we run WebTorrent in its own hidden window, a separate
+// To keep the UI snappy, we run PopNetwork in its own hidden window, a separate
 // process from the main window.
 console.time('init')
 
@@ -11,7 +11,7 @@ const mkdirp = require('mkdirp')
 const mm = require('music-metadata')
 const networkAddress = require('network-address')
 const path = require('path')
-const WebTorrent = require('webtorrent')
+const PopNetwork = require('webtorrent')
 
 const crashReporter = require('../crash-reporter')
 const config = require('../config')
@@ -24,13 +24,13 @@ crashReporter.init()
 // Send & receive messages from the main window
 const ipc = electron.ipcRenderer
 
-// Force use of webtorrent trackers on all torrents
-global.WEBTORRENT_ANNOUNCE = defaultAnnounceList
+// Force use of popnetwork trackers on all torrents
+global.POPNETWORK_ANNOUNCE = defaultAnnounceList
   .map((arr) => arr[0])
   .filter((url) => url.indexOf('wss://') === 0 || url.indexOf('ws://') === 0)
 
 /**
- * WebTorrent version.
+ * PopNetwork version.
  */
 const VERSION = require('../../package.json').version
 
@@ -45,7 +45,7 @@ const VERSION_STR = VERSION
   .slice(0, 4)
 
 /**
- * Version prefix string (used in peer ID). WebTorrent uses the Azureus-style
+ * Version prefix string (used in peer ID). PopNetwork uses the Azureus-style
  * encoding: '-', two characters for client id ('WW'), four ascii digits for version
  * number, '-', followed by random numbers.
  * For example:
@@ -58,11 +58,11 @@ const VERSION_PREFIX = '-WD' + VERSION_STR + '-'
  */
 const PEER_ID = Buffer.from(VERSION_PREFIX + crypto.randomBytes(9).toString('base64'))
 
-// Connect to the WebTorrent and BitTorrent networks. WebTorrent Desktop is a hybrid
-// client, as explained here: https://webtorrent.io/faq
-let client = window.client = new WebTorrent({ peerId: PEER_ID })
+// Connect to the PopNetwork and BitTorrent networks. PopNetwork Desktop is a hybrid
+// client, as explained here: https://thepopnetwork.org/faq
+let client = window.client = new PopNetwork({ peerId: PEER_ID })
 
-// WebTorrent-to-HTTP streaming sever
+// PopNetwork-to-HTTP streaming sever
 let server = null
 
 // Used for diffing, so we only send progress updates when necessary
@@ -73,29 +73,29 @@ init()
 function init () {
   listenToClientEvents()
 
-  ipc.on('wt-start-torrenting', (e, torrentKey, torrentID, path, fileModtimes, selections) =>
+  ipc.on('pn-start-torrenting', (e, torrentKey, torrentID, path, fileModtimes, selections) =>
     startTorrenting(torrentKey, torrentID, path, fileModtimes, selections))
-  ipc.on('wt-stop-torrenting', (e, infoHash) =>
+  ipc.on('pn-stop-torrenting', (e, infoHash) =>
     stopTorrenting(infoHash))
-  ipc.on('wt-create-torrent', (e, torrentKey, options) =>
+  ipc.on('pn-create-torrent', (e, torrentKey, options) =>
     createTorrent(torrentKey, options))
-  ipc.on('wt-save-torrent-file', (e, torrentKey) =>
+  ipc.on('pn-save-torrent-file', (e, torrentKey) =>
     saveTorrentFile(torrentKey))
-  ipc.on('wt-generate-torrent-poster', (e, torrentKey) =>
+  ipc.on('pn-generate-torrent-poster', (e, torrentKey) =>
     generateTorrentPoster(torrentKey))
-  ipc.on('wt-get-audio-metadata', (e, infoHash, index) =>
+  ipc.on('pn-get-audio-metadata', (e, infoHash, index) =>
     getAudioMetadata(infoHash, index))
-  ipc.on('wt-start-server', (e, infoHash) =>
+  ipc.on('pn-start-server', (e, infoHash) =>
     startServer(infoHash))
-  ipc.on('wt-stop-server', (e) =>
+  ipc.on('pn-stop-server', (e) =>
     stopServer())
-  ipc.on('wt-select-files', (e, infoHash, selections) =>
+  ipc.on('pn-select-files', (e, infoHash, selections) =>
     selectFiles(infoHash, selections))
 
-  ipc.send('ipcReadyWebTorrent')
+  ipc.send('ipcReadyPopNetwork')
 
   window.addEventListener('error', (e) =>
-    ipc.send('wt-uncaught-error', { message: e.error.message, stack: e.error.stack }),
+    ipc.send('pn-uncaught-error', { message: e.error.message, stack: e.error.stack }),
   true)
 
   setInterval(updateTorrentProgress, 1000)
@@ -103,12 +103,12 @@ function init () {
 }
 
 function listenToClientEvents () {
-  client.on('warning', (err) => ipc.send('wt-warning', null, err.message))
-  client.on('error', (err) => ipc.send('wt-error', null, err.message))
+  client.on('warning', (err) => ipc.send('pn-warning', null, err.message))
+  client.on('error', (err) => ipc.send('pn-error', null, err.message))
 }
 
 // Starts a given TorrentID, which can be an infohash, magnet URI, etc.
-// Returns a WebTorrent object. See https://git.io/vik9M
+// Returns a PopNetwork object. See https://git.io/vik9M
 function startTorrenting (torrentKey, torrentID, path, fileModtimes, selections) {
   console.log('starting torrent %s: %s', torrentKey, torrentID)
 
@@ -138,44 +138,44 @@ function createTorrent (torrentKey, options) {
   const torrent = client.seed(paths, options)
   torrent.key = torrentKey
   addTorrentEvents(torrent)
-  ipc.send('wt-new-torrent')
+  ipc.send('pn-new-torrent')
 }
 
 function addTorrentEvents (torrent) {
   torrent.on('warning', (err) =>
-    ipc.send('wt-warning', torrent.key, err.message))
+    ipc.send('pn-warning', torrent.key, err.message))
   torrent.on('error', (err) =>
-    ipc.send('wt-error', torrent.key, err.message))
+    ipc.send('pn-error', torrent.key, err.message))
   torrent.on('infoHash', () =>
-    ipc.send('wt-parsed', torrent.key, torrent.infoHash, torrent.magnetURI))
+    ipc.send('pn-parsed', torrent.key, torrent.infoHash, torrent.magnetURI))
   torrent.on('metadata', torrentMetadata)
   torrent.on('ready', torrentReady)
   torrent.on('done', torrentDone)
 
   function torrentMetadata () {
     const info = getTorrentInfo(torrent)
-    ipc.send('wt-metadata', torrent.key, info)
+    ipc.send('pn-metadata', torrent.key, info)
 
     updateTorrentProgress()
   }
 
   function torrentReady () {
     const info = getTorrentInfo(torrent)
-    ipc.send('wt-ready', torrent.key, info)
-    ipc.send('wt-ready-' + torrent.infoHash, torrent.key, info)
+    ipc.send('pn-ready', torrent.key, info)
+    ipc.send('pn-ready-' + torrent.infoHash, torrent.key, info)
 
     updateTorrentProgress()
   }
 
   function torrentDone () {
     const info = getTorrentInfo(torrent)
-    ipc.send('wt-done', torrent.key, info)
+    ipc.send('pn-done', torrent.key, info)
 
     updateTorrentProgress()
 
     torrent.getFileModtimes(function (err, fileModtimes) {
       if (err) return onError(err)
-      ipc.send('wt-file-modtimes', torrent.key, fileModtimes)
+      ipc.send('pn-file-modtimes', torrent.key, fileModtimes)
     })
   }
 }
@@ -212,7 +212,7 @@ function saveTorrentFile (torrentKey) {
     const fileName = torrent.infoHash + '.torrent'
     if (!err) {
       // We've already saved the file
-      return ipc.send('wt-file-saved', torrentKey, fileName)
+      return ipc.send('pn-file-saved', torrentKey, fileName)
     }
 
     // Otherwise, save the .torrent file, under the app config folder
@@ -220,7 +220,7 @@ function saveTorrentFile (torrentKey) {
       fs.writeFile(torrentPath, torrent.torrentFile, function (err) {
         if (err) return console.log('error saving torrent file %s: %o', torrentPath, err)
         console.log('saved torrent file %s', torrentPath)
-        return ipc.send('wt-file-saved', torrentKey, fileName)
+        return ipc.send('pn-file-saved', torrentKey, fileName)
       })
     })
   })
@@ -240,7 +240,7 @@ function generateTorrentPoster (torrentKey) {
       fs.writeFile(posterFilePath, buf, function (err) {
         if (err) return console.log('error saving poster: %o', err)
         // show the poster
-        ipc.send('wt-poster', torrentKey, posterFileName)
+        ipc.send('pn-poster', torrentKey, posterFileName)
       })
     })
   })
@@ -252,7 +252,7 @@ function updateTorrentProgress () {
   if (prevProgress && deepEqual(progress, prevProgress, { strict: true })) {
     return /* don't send heavy object if it hasn't changed */
   }
-  ipc.send('wt-progress', progress)
+  ipc.send('pn-progress', progress)
   prevProgress = progress
 }
 
@@ -264,7 +264,7 @@ function getTorrentProgress () {
   })
 
   // Track progress for every file in each torrent
-  // TODO: ideally this would be tracked by WebTorrent, which could do it
+  // TODO: ideally this would be tracked by PopNetwork, which could do it
   // more efficiently than looping over torrent.bitfield
   const torrentProg = client.torrents.map(function (torrent) {
     const fileProg = torrent.files && torrent.files.map(function (file, index) {
@@ -322,8 +322,8 @@ function startServerFromReadyTorrent (torrent, cb) {
       networkAddress: networkAddress()
     }
 
-    ipc.send('wt-server-running', info)
-    ipc.send('wt-server-' + torrent.infoHash, info)
+    ipc.send('pn-server-running', info)
+    ipc.send('pn-server-' + torrent.infoHash, info)
   })
 }
 
@@ -341,14 +341,14 @@ function getAudioMetadata (infoHash, index) {
 
   // Set initial matadata to display the filename first.
   const metadata = { title: file.name }
-  ipc.send('wt-audio-metadata', infoHash, index, metadata)
+  ipc.send('pn-audio-metadata', infoHash, index, metadata)
 
   const options = {
     native: false,
     skipCovers: true,
     fileSize: file.length,
     observer: event => {
-      ipc.send('wt-audio-metadata', infoHash, index, event.metadata)
+      ipc.send('pn-audio-metadata', infoHash, index, event.metadata)
     }
   }
   const onMetaData = file.done
@@ -410,7 +410,7 @@ function selectFiles (torrentOrInfoHash, selections) {
   }
 }
 
-// Gets a WebTorrent handle by torrentKey
+// Gets a PopNetwork handle by torrentKey
 // Throws an Error if we're not currently torrenting anything w/ that key
 function getTorrent (torrentKey) {
   const ret = client.torrents.find((x) => x.key === torrentKey)
@@ -427,7 +427,7 @@ function onError (err) {
 // https://github.com/electron/electron/issues/7212
 window.testOfflineMode = function () {
   console.log('Test, going OFFLINE')
-  client = window.client = new WebTorrent({
+  client = window.client = new PopNetwork({
     peerId: PEER_ID,
     tracker: false,
     dht: false,

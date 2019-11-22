@@ -1,5 +1,5 @@
 // Collects anonymous usage stats and uncaught errors
-// Reports back so that we can improve WebTorrent Desktop
+// Reports back so that we can improve PopNetwork Desktop
 module.exports = {
   init,
   send,

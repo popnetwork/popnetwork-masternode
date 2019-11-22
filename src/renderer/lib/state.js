@@ -1,4 +1,4 @@
-const appConfig = require('application-config')('WebTorrent')
+const appConfig = require('application-config')('PopNetwork')
 const path = require('path')
 const { EventEmitter } = require('events')
 
@@ -31,8 +31,8 @@ function getDefaultState () {
      * Temporary state disappears once the program exits.
      * It can contain complex objects like open connections, etc.
      */
-    client: null, /* the WebTorrent client */
-    server: null, /* local WebTorrent-to-HTTP server */
+    client: null, /* the PopNetwork client */
+    server: null, /* local PopNetwork-to-HTTP server */
     prev: { /* used for state diffing in updateElectron() */
       title: null,
       progress: -1,
@@ -54,7 +54,7 @@ function getDefaultState () {
     },
     modal: null, /* modal popover */
     errors: [], /* user-facing errors */
-    nextTorrentKey: 1, /* identify torrents for IPC between the main and webtorrent windows */
+    nextTorrentKey: 1, /* identify torrents for IPC between the main and popnetwork windows */
 
     /*
      * Saved state is read from and written to a file every time the app runs.
@@ -63,13 +63,13 @@ function getDefaultState () {
      *
      * Config path:
      *
-     * Mac                  ~/Library/Application Support/WebTorrent/config.json
-     * Linux (XDG)          $XDG_CONFIG_HOME/WebTorrent/config.json
-     * Linux (Legacy)       ~/.config/WebTorrent/config.json
-     * Windows (> Vista)    %LOCALAPPDATA%/WebTorrent/config.json
-     * Windows (XP, 2000)   %USERPROFILE%/Local Settings/Application Data/WebTorrent/config.json
+     * Mac                  ~/Library/Application Support/PopNetwork/config.json
+     * Linux (XDG)          $XDG_CONFIG_HOME/PopNetwork/config.json
+     * Linux (Legacy)       ~/.config/PopNetwork/config.json
+     * Windows (> Vista)    %LOCALAPPDATA%/PopNetwork/config.json
+     * Windows (XP, 2000)   %USERPROFILE%/Local Settings/Application Data/PopNetwork/config.json
      *
-     * Also accessible via `require('application-config')('WebTorrent').filePath`
+     * Also accessible via `require('application-config')('PopNetwork').filePath`
      */
     saved: {},
 
@@ -245,7 +245,7 @@ function saveImmediate (state, cb) {
       const torrent = {}
       for (const key in x) {
         if (key === 'progress' || key === 'torrentKey') {
-          continue // Don't save progress info or key for the webtorrent process
+          continue // Don't save progress info or key for the popnetwork process
         }
         if (key === 'error') {
           continue // Don't save error states

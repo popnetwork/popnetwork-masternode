@@ -185,11 +185,11 @@ function getMenuTemplate () {
               click: () => windows.main.toggleDevTools()
             },
             {
-              label: 'Show WebTorrent Process',
+              label: 'Show PopNetwork Process',
               accelerator: process.platform === 'darwin'
                 ? 'Alt+Command+P'
                 : 'Ctrl+Shift+P',
-              click: () => windows.webtorrent.toggleDevTools()
+              click: () => windows.popnetwork.toggleDevTools()
             }
           ]
         }
@@ -338,7 +338,7 @@ function getMenuTemplate () {
   ]
 
   if (process.platform === 'darwin') {
-    // WebTorrent menu (Mac)
+    // PopNetwork menu (Mac)
     template.unshift({
       label: config.APP_NAME,
       submenu: [

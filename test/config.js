@@ -1,7 +1,7 @@
 const path = require('path')
 
 const TEMP_DIR = process.platform === 'win32' ? 'C:\\Windows\\Temp' : '/tmp'
-const TEST_DIR = path.join(TEMP_DIR, 'WebTorrentTest')
+const TEST_DIR = path.join(TEMP_DIR, 'PopNetworkTest')
 const TEST_DIR_DOWNLOAD = path.join(TEST_DIR, 'Downloads')
 const TEST_DIR_DESKTOP = path.join(TEST_DIR, 'Desktop')
 

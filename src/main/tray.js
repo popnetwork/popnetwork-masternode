@@ -52,7 +52,7 @@ function checkLinuxTraySupport (cb) {
   const cp = require('child_process')
 
   // Check that we're on Ubuntu (or another debian system) and that we have
-  // libappindicator1. If WebTorrent was installed from the deb file, we should
+  // libappindicator1. If PopNetwork was installed from the deb file, we should
   // always have it. If it was installed from the zip file, we might not.
   cp.exec('dpkg --get-selections libappindicator1', function (err, stdout) {
     if (err) return cb(err)
@@ -99,7 +99,7 @@ function getMenuTemplate () {
       }
     } else {
       return {
-        label: 'Show WebTorrent',
+        label: 'Show PopNetwork',
         click: () => windows.main.show()
       }
     }

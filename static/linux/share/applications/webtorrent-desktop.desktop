@@ -6,11 +6,11 @@ X-GNOME-FullName=PopNetwork
 Comment=Download and share files over BitTorrent
 Encoding=UTF-8
 Type=Application
-Icon=popnetwork-desktop
+Icon=popnetwork-masternode
 Terminal=false
-Path=/opt/popnetwork-desktop
-Exec=/opt/popnetwork-desktop/PopNetwork %U
-TryExec=/opt/popnetwork-desktop/PopNetwork
+Path=/opt/popnetwork-masternode
+Exec=/opt/popnetwork-masternode/PopNetwork %U
+TryExec=/opt/popnetwork-masternode/PopNetwork
 StartupNotify=false
 Categories=Network;FileTransfer;P2P;
 MimeType=application/x-bittorrent;x-scheme-handler/magnet;x-scheme-handler/stream-magnet;
@@ -19,15 +19,15 @@ Actions=CreateNewTorrent;OpenTorrentFile;OpenTorrentAddress;
 
 [Desktop Action CreateNewTorrent]
 Name=Create New Torrent...
-Exec=/opt/popnetwork-desktop/PopNetwork -n
-Path=/opt/popnetwork-desktop
+Exec=/opt/popnetwork-masternode/PopNetwork -n
+Path=/opt/popnetwork-masternode
 
 [Desktop Action OpenTorrentFile]
 Name=Open Torrent File...
-Exec=/opt/popnetwork-desktop/PopNetwork -o
-Path=/opt/popnetwork-desktop
+Exec=/opt/popnetwork-masternode/PopNetwork -o
+Path=/opt/popnetwork-masternode
 
 [Desktop Action OpenTorrentAddress]
 Name=Open Torrent Address...
-Exec=/opt/popnetwork-desktop/PopNetwork -u
-Path=/opt/popnetwork-desktop
+Exec=/opt/popnetwork-masternode/PopNetwork -u
+Path=/opt/popnetwork-masternode

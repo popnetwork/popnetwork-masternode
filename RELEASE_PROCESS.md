@@ -62,7 +62,7 @@
   ```
 
   Follow the URL to a newly created Github release page. Manually upload the binaries from
-  `popnetwork-desktop/dist/`. Open the previous release in another tab, and make sure that you
+  `popnetwork-masternode/dist/`. Open the previous release in another tab, and make sure that you
   are uploading the same set of files, no more, no less.
 
 ### 3. Test it

@@ -13,9 +13,9 @@
 
 <p align="center">
   <a href="https://discord.gg/cnXkm4Z"><img src="https://img.shields.io/discord/612575111718895616" alt="discord"></a>
-  <a href="https://travis-ci.org/popnetwork/popnetwork-desktop"><img src="https://img.shields.io/travis/popnetwork/popnetwork-desktop/master.svg" alt="travis"></a>
-  <a href="https://github.com/popnetwork/popnetwork-desktop/releases"><img src="https://img.shields.io/github/release/popnetwork/popnetwork-desktop.svg" alt="github release version"></a>
-  <a href="https://github.com/popnetwork/popnetwork-desktop/releases"><img src="https://img.shields.io/github/downloads/popnetwork/popnetwork-desktop/total.svg" alt="github release downloads"></a>
+  <a href="https://travis-ci.org/popnetwork/popnetwork-masternode"><img src="https://img.shields.io/travis/popnetwork/popnetwork-masternode/master.svg" alt="travis"></a>
+  <a href="https://github.com/popnetwork/popnetwork-masternode/releases"><img src="https://img.shields.io/github/release/popnetwork/popnetwork-masternode.svg" alt="github release version"></a>
+  <a href="https://github.com/popnetwork/popnetwork-masternode/releases"><img src="https://img.shields.io/github/downloads/popnetwork/popnetwork-masternode/total.svg" alt="github release downloads"></a>
   <a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="Standard - JavaScript Style Guide"></a>
 </p>
 
@@ -30,7 +30,7 @@ Download the latest version of PopNetwork Desktop from
 
 ### Advanced Install
 
-- Download specific installer files from the [GitHub releases](https://github.com/popnetwork/popnetwork-desktop/releases) page.
+- Download specific installer files from the [GitHub releases](https://github.com/popnetwork/popnetwork-masternode/releases) page.
 
 - Use [Homebrew-Cask](https://github.com/caskroom/homebrew-cask) to install from the command line:
 
@@ -53,8 +53,8 @@ Download the latest version of PopNetwork Desktop from
 ### Get the code
 
 ```
-$ git clone https://github.com/popnetwork/popnetwork-desktop.git
-$ cd popnetwork-desktop
+$ git clone https://github.com/popnetwork/popnetwork-masternode.git
+$ cd popnetwork-masternode
 $ npm install
 ```
 

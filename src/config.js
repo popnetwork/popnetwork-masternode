@@ -1,10 +1,10 @@
-const appConfig = require('application-config')('PopNetwork')
+const appConfig = require('application-config')('popnetwork')
 const path = require('path')
 const electron = require('electron')
 const arch = require('arch')
 
-const APP_NAME = 'PopNetwork'
-const APP_TEAM = 'PopNetwork, LLC'
+const APP_NAME = 'POP Network Masternode'
+const APP_TEAM = 'popnetwork, LLC'
 const APP_VERSION = require('../package.json').version
 
 const IS_TEST = isTest()

@@ -42,7 +42,7 @@ module.exports = class TorrentController {
   }
 
   torrentError (torrentKey, message) {
-    // TODO: PopNetwork needs semantic errors
+    // TODO: popnetwork needs semantic errors
     if (message.startsWith('Cannot add duplicate torrent')) {
       // Remove infohash from the message
       message = 'Cannot add duplicate torrent'
@@ -106,7 +106,7 @@ module.exports = class TorrentController {
       ? -1
       : progressInfo.progress
 
-    // Show progress bar under the PopNetwork taskbar icon, on OSX
+    // Show progress bar under the popnetwork taskbar icon, on OSX
     this.state.dock.progress = progress
 
     // Update progress for each individual torrent

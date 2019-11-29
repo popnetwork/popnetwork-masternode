@@ -1,7 +1,7 @@
 <h1 align="center">
   <br>
   <a href="https://thepopnetwork.org">
-    <img src="https://thepopnetwork.org/img/PopNetwork.png" alt="PopNetwork" width="200">
+    <img src="https://thepopnetwork.org/img/popnetwork.png" alt="popnetwork" width="200">
   </a>
   <br>
   popnetwork-masternode
@@ -187,4 +187,4 @@ torrents you add.
 
 ## License
 
-MIT. Copyright (c) [PopNetwork, LLC](https://thepopnetwork.org).
+MIT. Copyright (c) [popnetwork, LLC](https://thepopnetwork.org).

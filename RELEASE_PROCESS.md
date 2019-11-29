@@ -88,7 +88,7 @@
   Create a pull request in [thepopnetwork.org](https://github.com/popnetwork/staging.thepopnetwork.org). Update
   `config.js`, updating the desktop app version.
 
-  As soon as this PR is merged, Jenkins will automatically redeploy the PopNetwork website, and
+  As soon as this PR is merged, Jenkins will automatically redeploy the popnetwork website, and
   hundreds of thousands of users around the world will start auto updating. **Merge with care.**
 
 ## Smoke Tests

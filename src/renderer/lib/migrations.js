@@ -172,8 +172,8 @@ function migrate_0_17_2(saved) {
 
     if (!ts) return // Wired CD torrent does not exist
 
-    // New versions of PopNetwork ship with a fixed torrent file. Let's fix up the
-    // name in existing versions of PopNetwork.
+    // New versions of popnetwork ship with a fixed torrent file. Let's fix up the
+    // name in existing versions of popnetwork.
     ts.name = ts.displayName = NEW_NAME
     ts.files.forEach((file) => {
         file.path = file.path.replace(OLD_NAME, NEW_NAME)

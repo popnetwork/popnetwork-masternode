@@ -234,7 +234,7 @@ module.exports = class PlaybackController {
     this.updatePlayer(infoHash, index, true, cb)
   }
 
-  // Starts PopNetwork server for media streaming
+  // Starts popnetwork server for media streaming
   startServer (torrentSummary) {
     const state = this.state
 
@@ -350,7 +350,7 @@ module.exports = class PlaybackController {
     }
     restoreBounds(state)
 
-    // Tell the PopNetwork process to kill the torrent-to-HTTP server
+    // Tell the popnetwork process to kill the torrent-to-HTTP server
     ipcRenderer.send('pn-stop-server')
 
     ipcRenderer.send('onPlayerClose')

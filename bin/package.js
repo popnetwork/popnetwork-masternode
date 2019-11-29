@@ -82,12 +82,12 @@ const all = {
     asar: {
         // A glob expression, that unpacks the files with matching names to the
         // "app.asar.unpacked" directory.
-        unpack: 'PopNetwork*'
+        unpack: 'popnetwork*'
     },
 
     // The build version of the application. Maps to the FileVersion metadata property on
     // Windows, and CFBundleVersion on Mac. Note: Windows requires the build version to
-    // start with a number. We're using the version of the underlying PopNetwork library.
+    // start with a number. We're using the version of the underlying popnetwork library.
     buildVersion: require('webtorrent/package.json').version,
 
     // The application source directory.
@@ -513,7 +513,7 @@ function buildLinux(cb) {
             src: filesPath + '/',
             dest: DIST_PATH,
             arch: destArch,
-            bin: 'PopNetwork',
+            bin: 'popnetwork',
             icon: {
                 '48x48': path.join(config.STATIC_PATH, 'linux/share/icons/hicolor/48x48/apps/popnetwork-masternode.png'),
                 '256x256': path.join(config.STATIC_PATH, 'linux/share/icons/hicolor/256x256/apps/popnetwork-masternode.png')
@@ -547,7 +547,7 @@ function buildLinux(cb) {
             src: filesPath + '/',
             dest: DIST_PATH,
             arch: destArch,
-            bin: 'PopNetwork',
+            bin: 'popnetwork',
             icon: {
                 '48x48': path.join(config.STATIC_PATH, 'linux/share/icons/hicolor/48x48/apps/popnetwork-masternode.png'),
                 '256x256': path.join(config.STATIC_PATH, 'linux/share/icons/hicolor/256x256/apps/popnetwork-masternode.png')

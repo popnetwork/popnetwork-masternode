@@ -191,7 +191,7 @@ function handleSubmit () {
     .map((s) => s.trim())
     .filter((s) => s !== '')
   const options = {
-    // We can't let the user choose their own name if we want PopNetwork
+    // We can't let the user choose their own name if we want popnetwork
     // to use the files in place rather than creating a new folder.
     name: this.state.defaultName,
     path: this.state.basePath,

@@ -41,7 +41,7 @@ if (process.platform === 'win32') {
 if (!shouldQuit && !config.IS_PORTABLE) {
     // Prevent multiple instances of app from running at same time. New instances
     // signal this instance and quit. Note: This feature creates a lock file in
-    // %APPDATA%\Roaming\PopNetwork so we do not do it for the Portable App since
+    // %APPDATA%\Roaming\popnetwork so we do not do it for the Portable App since
     // we want to be "silent" as well as "portable".
     if (!app.requestSingleInstanceLock()) {
         shouldQuit = true
@@ -98,11 +98,11 @@ function init() {
         })
     }
 
-    // Enable app logging into default directory, i.e. /Library/Logs/PopNetwork
+    // Enable app logging into default directory, i.e. /Library/Logs/popnetwork
     // on Mac, %APPDATA% on Windows, $XDG_CONFIG_HOME or ~/.config on Linux.
     app.setAppLogsPath()
 
-    app.userAgentFallback = `PopNetwork/${POPNETWORK_VERSION} (https://webtorrent.io)`
+    app.userAgentFallback = `popnetwork/${POPNETWORK_VERSION} (https://webtorrent.io)`
 
     app.on('open-file', onOpen)
     app.on('open-url', onOpen)
@@ -195,7 +195,7 @@ function onAppOpen(newArgv) {
 }
 
 // Remove leading args.
-// Production: 1 arg, eg: /Applications/PopNetwork.app/Contents/MacOS/PopNetwork
+// Production: 1 arg, eg: /Applications/popnetwork.app/Contents/MacOS/popnetwork
 // Development: 2 args, eg: electron .
 // Test: 4 args, eg: electron -r .../mocks.js .
 function sliceArgv(argv) {
@@ -228,7 +228,7 @@ function processArgv(argv) {
             // Ignore weird Spectron argument
         } else if (arg !== '.') {
             // Ignore '.' argument, which gets misinterpreted as a torrent id, when a
-            // development copy of PopNetwork is started while a production version is
+            // development copy of popnetwork is started while a production version is
             // running.
             torrentIds.push(arg)
         }

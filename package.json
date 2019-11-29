@@ -1,9 +1,9 @@
 {
     "name": "popnetwork-masternode",
-    "description": "PopNetwork, the streaming torrent client. For Mac, Windows, and Linux.",
+    "description": "popnetwork, the streaming torrent client. For Mac, Windows, and Linux.",
     "version": "0.21.0",
     "author": {
-        "name": "PopNetwork, LLC",
+        "name": "popnetwork, LLC",
         "email": "feross@thepopnetwork.org",
         "url": "https://thepopnetwork.org"
     },
@@ -91,7 +91,7 @@
         "electron-installer-redhat": "^2.0.0"
     },
     "private": true,
-    "productName": "PopNetwork",
+    "productName": "popnetwork",
     "repository": {
         "type": "git",
         "url": "git://github.com/popnetwork/popnetwork-masternode.git"

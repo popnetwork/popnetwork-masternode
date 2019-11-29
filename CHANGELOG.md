@@ -55,14 +55,14 @@
 
 ### Changed
 - [SECURITY] Mitigate Electron protocol handler issue (Windows)
-- Moved project from Feross's GitHub account to the PopNetwork GitHub organization
+- Moved project from Feross's GitHub account to the popnetwork GitHub organization
 - Updated to electron@1.6.16
 - Updated to material-ui@0.17
 - Treat .FLAC as playable audio (#1127)
 
 ### Fixed
 - Fix time and duration so it doesn't bounce in the UI (#1233)
-- Fix 'About PopNetwork' menu location on Windows (#1120)
+- Fix 'About popnetwork' menu location on Windows (#1120)
 
 ## v0.18.0 - 2017-02-03
 
@@ -73,7 +73,7 @@
 - Update Electron to 1.4.15
   - Windows 32-bit: App can use 4GB of memory instead of just 2GB
   - Fix "Portable App" writing crash reports to "%APPDATA%\Temp" (Windows)
-- Updated PopNetwork engine to 0.98.5
+- Updated popnetwork engine to 0.98.5
   - Fix issue where http web seeds would sometimes stall
   - Don't send 'completed' event to tracker again if torrent is already complete
   - Add more peer ID entropy
@@ -104,7 +104,7 @@
 - Fix external player (VLC, etc.) opening before HTTP server was ready
 - Windows (Portable App): Fix "Portable App" mode
   - Write application support files to the "Portable Settings" folder
-  - Stop writing Electron "single instance" lock file to "%APPDATA%\Roaming\PopNetwork"
+  - Stop writing Electron "single instance" lock file to "%APPDATA%\Roaming\popnetwork"
   - Some temp data is still written to "%APPDATA%\Temp" (will be fixed in future version)
 - Don't show pointer cursor on torrent list checkbox
 - Trim extra whitespace from magnet links pasted into "Open Torrent Address" dialog
@@ -205,12 +205,12 @@
 ## v0.11.0 - 2016-08-19
 
 ### Added
-- New Preference to "Set PopNetwork as default handler for torrents and magnet links" (#771)
+- New Preference to "Set popnetwork as default handler for torrents and magnet links" (#771)
 - New Preference to "Always play in VLC" (#674)
 - Check for missing default download path and torrent folders on start up (#776)
 
 ### Changed
-- Do not automatically set PopNetwork as the default handler for torrents (#771)
+- Do not automatically set popnetwork as the default handler for torrents (#771)
 - Torrents can only be created from the home screen (#770)
 - Update Electron to 1.3.3 (#772)
 
@@ -228,7 +228,7 @@
 - Linux: Show badge count for completed torrent downloads
 
 ### Changed
-- Change popnetwork-masternode peer ID prefix to 'WD' to distinguish from PopNetwork in the browser, 'WW' (#688)
+- Change popnetwork-masternode peer ID prefix to 'WD' to distinguish from popnetwork in the browser, 'WW' (#688)
 - Switch UI to React to improve UI rendering speed (#729)
   - The primary bottleneck was actually `hyperx`, not `virtual-dom`.
 - Update Electron to 1.3.2 (#738) (#739) (#740) (#747) (#756)
@@ -291,7 +291,7 @@
 ### Fixed
 - Fix exception that affects users upgrading from v0.5.1 or older
   - Ensure `state.saved.prefs` configuration exists
-- Fix window title on "About PopNetwork" window
+- Fix window title on "About popnetwork" window
 
 ## v0.7.1 - 2016-06-02
 
@@ -336,9 +336,9 @@
 
 ### Fixed
 - Disable WebRTC to work around Electron crash (Windows)
-  - Will be re-enabled in the next version of PopNetwork, which will be based on
+  - Will be re-enabled in the next version of popnetwork, which will be based on
     the next version of Electron, where the bug is fixed.
-- Fix crash when updating from PopNetwork 0.5.x in some situtations (#583)
+- Fix crash when updating from popnetwork 0.5.x in some situtations (#583)
 - Fix crash when dropping files onto the dock icon (OS X)
 - Fix keyboard shortcuts Space and ESC being captured globally (#585)
 - Fix crash, show error when drag-dropping hidden files (#586)
@@ -387,7 +387,7 @@
 ### Fixed
 - Magnet links throw exception on app launch. (OS X)
 - Multi-file torrents would not seed in-place, were copied to Downloads folder.
-- Missing 'About PopNetwork' menu item. (Windows)
+- Missing 'About popnetwork' menu item. (Windows)
 - Rare exception. ("Cannot create BrowserWindow before app is ready")
 
 ## v0.4.0 - 2016-05-13
@@ -454,7 +454,7 @@ to this release!
 ## v0.3.2 - 2016-04-07
 
 ### Added
-- Register PopNetwork as default handler for magnet links (OS X)
+- Register popnetwork as default handler for magnet links (OS X)
 
 ### Changed
 - Faster startup time (50ms)
@@ -517,12 +517,12 @@ Thanks to @dcposch, @grunjol, and @feross for contributing to this release.
     Linux users need to download new versions manually.
 
 ### Changed
-- Renamed PopNetwork.app to popnetwork-masternode
+- Renamed popnetwork.app to popnetwork-masternode
 - Add Cosmos Laundromat as a default torrent
 
 ### Fixed
 - Only capture media keys when player is active
-- Update PopNetwork to 0.88.1 for performance improvements
+- Update popnetwork to 0.88.1 for performance improvements
   - When seeding, do not proactively connect to new peers
   - When seeding, do not accept new peers from peer exchange (ut_pex)
   - Fixed leaks, and other improvements that result in less garbage collection
@@ -545,7 +545,7 @@ Thanks to @dcposch, @ungoldman, and @feross for contributing to this release.
 - Better default window size that fits all the default torrents
 - Fixed
   - Crash when ".local/share/{applications,icons}" path did not exist (Linux)
-  - PopNetwork executable can be moved without breaking torrents in the client
+  - popnetwork executable can be moved without breaking torrents in the client
   - Video progress bar shows progress for current file, not full torrent
   - Video player window shows file title instead of torrent title
 
@@ -561,7 +561,7 @@ this release.
   - Supports playback of .mp3, .aac, .ogg, .wav
   - Audio file metadata gets shown in the UI
 - Top menu is no longer automatically hidden (Windows)
-- When magnet links are opened from third-party apps, the PopNetwork window now gets focus.
+- When magnet links are opened from third-party apps, the popnetwork window now gets focus.
 - Subtler app sounds.
 - Fix for an issue that caused some magnet links to fail to open.
 
@@ -587,7 +587,7 @@ the coming weeks! If you know JavaScript and want to help us out, there's
 - **Lightweight, fast torrent client**
 - **Beautiful user experience**
 - **Instantly stream video and audio** from torrents!
-  - PopNetwork fetches file pieces from the network **on-demand**, for instant playback.
+  - popnetwork fetches file pieces from the network **on-demand**, for instant playback.
   - Even when the file is not fully downloaded, **seeking still works!** (Seeking just reprioritizes what pieces are fetched from the network.)
 - Stream videos to **AirPlay** and **Chromecast**
 - **Pure Javascript**, so it's very easy to contribute code!
@@ -598,4 +598,4 @@ the coming weeks! If you know JavaScript and want to help us out, there's
   - Seed files/folders by dragging them onto the app
   - Discovers peers via tracker servers, DHT (Distributed Hash Table), and peer exchange
   - Make the video window "float on top" for watching video while you work!
-  - Supports PopNetwork protocol – for connecting to WebRTC peers (i.e. web browsers)
+  - Supports popnetwork protocol – for connecting to WebRTC peers (i.e. web browsers)

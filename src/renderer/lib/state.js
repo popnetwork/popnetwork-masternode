@@ -1,4 +1,4 @@
-const appConfig = require('application-config')('PopNetwork')
+const appConfig = require('application-config')('popnetwork')
 const path = require('path')
 const { EventEmitter } = require('events')
 
@@ -31,8 +31,8 @@ function getDefaultState () {
      * Temporary state disappears once the program exits.
      * It can contain complex objects like open connections, etc.
      */
-    client: null, /* the PopNetwork client */
-    server: null, /* local PopNetwork-to-HTTP server */
+    client: null, /* the popnetwork client */
+    server: null, /* local popnetwork-to-HTTP server */
     prev: { /* used for state diffing in updateElectron() */
       title: null,
       progress: -1,
@@ -63,13 +63,13 @@ function getDefaultState () {
      *
      * Config path:
      *
-     * Mac                  ~/Library/Application Support/PopNetwork/config.json
-     * Linux (XDG)          $XDG_CONFIG_HOME/PopNetwork/config.json
-     * Linux (Legacy)       ~/.config/PopNetwork/config.json
-     * Windows (> Vista)    %LOCALAPPDATA%/PopNetwork/config.json
-     * Windows (XP, 2000)   %USERPROFILE%/Local Settings/Application Data/PopNetwork/config.json
+     * Mac                  ~/Library/Application Support/popnetwork/config.json
+     * Linux (XDG)          $XDG_CONFIG_HOME/popnetwork/config.json
+     * Linux (Legacy)       ~/.config/popnetwork/config.json
+     * Windows (> Vista)    %LOCALAPPDATA%/popnetwork/config.json
+     * Windows (XP, 2000)   %USERPROFILE%/Local Settings/Application Data/popnetwork/config.json
      *
-     * Also accessible via `require('application-config')('PopNetwork').filePath`
+     * Also accessible via `require('application-config')('popnetwork').filePath`
      */
     saved: {},
 

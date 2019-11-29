@@ -10,7 +10,7 @@ module.exports = class UpdateAvailableModal extends React.Component {
         return ( <
             div className = 'update-available-modal' >
             <
-            p > < strong > A new version of PopNetwork is available: v { state.modal.version } < /strong></p >
+            p > < strong > A new version of popnetwork is available: v { state.modal.version } < /strong></p >
             <
             p >
             We have an auto - updater

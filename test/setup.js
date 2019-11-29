@@ -58,7 +58,7 @@ function waitForLoad(app, t, opts) {
     }).then(function() {
         return app.webContents.getTitle()
     }).then(function(title) {
-        // Note the window title is PopNetwork, this is the HTML <title>
+        // Note the window title is popnetwork, this is the HTML <title>
         t.equal(title, 'Main Window', 'html title')
     })
 }

@@ -11,7 +11,7 @@ const ANNOUNCEMENT_URL =
     `${config.ANNOUNCEMENT_URL}?version=${config.APP_VERSION}&platform=${process.platform}`
 
 /**
- * In certain situations, the PopNetwork team may need to show an announcement to
+ * In certain situations, the popnetwork team may need to show an announcement to
  * all popnetwork-masternode users. For example: a security notice, or an update
  * notification (if the auto-updater stops working).
  *

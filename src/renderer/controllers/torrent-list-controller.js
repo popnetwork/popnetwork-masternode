@@ -187,7 +187,7 @@ module.exports = class TorrentListController {
     const torrentSummary = TorrentSummary.getByKey(this.state, infoHash)
     torrentSummary.selections[index] = !torrentSummary.selections[index]
 
-    // Let the PopNetwork process know to start or stop fetching that file
+    // Let the popnetwork process know to start or stop fetching that file
     if (torrentSummary.status !== 'paused') {
       ipcRenderer.send('pn-select-files', infoHash, torrentSummary.selections)
     }

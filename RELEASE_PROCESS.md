@@ -75,7 +75,7 @@
   been downloaded, even though the files are byte for byte identical. This ensures that the
   codesigning worked and is valid.
 
-- Smoke test PopNetwork Desktop on each platform.
+- Smoke test popnetwork-masternode on each platform.
 
   See Smoke Tests below for details. Open DevTools
   on Windows and Mac, and ensure that the auto updater is running. If the auto updater does not

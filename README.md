@@ -4,7 +4,7 @@
     <img src="https://thepopnetwork.org/img/PopNetwork.png" alt="PopNetwork" width="200">
   </a>
   <br>
-  PopNetwork Desktop
+  popnetwork-masternode
   <br>
   <br>
 </h1>
@@ -23,10 +23,10 @@
 
 ### Recommended Install
 
-Download the latest version of PopNetwork Desktop from
+Download the latest version of popnetwork-masternode from
 [the official website](https://thepopnetwork.org/masternode/):
 
-### [✨ Download PopNetwork Desktop ✨](https://thepopnetwork.org/masternode/)
+### [✨ Download popnetwork-masternode ✨](https://thepopnetwork.org/masternode/)
 
 ### Advanced Install
 
@@ -178,7 +178,7 @@ https://material-ui.com/getting-started
 
 ### Privacy
 
-PopNetwork Desktop collects some basic usage stats to help us make the app better.
+popnetwork-masternode collects some basic usage stats to help us make the app better.
 For example, we track how well the play button works. How often does it succeed?
 Time out? Show a missing codec error?
 

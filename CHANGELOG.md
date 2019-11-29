@@ -1,4 +1,4 @@
-# PopNetwork Desktop Version History
+# popnetwork-masternode Version History
 
 ## v0.21.0 - 2019-08
 
@@ -228,7 +228,7 @@
 - Linux: Show badge count for completed torrent downloads
 
 ### Changed
-- Change PopNetwork Desktop peer ID prefix to 'WD' to distinguish from PopNetwork in the browser, 'WW' (#688)
+- Change popnetwork-masternode peer ID prefix to 'WD' to distinguish from PopNetwork in the browser, 'WW' (#688)
 - Switch UI to React to improve UI rendering speed (#729)
   - The primary bottleneck was actually `hyperx`, not `virtual-dom`.
 - Update Electron to 1.3.2 (#738) (#739) (#740) (#747) (#756)
@@ -328,7 +328,7 @@
 - Fix torrent loading message UI misalignment
 
 ### Known issues
-- When upgrading to PopNetwork Desktop v0.7.0, some torrent metadata (file list,
+- When upgrading to popnetwork-masternode v0.7.0, some torrent metadata (file list,
   selected files, whether torrent is streamable) will be cleared. Just start the
   torrent to re-populate the metadata.
 
@@ -350,7 +350,7 @@
 - Save video position, resume playback from saved position
 - Add additional video player keyboard shortcuts (#275)
 - Use `poster.jpg` file as the poster image if available (#558)
-- Associate .torrent files to PopNetwork Desktop (OS X) (#553)
+- Associate .torrent files to popnetwork-masternode (OS X) (#553)
 - Add support for pasting `instant.io` links (#559)
 - Add announcement feature
 
@@ -517,7 +517,7 @@ Thanks to @dcposch, @grunjol, and @feross for contributing to this release.
     Linux users need to download new versions manually.
 
 ### Changed
-- Renamed PopNetwork.app to PopNetwork Desktop
+- Renamed PopNetwork.app to popnetwork-masternode
 - Add Cosmos Laundromat as a default torrent
 
 ### Fixed
@@ -575,10 +575,10 @@ Thanks to @dcposch, @ungoldman, and @feross for contributing to this release.
 
 ## v0.0.0 - 2016-03-21
 
-The first official release of PopNetwork Desktop, the streaming torrent client for OS X,
+The first official release of popnetwork-masternode, the streaming torrent client for OS X,
 Windows, and Linux. For now, we're only releasing binaries for OS X.
 
-PopNetwork Desktop is in ALPHA and under very active development – expect lots more polish in
+popnetwork-masternode is in ALPHA and under very active development – expect lots more polish in
 the coming weeks! If you know JavaScript and want to help us out, there's
 [lots to do](https://github.com/popnetwork/popnetwork-masternode/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+contribution%22)!
 

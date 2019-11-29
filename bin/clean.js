@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Remove all traces of PopNetwork Desktop from the system (config and temp files).
+ * Remove all traces of popnetwork-masternode from the system (config and temp files).
  * Useful for developers.
  */
 
@@ -23,9 +23,9 @@ rimraf.sync(config.CONFIG_PATH)
 // Remove any temporary files
 let tmpPath
 try {
-  tmpPath = path.join(fs.statSync('/tmp') && '/tmp', 'popnetwork')
+    tmpPath = path.join(fs.statSync('/tmp') && '/tmp', 'popnetwork')
 } catch (err) {
-  tmpPath = path.join(os.tmpdir(), 'popnetwork')
+    tmpPath = path.join(os.tmpdir(), 'popnetwork')
 }
 rimraf.sync(tmpPath)
 

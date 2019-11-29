@@ -24,9 +24,9 @@
 ### Recommended Install
 
 Download the latest version of PopNetwork Desktop from
-[the official website](https://thepopnetwork.org/desktop/):
+[the official website](https://thepopnetwork.org/masternode/):
 
-### [✨ Download PopNetwork Desktop ✨](https://thepopnetwork.org/desktop/)
+### [✨ Download PopNetwork Desktop ✨](https://thepopnetwork.org/masternode/)
 
 ### Advanced Install
 

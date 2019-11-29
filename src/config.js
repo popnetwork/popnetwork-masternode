@@ -18,10 +18,10 @@ const UI_HEADER_HEIGHT = 38
 const UI_TORRENT_HEIGHT = 100
 
 module.exports = {
-    ANNOUNCEMENT_URL: 'https://thepopnetwork.org/desktop/announcement',
-    AUTO_UPDATE_URL: 'https://thepopnetwork.org/desktop/update',
-    CRASH_REPORT_URL: 'https://thepopnetwork.org/desktop/crash-report',
-    TELEMETRY_URL: 'https://thepopnetwork.org/desktop/telemetry',
+    ANNOUNCEMENT_URL: 'https://thepopnetwork.org/masternode/announcement',
+    AUTO_UPDATE_URL: 'https://thepopnetwork.org/masternode/update',
+    CRASH_REPORT_URL: 'https://thepopnetwork.org/masternode/crash-report',
+    TELEMETRY_URL: 'https://thepopnetwork.org/masternode/telemetry',
 
     APP_COPYRIGHT: 'Copyright © 2014-2019 ' + APP_TEAM,
     APP_FILE_ICON: path.join(__dirname, '..', 'static', 'PopNetwork'),

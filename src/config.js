@@ -24,8 +24,8 @@ module.exports = {
     TELEMETRY_URL: 'https://thepopnetwork.org/masternode/telemetry',
 
     APP_COPYRIGHT: 'Copyright © 2014-2019 ' + APP_TEAM,
-    APP_FILE_ICON: path.join(__dirname, '..', 'static', 'PopNetwork'),
-    APP_ICON: path.join(__dirname, '..', 'static', 'PopNetwork'),
+    APP_FILE_ICON: path.join(__dirname, '..', 'static', 'popnetworkfile'),
+    APP_ICON: path.join(__dirname, '..', 'static', 'popnetwork'),
     APP_NAME: APP_NAME,
     APP_TEAM: APP_TEAM,
     APP_VERSION: APP_VERSION,

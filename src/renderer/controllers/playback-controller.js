@@ -234,21 +234,21 @@ module.exports = class PlaybackController {
     this.updatePlayer(infoHash, index, true, cb)
   }
 
-  // Starts WebTorrent server for media streaming
+  // Starts popnetwork server for media streaming
   startServer (torrentSummary) {
     const state = this.state
 
     if (torrentSummary.status === 'paused') {
       dispatch('startTorrentingSummary', torrentSummary.torrentKey)
-      ipcRenderer.once('wt-ready-' + torrentSummary.infoHash,
+      ipcRenderer.once('pn-ready-' + torrentSummary.infoHash,
         () => onTorrentReady())
     } else {
       onTorrentReady()
     }
 
     function onTorrentReady () {
-      ipcRenderer.send('wt-start-server', torrentSummary.infoHash)
-      ipcRenderer.once('wt-server-running', () => { state.playing.isReady = true })
+      ipcRenderer.send('pn-start-server', torrentSummary.infoHash)
+      ipcRenderer.once('pn-server-running', () => { state.playing.isReady = true })
     }
   }
 
@@ -287,14 +287,14 @@ module.exports = class PlaybackController {
 
     // if it's audio, parse out the metadata (artist, title, etc)
     if (torrentSummary.status === 'paused') {
-      ipcRenderer.once('wt-ready-' + torrentSummary.infoHash, getAudioMetadata)
+      ipcRenderer.once('pn-ready-' + torrentSummary.infoHash, getAudioMetadata)
     } else {
       getAudioMetadata()
     }
 
     function getAudioMetadata () {
       if (state.playing.type === 'audio') {
-        ipcRenderer.send('wt-get-audio-metadata', torrentSummary.infoHash, index)
+        ipcRenderer.send('pn-get-audio-metadata', torrentSummary.infoHash, index)
       }
     }
 
@@ -350,8 +350,8 @@ module.exports = class PlaybackController {
     }
     restoreBounds(state)
 
-    // Tell the WebTorrent process to kill the torrent-to-HTTP server
-    ipcRenderer.send('wt-stop-server')
+    // Tell the popnetwork process to kill the torrent-to-HTTP server
+    ipcRenderer.send('pn-stop-server')
 
     ipcRenderer.send('onPlayerClose')
 

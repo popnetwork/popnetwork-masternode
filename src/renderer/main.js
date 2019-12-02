@@ -357,7 +357,7 @@ function dispatch (action, ...args) {
   }
 }
 
-// Listen to events from the main and webtorrent processes
+// Listen to events from the main and popnetwork processes
 function setupIpc () {
   ipcRenderer.on('log', (e, ...args) => console.log(...args))
   ipcRenderer.on('error', (e, ...args) => console.error(...args))
@@ -368,21 +368,21 @@ function setupIpc () {
   ipcRenderer.on('windowBoundsChanged', onWindowBoundsChanged)
 
   const tc = controllers.torrent()
-  ipcRenderer.on('wt-parsed', (e, ...args) => tc.torrentParsed(...args))
-  ipcRenderer.on('wt-metadata', (e, ...args) => tc.torrentMetadata(...args))
-  ipcRenderer.on('wt-done', (e, ...args) => tc.torrentDone(...args))
-  ipcRenderer.on('wt-done', () => controllers.torrentList().resumePausedTorrents())
-  ipcRenderer.on('wt-warning', (e, ...args) => tc.torrentWarning(...args))
-  ipcRenderer.on('wt-error', (e, ...args) => tc.torrentError(...args))
+  ipcRenderer.on('pn-parsed', (e, ...args) => tc.torrentParsed(...args))
+  ipcRenderer.on('pn-metadata', (e, ...args) => tc.torrentMetadata(...args))
+  ipcRenderer.on('pn-done', (e, ...args) => tc.torrentDone(...args))
+  ipcRenderer.on('pn-done', () => controllers.torrentList().resumePausedTorrents())
+  ipcRenderer.on('pn-warning', (e, ...args) => tc.torrentWarning(...args))
+  ipcRenderer.on('pn-error', (e, ...args) => tc.torrentError(...args))
 
-  ipcRenderer.on('wt-progress', (e, ...args) => tc.torrentProgress(...args))
-  ipcRenderer.on('wt-file-modtimes', (e, ...args) => tc.torrentFileModtimes(...args))
-  ipcRenderer.on('wt-file-saved', (e, ...args) => tc.torrentFileSaved(...args))
-  ipcRenderer.on('wt-poster', (e, ...args) => tc.torrentPosterSaved(...args))
-  ipcRenderer.on('wt-audio-metadata', (e, ...args) => tc.torrentAudioMetadata(...args))
-  ipcRenderer.on('wt-server-running', (e, ...args) => tc.torrentServerRunning(...args))
+  ipcRenderer.on('pn-progress', (e, ...args) => tc.torrentProgress(...args))
+  ipcRenderer.on('pn-file-modtimes', (e, ...args) => tc.torrentFileModtimes(...args))
+  ipcRenderer.on('pn-file-saved', (e, ...args) => tc.torrentFileSaved(...args))
+  ipcRenderer.on('pn-poster', (e, ...args) => tc.torrentPosterSaved(...args))
+  ipcRenderer.on('pn-audio-metadata', (e, ...args) => tc.torrentAudioMetadata(...args))
+  ipcRenderer.on('pn-server-running', (e, ...args) => tc.torrentServerRunning(...args))
 
-  ipcRenderer.on('wt-uncaught-error', (e, err) => telemetry.logUncaughtError('webtorrent', err))
+  ipcRenderer.on('pn-uncaught-error', (e, err) => telemetry.logUncaughtError('popnetwork', err))
 
   ipcRenderer.send('ipcReady')
 

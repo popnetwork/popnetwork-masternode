@@ -62,7 +62,7 @@
   ```
 
   Follow the URL to a newly created Github release page. Manually upload the binaries from
-  `webtorrent-desktop/dist/`. Open the previous release in another tab, and make sure that you
+  `popnetwork-masternode/dist/`. Open the previous release in another tab, and make sure that you
   are uploading the same set of files, no more, no less.
 
 ### 3. Test it
@@ -75,7 +75,7 @@
   been downloaded, even though the files are byte for byte identical. This ensures that the
   codesigning worked and is valid.
 
-- Smoke test WebTorrent Desktop on each platform.
+- Smoke test popnetwork-masternode on each platform.
 
   See Smoke Tests below for details. Open DevTools
   on Windows and Mac, and ensure that the auto updater is running. If the auto updater does not
@@ -85,10 +85,10 @@
 
 - Update the website
 
-  Create a pull request in [webtorrent.io](https://github.com/webtorrent/webtorrent.io). Update
+  Create a pull request in [thepopnetwork.org](https://github.com/popnetwork/staging.thepopnetwork.org). Update
   `config.js`, updating the desktop app version.
 
-  As soon as this PR is merged, Jenkins will automatically redeploy the WebTorrent website, and
+  As soon as this PR is merged, Jenkins will automatically redeploy the popnetwork website, and
   hundreds of thousands of users around the world will start auto updating. **Merge with care.**
 
 ## Smoke Tests

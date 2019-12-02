@@ -61,10 +61,17 @@ function openFiles () {
       properties: ['openFile']
     }
   setTitle(opts.title)
-  electron.dialog.showOpenDialog(windows.main.win, opts, function (selectedPaths) {
+  // electron.dialog.showOpenDialog(windows.main.win, opts, function (selectedPaths) {
+  //   resetTitle()
+  //   if (!Array.isArray(selectedPaths)) return
+  //   windows.main.dispatch('onOpen', selectedPaths)
+  // })
+
+  electron.dialog.showOpenDialog(windows.main.win, opts)
+  .then(result => {
     resetTitle()
-    if (!Array.isArray(selectedPaths)) return
-    windows.main.dispatch('onOpen', selectedPaths)
+    if (!Array.isArray(result.filePaths)) return
+    windows.main.dispatch('onOpen', result.filePaths)
   })
 }
 
@@ -80,10 +87,19 @@ function openTorrentFile () {
     properties: ['openFile', 'multiSelections']
   }
   setTitle(opts.title)
-  electron.dialog.showOpenDialog(windows.main.win, opts, function (selectedPaths) {
+  // electron.dialog.showOpenDialog(windows.main.win, opts, function (selectedPaths) {
+  //   resetTitle()
+  //   if (!Array.isArray(selectedPaths)) return
+  //   selectedPaths.forEach(function (selectedPath) {
+  //     windows.main.dispatch('addTorrent', selectedPath)
+  //   })
+  // })
+
+  electron.dialog.showOpenDialog(windows.main.win, opts)
+  .then(result => {
     resetTitle()
-    if (!Array.isArray(selectedPaths)) return
-    selectedPaths.forEach(function (selectedPath) {
+    if (!Array.isArray(result.filePaths)) return
+    result.filePaths.forEach(function (selectedPath) {
       windows.main.dispatch('addTorrent', selectedPath)
     })
   })
@@ -116,9 +132,17 @@ function resetTitle () {
  */
 function showOpenSeed (opts) {
   setTitle(opts.title)
-  electron.dialog.showOpenDialog(windows.main.win, opts, function (selectedPaths) {
+  // electron.dialog.showOpenDialog(windows.main.win, opts, (selectedPaths) => {
+  //   console.log('showOpenDialog: ', selectedPaths);
+  //   resetTitle()
+  //   if (!Array.isArray(selectedPaths)) return
+  //   windows.main.dispatch('showCreateTorrent', selectedPaths)
+  // })
+
+  electron.dialog.showOpenDialog(windows.main.win, opts)
+  .then(result => {
     resetTitle()
-    if (!Array.isArray(selectedPaths)) return
-    windows.main.dispatch('showCreateTorrent', selectedPaths)
+    if (!Array.isArray(result.filePaths)) return
+    windows.main.dispatch('showCreateTorrent', result.filePaths)
   })
 }

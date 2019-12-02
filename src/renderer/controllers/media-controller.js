@@ -68,7 +68,7 @@ module.exports = class MediaController {
     }
 
     if (state.server != null) onServerRunning()
-    else ipcRenderer.once('wt-server-running', onServerRunning)
+    else ipcRenderer.once('pn-server-running', onServerRunning)
   }
 
   externalPlayerNotFound () {

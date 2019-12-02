@@ -56,7 +56,7 @@ class PreferencesPage extends React.Component {
         <Checkbox
           className='control'
           checked={!this.props.state.saved.prefs.openExternalPlayer}
-          label='Play torrent media files using WebTorrent'
+          label='Play torrent media files using popnetwork'
           onCheck={this.handleOpenExternalPlayerChange}
         />
       </Preference>
@@ -91,7 +91,7 @@ class PreferencesPage extends React.Component {
 
     const description = this.props.state.saved.prefs.openExternalPlayer
       ? `Torrent media files will always play in ${playerName}.`
-      : `Torrent media files will play in ${playerName} if WebTorrent cannot play them.`
+      : `Torrent media files will play in ${playerName} if popnetwork cannot play them.`
 
     return (
       <Preference>
@@ -171,17 +171,17 @@ class PreferencesPage extends React.Component {
     if (isFileHandler) {
       return (
         <Preference>
-          <p>WebTorrent is your default torrent app. Hooray!</p>
+          <p>popnetwork is your default torrent app. Hooray!</p>
         </Preference>
       )
     }
     return (
       <Preference>
-        <p>WebTorrent is not currently the default torrent app.</p>
+        <p>popnetwork is not currently the default torrent app.</p>
         <RaisedButton
           className='control'
           onClick={this.handleSetDefaultApp}
-          label='Make WebTorrent the default'
+          label='Make popnetwork the default'
         />
       </Preference>
     )
@@ -201,7 +201,7 @@ class PreferencesPage extends React.Component {
         <Checkbox
           className='control'
           checked={this.props.state.saved.prefs.startup}
-          label='Open WebTorrent on startup'
+          label='Open popnetwork on startup'
           onCheck={this.handleStartupChange}
         />
       </Preference>

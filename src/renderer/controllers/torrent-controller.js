@@ -20,7 +20,7 @@ module.exports = class TorrentController {
 
       // Check if an existing (non-active) torrent has the same info hash
       if (torrents.find((t) => t.infoHash === infoHash)) {
-        ipcRenderer.send('wt-stop-torrenting', infoHash)
+        ipcRenderer.send('pn-stop-torrenting', infoHash)
         return dispatch('error', 'Cannot add duplicate torrent')
       }
 
@@ -42,7 +42,7 @@ module.exports = class TorrentController {
   }
 
   torrentError (torrentKey, message) {
-    // TODO: WebTorrent needs semantic errors
+    // TODO: popnetwork needs semantic errors
     if (message.startsWith('Cannot add duplicate torrent')) {
       // Remove infohash from the message
       message = 'Cannot add duplicate torrent'
@@ -75,10 +75,10 @@ module.exports = class TorrentController {
     dispatch('update')
 
     // Save the .torrent file, if it hasn't been saved already
-    if (!torrentSummary.torrentFileName) ipcRenderer.send('wt-save-torrent-file', torrentKey)
+    if (!torrentSummary.torrentFileName) ipcRenderer.send('pn-save-torrent-file', torrentKey)
 
     // Auto-generate a poster image, if it hasn't been generated already
-    if (!torrentSummary.posterFileName) ipcRenderer.send('wt-generate-torrent-poster', torrentKey)
+    if (!torrentSummary.posterFileName) ipcRenderer.send('pn-generate-torrent-poster', torrentKey)
   }
 
   torrentDone (torrentKey, torrentInfo) {
@@ -106,7 +106,7 @@ module.exports = class TorrentController {
       ? -1
       : progressInfo.progress
 
-    // Show progress bar under the WebTorrent taskbar icon, on OSX
+    // Show progress bar under the popnetwork taskbar icon, on OSX
     this.state.dock.progress = progress
 
     // Update progress for each individual torrent

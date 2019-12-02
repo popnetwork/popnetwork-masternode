@@ -1,190 +1,34 @@
-<h1 align="center">
-  <br>
-  <a href="https://thepopnetwork.org">
-    <img src="https://thepopnetwork.org/img/popnetwork.png" alt="popnetwork" width="200">
-  </a>
-  <br>
-  popnetwork-masternode
-  <br>
-  <br>
-</h1>
+# POP Network Masternode (testnet)
 
-<h4 align="center">The streaming torrent app. For Mac, Windows, and Linux.</h4>
+[![Version](https://img.shields.io/badge/version-0.1--alpha-orange)]() [![Platform](https://img.shields.io/badge/platform-win--32-lightgrey)]() [![License](https://img.shields.io/badge/license-MIT-green)]() 
 
-<p align="center">
-  <a href="https://discord.gg/cnXkm4Z"><img src="https://img.shields.io/discord/612575111718895616" alt="discord"></a>
-  <a href="https://travis-ci.org/popnetwork/popnetwork-masternode"><img src="https://img.shields.io/travis/popnetwork/popnetwork-masternode/master.svg" alt="travis"></a>
-  <a href="https://github.com/popnetwork/popnetwork-masternode/releases"><img src="https://img.shields.io/github/release/popnetwork/popnetwork-masternode.svg" alt="github release version"></a>
-  <a href="https://github.com/popnetwork/popnetwork-masternode/releases"><img src="https://img.shields.io/github/downloads/popnetwork/popnetwork-masternode/total.svg" alt="github release downloads"></a>
-  <a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="Standard - JavaScript Style Guide"></a>
-</p>
+POP Network is an ecosystem of blockchain and artificial intelligence applications built to power the streaming economy. Components include:
+- **Masternode Torrent Network** for decentralized, peer-to-peer streaming
+- **Superdelegated Proof-of-Stake** blockchain for ultra-fast transaction processing
+- **Artificial Intelligence** content protection to defend the network from harmful material
 
-## Install
+**POP Network Masternodes** form a decentralized, peer-to-peer torrent network to store and stream all media on POP Network. Masternodes earn 35% of all POP Network block rewards for performing this critical service.
 
-### Recommended Install
+### Release Notes
+- This is Windows-only testnet software and should be treated as extremely experimental.
+- Do not upload any mission critical content to testnet. There is no guarantee future versions of the Masternode will be backwards-compatible.
+- It is not possible to earn POP Network Tokens (POP) for operating a Masternode on testnet.
+- The purpose of this release is to demonstrate how easy operating a POP Masternode can be and thus demonstrate how easy it would be to earn crypto on the torrent network.
 
-Download the latest version of popnetwork-masternode from
-[the official website](https://thepopnetwork.org/masternode/):
+# Install
+- [Download the latest version]() of POP Network Masternode
+- Unzip installer and run `popnetwork-masternode.exe`
+- ✨Automagically ✨start streaming the POP Network Demo video as seen the [POP Network website](https://thepopnetwork.org/?utm_source=github&utm_medium=pages#demo). On mainnet your Masternode would earn POP for streaming content.
+- Use `FILE > CREATE` to start seeding your own content to the network
 
-### [✨ Download popnetwork-masternode ✨](https://thepopnetwork.org/masternode/)
+# Screenshot
 
-### Advanced Install
+![Imgur](https://i.imgur.com/vl2umEb.png?1)
 
-- Download specific installer files from the [GitHub releases](https://github.com/popnetwork/popnetwork-masternode/releases) page.
+# Contributing
 
-- Use [Homebrew-Cask](https://github.com/caskroom/homebrew-cask) to install from the command line:
+Want to join us? Come to our [Telegram group]() and chat with fellow POP Stars.
 
-  ```
-  $ brew cask install popnetwork
-  ```
+# License
 
-- Try the (unstable) development version by cloning the Git repository. See the
-  ["How to Contribute"](#how-to-contribute) instructions.
-
-## Screenshots
-
-<p align="center">
-  <img src="https://thepopnetwork.org/img/screenshot-player3.png" alt="screenshot" align="center">
-  <img src="https://thepopnetwork.org/img/screenshot-main.png" width="612" height="749" alt="screenshot" align="center">
-</p>
-
-## How to Contribute
-
-### Get the code
-
-```
-$ git clone https://github.com/popnetwork/popnetwork-masternode.git
-$ cd popnetwork-masternode
-$ npm install
-```
-
-### Run the app
-
-```
-$ npm start
-```
-
-### Watch the code
-
-Restart the app automatically every time code changes. Useful during development.
-
-```
-$ npm run watch
-```
-
-### Run linters
-
-```
-$ npm test
-```
-
-### Run integration tests
-
-```
-$ npm run test-integration
-```
-
-The integration tests use Spectron and Tape. They click through the app, taking screenshots and
-comparing each one to a reference. Why screenshots?
-
-* Ad-hoc checking makes the tests a lot more work to write
-* Even diffing the whole HTML is not as thorough as screenshot diffing. For example, it wouldn't
-  catch an bug where hitting ESC from a video doesn't correctly restore window size.
-* Chrome's own integration tests use screenshot diffing iirc
-* Small UI changes will break a few tests, but the fix is as easy as deleting the offending
-  screenshots and running the tests, which will recreate them with the new look.
-* The resulting Github PR will then show, pixel by pixel, the exact UI changes that were made! See
-  https://github.com/blog/817-behold-image-view-modes
-
-For MacOS, you'll need a Retina screen for the integration tests to pass. Your screen should have
-the same resolution as a 2018 MacBook Pro 13".
-
-For Windows, you'll need Windows 10 with a 1366x768 screen.
-
-When running integration tests, keep the mouse on the edge of the screen and don't touch the mouse
-or keyboard while the tests are running.
-
-### Package the app
-
-Builds app binaries for Mac, Linux, and Windows.
-
-```
-$ npm run package
-```
-
-To build for one platform:
-
-```
-$ npm run package -- [platform] [options]
-```
-
-Where `[platform]` is `darwin`, `linux`, `win32`, or `all` (default).
-
-The following optional arguments are available:
-
-- `--sign` - Sign the application (Mac, Windows)
-- `--package=[type]` - Package single output type.
-   - `deb` - Debian package
-   - `rpm` - RedHat package
-   - `zip` - Linux zip file
-   - `dmg` - Mac disk image
-   - `exe` - Windows installer
-   - `portable` - Windows portable app
-   - `all` - All platforms (default)
-
-Note: Even with the `--package` option, the auto-update files (.nupkg for Windows,
--darwin.zip for Mac) will always be produced.
-
-#### Windows build notes
-
-The Windows app can be packaged from **any** platform.
-
-Note: Windows code signing only works from **Windows**, for now.
-
-Note: To package the Windows app from non-Windows platforms,
-[Wine](https://www.winehq.org/) and [Mono](https://www.mono-project.com/) need
-to be installed. For example on Mac, first install
-[XQuartz](http://www.xquartz.org/), then run:
-
-```
-brew install wine mono
-```
-
-(Requires the [Homebrew](http://brew.sh/) package manager.)
-
-#### Mac build notes
-
-The Mac app can only be packaged from **macOS**.
-
-#### Linux build notes
-
-The Linux app can be packaged from **any** platform.
-
-If packaging from Mac, install system dependencies with Homebrew by running:
-
-```
-npm run install-system-deps
-```
-#### Recommended readings to start working in the app
-
-Electron (Framework to make native apps for Windows, OSX and Linux in Javascript):
-https://electronjs.org/docs/tutorial/quick-start
-
-React.js (Framework to work with Frontend UI):
-https://reactjs.org/docs/getting-started.html
-
-Material UI (React components that implement Google's Material Design.):
-https://material-ui.com/getting-started
-
-### Privacy
-
-popnetwork-masternode collects some basic usage stats to help us make the app better.
-For example, we track how well the play button works. How often does it succeed?
-Time out? Show a missing codec error?
-
-The app never sends any personally identifying information, nor does it track which
-torrents you add.
-
-## License
-
-MIT. Copyright (c) [popnetwork, LLC](https://thepopnetwork.org).
+`popnetwork-masternode` is released under the terms of the MIT license.

@@ -1,6 +1,6 @@
 # POP Network Masternode (testnet)
 
-[![Version](https://img.shields.io/badge/version-0.2--alpha-orange)](releases/popnetwork-masternode.v0.2-alpha.zip) [![Platform](https://img.shields.io/badge/platform-win--32-lightgrey)](https://popnetwork.github.io/popnetwork-masternode/releases/popnetwork-masternode.v0.2-alpha.zip) [![License](https://img.shields.io/badge/license-MIT-green)]() 
+[![Version](https://img.shields.io/badge/version-0.2--alpha-orange)](https://drive.google.com/uc?export=download&id=1IYR6tEDwyM1Xli6V1EKYD9Edr9ORDjmy) [![Platform](https://img.shields.io/badge/platform-win--32-lightgrey)](https://popnetwork.github.io/popnetwork-masternode/releases/popnetwork-masternode.v0.2-alpha.zip) [![License](https://img.shields.io/badge/license-MIT-green)]() 
 
 POP Network is an ecosystem of blockchain and artificial intelligence applications built to power the streaming economy. Components include:
 - **Masternode Torrent Network** for decentralized, peer-to-peer streaming

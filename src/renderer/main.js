@@ -117,6 +117,10 @@ function onState (err, _state) {
     folderWatcher: createGetter(() => {
       const FolderWatcherController = require('./controllers/folder-watcher-controller')
       return new FolderWatcherController()
+    }),
+    iframeCode:  createGetter(() => {
+      const IframeCodeController = require('./controllers/iframe-code-controller')
+      return new IframeCodeController(state)
     })
   }
 
@@ -277,6 +281,9 @@ const dispatchHandlers = {
   changeVolume: (delta) => controllers.playback().changeVolume(delta),
   setVolume: (vol) => controllers.playback().setVolume(vol),
   openItem: (infoHash, index) => controllers.playback().openItem(infoHash, index),
+
+  // Iframe Code
+  showCode: (infoHash) => controllers.iframeCode().showCode(infoHash),
 
   // Subtitles
   openSubtitles: () => controllers.subtitles().openSubtitles(),

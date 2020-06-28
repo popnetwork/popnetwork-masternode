@@ -230,8 +230,19 @@ module.exports = class TorrentList extends React.Component {
     const infoHash = torrentSummary.infoHash
 
     // Only show the play/dowload buttons for torrents that contain playable media
-    let playButton
+    let playButton, codeButton
     if (!torrentSummary.error && TorrentPlayer.isPlayableTorrentSummary(torrentSummary)) {
+      codeButton = (
+        <i
+          key='code-button'
+          title='iFrame Code'
+          className='icon code'
+          onClick={dispatcher('showCode', infoHash)}
+        >
+          iframe_code
+        </i>
+      )
+
       playButton = (
         <i
           key='play-button'
@@ -246,6 +257,7 @@ module.exports = class TorrentList extends React.Component {
 
     return (
       <div className='torrent-controls'>
+        {codeButton}
         {playButton}
         <i
           key='delete-button'

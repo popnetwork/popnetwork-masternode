@@ -294,6 +294,24 @@ table {
   text-overflow: ellipsis;
 }
 
+.iframe-code-page {
+  padding: 10px 25px;
+  overflow: hidden;
+}
+
+.iframe-code {
+  width: 100%;
+  margin: 20px 0;
+  padding: 10px 15px;
+  border: 2px solid;
+  border-radius: 2px;
+  cursor: text;
+}
+
+.iframe-code:focus {
+  outline: none;
+}
+
 /*
  * BUTTONS
  */
@@ -369,16 +387,23 @@ textarea,
   display: block;
 }
 
+.torrent .code {
+  position: absolute;
+  top: 5px;
+  right: 12px;
+  font-size: 30px;
+}
+
 .torrent .play {
   position: absolute;
-  top: 23px;
+  top: 40px;
   right: 45px;
-  font-size: 55px;
+  font-size: 45px;
 }
 
 .torrent .delete {
   position: absolute;
-  top: 38px;
+  top: 50px;
   right: 12px;
 }
 

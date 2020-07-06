@@ -28,11 +28,12 @@ class IframeCodePage extends React.Component {
     
     // magnetURI
     const torrentSummary = TorrentSummary.getByKey(state, infoHash);
-    const magnetURI = encodeURIComponent(torrentSummary.magnetURI);
+    // const magnetURI = encodeURIComponent(torrentSummary.magnetURI);
+    // const infoHash = encodeURIComponent(torrentSummary.infoHash);
 
     // iframe Content
     const iframeContent = `
-      <iframe src="${config.HOME_PAGE_URL}/iframe/?url=${magnetURI}"></iframe>
+      <iframe src="${config.HOME_PAGE_URL}/iframe/?infoHash=${infoHash}"></iframe>
     `;
 
     this.setState({ iframeContent });

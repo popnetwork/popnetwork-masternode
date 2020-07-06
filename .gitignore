@@ -3,6 +3,8 @@ build/
 dist/
 npm-debug.log*
 
+release_conf
+
 # JetBrains IntelliJ IDEA project files
 .idea
 *.iml

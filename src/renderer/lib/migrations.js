@@ -30,6 +30,7 @@ function run(state) {
     if (semver.lt(version, '0.17.2')) migrate_0_17_2(saved)
     if (semver.lt(version, '0.21.0')) migrate_0_21_0(saved)
     if (semver.lt(version, '0.21.1')) migrate_0_21_1(saved)
+    if (semver.lt(version, '0.2.1')) migrate_0_2_1(saved)
 
     // Config is now on the new version
     state.saved.version = config.APP_VERSION

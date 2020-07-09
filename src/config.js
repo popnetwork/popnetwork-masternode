@@ -50,6 +50,7 @@ module.exports = {
     GITHUB_URL_RELEASES: 'https://github.com/popnetwork/popnetwork-masternode/releases',
 
     HOME_PAGE_URL: 'https://thepopnetwork.org',
+    HOME_PAGE_SHORTENED_URL: 'https://popnet.work',
     TWITTER_PAGE_URL: 'https://twitter.com/popnetwork',
 
     IS_PORTABLE: IS_PORTABLE,

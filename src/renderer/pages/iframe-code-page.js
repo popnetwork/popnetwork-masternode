@@ -33,7 +33,7 @@ class IframeCodePage extends React.Component {
 
     // iframe Content
     const iframeContent = `
-      <iframe src="${config.HOME_PAGE_URL}/iframe/?infoHash=${infoHash}"></iframe>
+      <iframe src="${config.HOME_PAGE_SHORTENED_URL}/i/?hash=${infoHash}"></iframe>
     `;
 
     this.setState({ iframeContent });

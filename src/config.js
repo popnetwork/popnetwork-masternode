@@ -3,8 +3,8 @@ const path = require('path')
 const electron = require('electron')
 const arch = require('arch')
 
-const APP_NAME = 'POP Network Masternode'
-const APP_TEAM = 'popnetwork, LLC'
+const APP_NAME = 'POPNetwork-Masternode'
+const APP_TEAM = 'POPNetwork, LLC'
 const APP_VERSION = require('../package.json').version
 
 const IS_TEST = isTest()
@@ -23,7 +23,7 @@ module.exports = {
     CRASH_REPORT_URL: 'https://thepopnetwork.org/masternode/crash-report',
     TELEMETRY_URL: 'https://thepopnetwork.org/masternode/telemetry',
 
-    APP_COPYRIGHT: 'Copyright © 2014-2019 ' + APP_TEAM,
+    APP_COPYRIGHT: 'Copyright © 2014-2020 ' + APP_TEAM,
     APP_FILE_ICON: path.join(__dirname, '..', 'static', 'popnetworkfile'),
     APP_ICON: path.join(__dirname, '..', 'static', 'popnetwork'),
     APP_NAME: APP_NAME,

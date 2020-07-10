@@ -513,7 +513,7 @@ function buildLinux(cb) {
             src: filesPath + '/',
             dest: DIST_PATH,
             arch: destArch,
-            bin: 'popnetwork',
+            bin: 'POPNetwork-Masternode',
             icon: {
                 '48x48': path.join(config.STATIC_PATH, 'linux/share/icons/hicolor/48x48/apps/popnetwork-masternode.png'),
                 '256x256': path.join(config.STATIC_PATH, 'linux/share/icons/hicolor/256x256/apps/popnetwork-masternode.png')
@@ -547,7 +547,7 @@ function buildLinux(cb) {
             src: filesPath + '/',
             dest: DIST_PATH,
             arch: destArch,
-            bin: 'popnetwork',
+            bin: 'POPNetwork-Masternode',
             icon: {
                 '48x48': path.join(config.STATIC_PATH, 'linux/share/icons/hicolor/48x48/apps/popnetwork-masternode.png'),
                 '256x256': path.join(config.STATIC_PATH, 'linux/share/icons/hicolor/256x256/apps/popnetwork-masternode.png')

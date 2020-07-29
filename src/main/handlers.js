@@ -70,7 +70,7 @@ function installWin32() {
     )
     registerFileHandlerWin32(
         '.torrent',
-        'io.webtorrent.torrent',
+        'io.popnetwork.torrent',
         'BitTorrent Document',
         iconPath,
         EXEC_COMMAND
@@ -207,7 +207,7 @@ function uninstallWin32() {
 
     unregisterProtocolHandlerWin32('magnet', EXEC_COMMAND)
     unregisterProtocolHandlerWin32('stream-magnet', EXEC_COMMAND)
-    unregisterFileHandlerWin32('.torrent', 'io.webtorrent.torrent', EXEC_COMMAND)
+    unregisterFileHandlerWin32('.torrent', 'io.popnetwork.torrent', EXEC_COMMAND)
 
     function unregisterProtocolHandlerWin32(protocol, command) {
         getCommand()

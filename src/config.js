@@ -33,12 +33,26 @@ module.exports = {
 
     CONFIG_PATH: getConfigPath(),
 
-    DEFAULT_TORRENTS: [{
-        testID: 'pop',
-        name: 'popnetwork',
-        posterFileName: 'popnetwork.png',
-        torrentFileName: 'popnetwork.torrent'
-    }, ],
+    DEFAULT_TORRENTS: [
+        {
+            testID: 'pop',
+            name: 'POPNetwork',
+            posterFileName: 'popnetwork.png',
+            torrentFileName: 'popnetwork.torrent'
+        },
+        {
+            testID: 'psbma',
+            name: 'POPNetwork-SGBW-Mass-Adoption',
+            posterFileName: 'POPNetwork-SGBW-Mass-Adoption.jpg',
+            torrentFileName: 'POPNetwork-SGBW-Mass-Adoption.torrent'
+        },
+        {
+            testID: 'psbmat',
+            name: 'POPNetwork-SGBW-Mass-Adoption-teaser',
+            posterFileName: 'POPNetwork-SGBW-Mass-Adoption-teaser.jpg',
+            torrentFileName: 'POPNetwork-SGBW-Mass-Adoption-teaser.torrent'
+        },
+     ],
 
     DELAYED_INIT: 3000 /* 3 seconds */ ,
 

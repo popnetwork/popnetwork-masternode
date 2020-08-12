@@ -41,16 +41,10 @@ module.exports = {
             torrentFileName: 'popnetwork.torrent'
         },
         {
-            testID: 'psbma',
-            name: 'POPNetwork-SGBW-Mass-Adoption',
-            posterFileName: 'POPNetwork-SGBW-Mass-Adoption.jpg',
-            torrentFileName: 'POPNetwork-SGBW-Mass-Adoption.torrent'
-        },
-        {
-            testID: 'psbmat',
-            name: 'POPNetwork-SGBW-Mass-Adoption-teaser',
-            posterFileName: 'POPNetwork-SGBW-Mass-Adoption-teaser.jpg',
-            torrentFileName: 'POPNetwork-SGBW-Mass-Adoption-teaser.torrent'
+            testID: 'psp',
+            name: 'POPNetwork-SGBW-panel',
+            posterFileName: 'POPNetwork-SGBW-panel.png',
+            torrentFileName: 'POPNetwork-SGBW-panel.torrent'
         },
      ],
 

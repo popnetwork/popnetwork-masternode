@@ -279,6 +279,14 @@ function getMenuTemplate() {
             ]
         },
         {
+            label: 'Wallet',
+            submenu: [{
+                    label: 'WalletConnect',
+                    click: () => windows.main.dispatch('walletConnect')
+                },
+            ]
+        },
+        {
             label: 'Help',
             role: 'help',
             submenu: [{
@@ -380,7 +388,7 @@ function getMenuTemplate() {
         })
 
         // Window menu (Mac)
-        template.splice(6, 0, {
+        template.splice(7, 0, {
             role: 'window',
             submenu: [{
                     role: 'minimize'
@@ -417,7 +425,7 @@ function getMenuTemplate() {
         })
 
         // Help menu (Windows, Linux)
-        template[5].submenu.push({
+        template[6].submenu.push({
             type: 'separator'
         }, {
             label: 'About ' + config.APP_NAME,

@@ -1,32 +1,32 @@
-const path = require('path')
-const ipcRenderer = require('electron').ipcRenderer
-
+const electron = require('electron')
 const { dispatch } = require('../lib/dispatcher')
 const WalletConnect = require('@walletconnect/client').default;
 const QRCodeModal = require('@walletconnect/qrcode-modal');
 const EtherApi = require('../helpers/ether-api')
+const remote = electron.remote
 
 module.exports = class WalletController {
   constructor (state) {
     this.state = state
-    this.state.connector = null;
-    this.state.fetching = false;
-    this.state.connected = false;
-    this.state.pendingRequest = false;
-    this.state.chainId = 1;
-    this.state.uri = "";
-    this.state.accounts = [];
-    this.state.address = "";
-    this.state.assets = [];
-    
+    // this.state.wallet.connector = null;
+    // this.state.wallet.fetching = false;
+    // this.state.wallet.connected = false;
+    // this.state.wallet.pendingRequest = false;
+    // this.state.wallet.chainId = 1;
+    // this.state.wallet.uri = "";
+    // this.state.wallet.accounts = [];
+    // this.state.wallet.address = "";
+    // this.state.wallet.assets = [];
+    this.reset();
   }
+
   async walletConnect () {
     const connector = new WalletConnect({
       bridge: "https://bridge.walletconnect.org",  // Required
       qrcodeModal: QRCodeModal
     });
 
-    this.state.connector = connector;
+    this.state.wallet.connector = connector;
     
     // Check if connection is already established
     if (!connector.connected) {
@@ -39,8 +39,28 @@ module.exports = class WalletController {
     await this.subscribeToEvents();
   }
 
+  checkWalletConnect () {
+    const connector = new WalletConnect({
+      bridge: "https://bridge.walletconnect.org",  // Required
+      qrcodeModal: QRCodeModal
+    });
+
+    this.state.wallet.connector = connector;
+    console.log('connector', connector);
+    // Check if connection is already established
+    if (!connector.connected) {
+      remote.dialog.showMessageBox({
+        type: 'warning',
+        buttons: ['OK'],
+        title: "WalletConnect",
+        message: "Login with WalletConnect",
+        detail: "To use POPNetwork-Masternode service fully, \n login wallet with walletconnect first."
+      })
+    }
+  }
+
   async subscribeToEvents () {
-    const { connector } = this.state;
+    const { connector } = this.state.wallet;
     console.log(connector)
     if (!connector) {
       return;
@@ -98,7 +118,7 @@ module.exports = class WalletController {
   };
 
   async killSession () {
-    const { connector } = this.state;
+    const { connector } = this.state.wallet;
     if (connector) {
       connector.killSession();
     }
@@ -109,25 +129,25 @@ module.exports = class WalletController {
     console.log('onConnect', payload);
     const { chainId, accounts } = payload.params[0];
     const address = accounts[0];
-    this.state.connected = true;
-    this.state.chainId = chainId;
-    this.state.accounts = accounts;
-    this.state.address = address;
+    this.state.wallet.connected = true;
+    this.state.wallet.chainId = chainId;
+    this.state.wallet.accounts = accounts;
+    this.state.wallet.address = address;
     this.getAccountAssets();
   };
 
   async getAccountAssets () {
-    const { address, chainId } = this.state;
-    this.state.fetching = true;
+    const { address, chainId } = this.state.wallet;
+    this.state.wallet.fetching = true;
     try {
       // get account balances
       const assets = await EtherApi.apiGetAccountAssets(address, chainId);
-      this.state.fetching = false;
-      this.state.address = address;
-      this.state.assets = assets;
+      this.state.wallet.fetching = false;
+      this.state.wallet.address = address;
+      this.state.wallet.assets = assets;
     } catch (error) {
       console.error(error);
-      this.state.fetching = false;
+      this.state.wallet.fetching = false;
     }
   };
 
@@ -136,12 +156,14 @@ module.exports = class WalletController {
     // this.resetApp();
   };
 
-  async resetApp() {
-    this.state.connector = null;
-    this.state.fetching = false;
-    this.state.connected = false;
-    this.state.chainId = 1;
-    this.state.uri = "";
+  reset() {
+    let wallet = {};
+    wallet.connector = null;
+    wallet.fetching = false;
+    wallet.connected = false;
+    wallet.chainId = 1;
+    wallet.uri = "";
+    this.state.wallet = wallet;
   }
 }
 

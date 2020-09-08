@@ -30,6 +30,8 @@ class Header extends React.Component {
           </i>
         </div>
         <div className='nav right float-right'>
+          <span className='header-info header-balance'><span>BALANCE: </span>{this.getBalance()}</span>
+          <span className='header-info header-staked'><span>STAKED: </span>{this.getStakedBalance()}</span>
           {this.getAddButton()}
         </div>
       </div>
@@ -44,6 +46,7 @@ class Header extends React.Component {
 
   getAddButton () {
     const state = this.props.state
+    
     if (state.location.url() !== 'home') return null
     return (
       <i
@@ -54,6 +57,22 @@ class Header extends React.Component {
         add
       </i>
     )
+  }
+
+  getBalance () {
+    const state = this.props.state
+    let balance = "LOCKED";
+    if (!!state.wallet && !!state.wallet.balance) 
+      balance = state.wallet.balance.toFixed(2) + " POP";
+    return (<span>{balance}</span>)
+  }
+
+  getStakedBalance () {
+    const state = this.props.state
+    let balance = "LOCKED";
+    if (!!state.wallet && !!state.wallet.stakedBalance) 
+      balance = state.wallet.stakedBalance.toFixed(2) + " POP";
+    return (<span>{balance}</span>)
   }
 }
 

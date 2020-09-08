@@ -60,18 +60,18 @@ class Header extends React.Component {
   }
 
   getBalance () {
-    const state = this.props.state
+    const { wallet } = this.props.state
     let balance = "LOCKED";
-    if (!!state.wallet && !!state.wallet.balance) 
-      balance = state.wallet.balance.toFixed(2) + " POP";
+    if (!!wallet && wallet.balance >= 0) 
+      balance = wallet.balance.toFixed(2) + " POP";
     return (<span>{balance}</span>)
   }
 
   getStakedBalance () {
-    const state = this.props.state
+    const { wallet } = this.props.state
     let balance = "LOCKED";
-    if (!!state.wallet && !!state.wallet.stakedBalance) 
-      balance = state.wallet.stakedBalance.toFixed(2) + " POP";
+    if (!!wallet && wallet.stakedBalance >= 0) 
+      balance = wallet.stakedBalance.toFixed(2) + " POP";
     return (<span>{balance}</span>)
   }
 }

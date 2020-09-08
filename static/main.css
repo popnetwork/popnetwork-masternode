@@ -207,7 +207,7 @@ table {
 }
 
 .header .nav.right .header-staked {
-  margin: 0 30px 0 10px;
+  margin: 0 10px 0 10px;
 }
 
 .app.is-darwin:not(.is-fullscreen) .header .nav.left {

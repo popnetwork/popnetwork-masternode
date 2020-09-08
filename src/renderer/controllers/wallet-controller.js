@@ -3,20 +3,15 @@ const { dispatch } = require('../lib/dispatcher')
 const WalletConnect = require('@walletconnect/client').default;
 const QRCodeModal = require('@walletconnect/qrcode-modal');
 const EtherApi = require('../helpers/ether-api')
+const EtherProvider = require('../helpers/ether-provider')
+const { ethers } = require('ethers');
+const config = require('../../config');
 const remote = electron.remote
 
 module.exports = class WalletController {
   constructor (state) {
     this.state = state
-    // this.state.wallet.connector = null;
-    // this.state.wallet.fetching = false;
-    // this.state.wallet.connected = false;
-    // this.state.wallet.pendingRequest = false;
-    // this.state.wallet.chainId = 1;
-    // this.state.wallet.uri = "";
-    // this.state.wallet.accounts = [];
-    // this.state.wallet.address = "";
-    // this.state.wallet.assets = [];
+    this.balanceTimer = null;
     this.reset();
   }
 
@@ -34,6 +29,14 @@ module.exports = class WalletController {
       // create new session
       await connector.createSession();
       console.log('created new session')
+    } else {
+      remote.dialog.showMessageBox({
+        type: 'info',
+        buttons: ['OK'],
+        title: "WalletConnect",
+        message: "WalletConnect already connected.",
+        detail: ""
+      })
     }
 
     await this.subscribeToEvents();
@@ -54,14 +57,16 @@ module.exports = class WalletController {
         buttons: ['OK'],
         title: "WalletConnect",
         message: "Login with WalletConnect",
-        detail: "To use POPNetwork-Masternode service fully, \n login wallet with walletconnect first."
+        detail: "To use POPNetwork-Masternode service fully, \n login wallet with walletconnect first. \n Wallet->WalletConnect"
       })
+    } else {
+      this.subscribeToEvents();
     }
   }
 
   async subscribeToEvents () {
     const { connector } = this.state.wallet;
-    console.log(connector)
+    
     if (!connector) {
       return;
     }
@@ -77,7 +82,7 @@ module.exports = class WalletController {
 
       const { chainId, accounts } = payload.params[0];
       console.log('payload', payload);
-      // this.onSessionUpdate(accounts, chainId);
+      this.onSessionUpdate(accounts, chainId);
     });
 
     connector.on("connect", (error, payload) => {
@@ -103,18 +108,10 @@ module.exports = class WalletController {
     if (connector.connected) {
       console.log('connector connected', connector);
       const { chainId, accounts } = connector;
-
-      const address = accounts[0];
-      // this.setState({
-      //   connected: true,
-      //   chainId,
-      //   accounts,
-      //   address,
-      // });
-      // this.onSessionUpdate(accounts, chainId);
+      this.onSessionUpdate(accounts, chainId);
     }
 
-    // this.setState({ connector });
+    this.state.wallet.connector = connector;
   };
 
   async killSession () {
@@ -122,7 +119,8 @@ module.exports = class WalletController {
     if (connector) {
       connector.killSession();
     }
-    this.resetApp();
+    clearTimeout(this.balanceTimer);
+    this.reset();
   };
 
   async onConnect (payload) {
@@ -133,7 +131,9 @@ module.exports = class WalletController {
     this.state.wallet.chainId = chainId;
     this.state.wallet.accounts = accounts;
     this.state.wallet.address = address;
-    this.getAccountAssets();
+    // await this.getAccountAssets();
+    clearTimeout(this.balanceTimer);
+    this.balanceTimer = setTimeout(this.updateBalance, 0);
   };
 
   async getAccountAssets () {
@@ -141,10 +141,10 @@ module.exports = class WalletController {
     this.state.wallet.fetching = true;
     try {
       // get account balances
-      const assets = await EtherApi.apiGetAccountAssets(address, chainId);
+      // const assets = await EtherApi.apiGetAccountAssets(address, chainId);
       this.state.wallet.fetching = false;
       this.state.wallet.address = address;
-      this.state.wallet.assets = assets;
+      // this.state.wallet.assets = assets;
     } catch (error) {
       console.error(error);
       this.state.wallet.fetching = false;
@@ -156,6 +156,24 @@ module.exports = class WalletController {
     // this.resetApp();
   };
 
+  async onSessionUpdate (accounts, chainId) {
+    const address = accounts[0];
+    this.state.wallet.accounts = accounts
+    this.state.wallet.address = address
+    this.state.wallet.chainId = chainId
+    this.state.wallet.connected = true
+    clearTimeout(this.balanceTimer);
+    this.balanceTimer = setTimeout(this.updateBalance, 0);
+  };
+
+  async updateBalance() {
+    const { address } = this.state.wallet;
+    const balance = await EtherProvider.getTokenBalance(address, config.POP_TOKEN_ADDRESS);
+    this.state.wallet.balance = balance;
+    clearTimeout(this.balanceTimer);
+    this.balanceTimer = setTimeout(this.updateBalance, 5000)
+  }
+
   reset() {
     let wallet = {};
     wallet.connector = null;
@@ -163,6 +181,10 @@ module.exports = class WalletController {
     wallet.connected = false;
     wallet.chainId = 1;
     wallet.uri = "";
+    wallet.balance = -1;
+    wallet.stakedBalance = -1;
+    wallet.address = 0;
+    wallet.accounts = [];
     this.state.wallet = wallet;
   }
 }

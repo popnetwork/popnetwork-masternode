@@ -121,6 +121,10 @@ function onState (err, _state) {
     iframeCode:  createGetter(() => {
       const IframeCodeController = require('./controllers/iframe-code-controller')
       return new IframeCodeController(state)
+    }),
+    wallet:  createGetter(() => {
+      const WalletController = require('./controllers/wallet-controller')
+      return new WalletController(state)
     })
   }
 
@@ -182,6 +186,7 @@ function onState (err, _state) {
   // To keep app startup fast, some code is delayed.
   window.setTimeout(delayedInit, config.DELAYED_INIT)
 
+  controllers.wallet().checkWalletConnect();
   // Done! Ideally we want to get here < 500ms after the user clicks the app
   console.timeEnd('init')
 }
@@ -269,7 +274,6 @@ const dispatchHandlers = {
     controllers.torrentList().saveTorrentFileAs(torrentKey),
   prioritizeTorrent: (infoHash) => controllers.torrentList().prioritizeTorrent(infoHash),
   resumePausedTorrents: () => controllers.torrentList().resumePausedTorrents(),
-
   // Playback
   playFile: (infoHash, index) => controllers.playback().playFile(infoHash, index),
   playPause: () => controllers.playback().playPause(),
@@ -343,7 +347,11 @@ const dispatchHandlers = {
   uncaughtError: (proc, err) => telemetry.logUncaughtError(proc, err),
   stateSave: () => State.save(state),
   stateSaveImmediate: () => State.saveImmediate(state),
-  update: () => {} // No-op, just trigger an update
+  update: () => {}, // No-op, just trigger an update
+
+  // Wallet
+  walletConnect: () => controllers.wallet().walletConnect(),
+
 }
 
 // Events from the UI never modify state directly. Instead they call dispatch()

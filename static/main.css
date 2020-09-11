@@ -201,6 +201,15 @@ table {
   margin-right: 10px;
 }
 
+.header .nav.right .header-info {
+  font-weight: normal;
+  vertical-align: super;
+}
+
+.header .nav.right .header-staked {
+  margin: 0 10px 0 10px;
+}
+
 .app.is-darwin:not(.is-fullscreen) .header .nav.left {
   margin-left: 78px;
 }

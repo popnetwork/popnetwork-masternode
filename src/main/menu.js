@@ -284,6 +284,10 @@ function getMenuTemplate() {
                     label: 'WalletConnect',
                     click: () => windows.main.dispatch('walletConnect')
                 },
+                {
+                    label: 'Stake/UnStake',
+                    click: () => windows.stake.init()
+                },
             ]
         },
         {

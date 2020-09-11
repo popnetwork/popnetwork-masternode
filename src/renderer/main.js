@@ -125,7 +125,11 @@ function onState (err, _state) {
     wallet:  createGetter(() => {
       const WalletController = require('./controllers/wallet-controller')
       return new WalletController(state)
-    })
+    }),
+    stake: createGetter(() => {
+      const StakeController = require('./controllers/stake-controller')
+      return new StakeController(state)
+    }),
   }
 
   // Add first page to location history
@@ -351,6 +355,7 @@ const dispatchHandlers = {
 
   // Wallet
   walletConnect: () => controllers.wallet().walletConnect(),
+  stake: () => controllers.stake().show(),
 
 }
 

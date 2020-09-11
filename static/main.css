@@ -203,11 +203,13 @@ table {
 
 .header .nav.right .header-info {
   font-weight: normal;
-  vertical-align: super;
+  float: left;
+  margin-top: 2px;
 }
 
 .header .nav.right .header-staked {
-  margin: 0 10px 0 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .app.is-darwin:not(.is-fullscreen) .header .nav.left {

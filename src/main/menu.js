@@ -286,7 +286,7 @@ function getMenuTemplate() {
                 },
                 {
                     label: 'Stake/UnStake',
-                    click: () => windows.stake.init()
+                    click: () => windows.main.dispatch('stake')
                 },
             ]
         },

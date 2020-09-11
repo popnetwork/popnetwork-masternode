@@ -75,8 +75,7 @@ module.exports = {
     WINDOW_ABOUT: 'file://' + path.join(__dirname, '..', 'static', 'about.html'),
     WINDOW_MAIN: 'file://' + path.join(__dirname, '..', 'static', 'main.html'),
     WINDOW_POPNETWORK: 'file://' + path.join(__dirname, '..', 'static', 'popnetwork.html'),
-    WINDOW_STAKE: 'file://' + path.join(__dirname, '..', 'static', 'stake.html'),
-
+    
     WINDOW_INITIAL_BOUNDS: {
         width: 500,
         height: UI_HEADER_HEIGHT + (UI_TORRENT_HEIGHT * 6) // header + 6 torrents

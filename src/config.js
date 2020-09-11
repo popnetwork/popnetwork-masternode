@@ -43,7 +43,7 @@ module.exports = {
         {
             testID: 'psp',
             name: 'POPNetwork-SGBW-panel',
-            posterFileName: 'POPNetwork-SGBW-panel.png',
+            posterFileName: 'POPNetwork-SGBW-panel.jpg',
             torrentFileName: 'POPNetwork-SGBW-panel.torrent'
         },
      ],

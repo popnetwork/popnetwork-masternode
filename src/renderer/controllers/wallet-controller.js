@@ -2,9 +2,7 @@ const electron = require('electron')
 const { dispatch } = require('../lib/dispatcher')
 const WalletConnect = require('@walletconnect/client').default;
 const QRCodeModal = require('@walletconnect/qrcode-modal');
-const EtherApi = require('../helpers/ether-api')
-const EtherProvider = require('../helpers/ether-provider')
-const { ethers } = require('ethers');
+const EthProvider = require('../services/eth/eth-provider')
 const config = require('../../config');
 const remote = electron.remote
 
@@ -168,7 +166,7 @@ module.exports = class WalletController {
 
   async updateBalance() {
     const { address } = this.state.wallet;
-    const balance = await EtherProvider.getTokenBalance(address, config.POP_TOKEN_ADDRESS);
+    const balance = await EthProvider.getTokenBalance(address, config.POP_TOKEN_ADDRESS);
     this.state.wallet.balance = balance;
     clearTimeout(this.balanceTimer);
     this.balanceTimer = setTimeout(this.updateBalance, 5000)

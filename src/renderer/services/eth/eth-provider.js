@@ -1,6 +1,7 @@
 const { ethers } = require('ethers');
-const config = require('../../config');
+const config = require('../../../config');
 const { erc20ABI } = require('./ERC20.js');
+
 module.exports = {
   getTokenBalance
 }

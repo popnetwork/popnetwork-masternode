@@ -9,6 +9,7 @@ const StaticValue = require('../components/static-value')
 
 const { dispatch } = require('../lib/dispatcher')
 const config = require('../../config')
+const { openDialog } = require('electron-custom-dialog')
 
 class StakePage extends React.Component {
   constructor (props) {
@@ -16,8 +17,10 @@ class StakePage extends React.Component {
 
   }
 
-  stake() {
-
+  async stake() {
+    openDialog('stakeDlg', {question: 'Are you sure?'}).then((result) => {
+      console.log('================', result) 
+    })
   }
 
   unstake() {

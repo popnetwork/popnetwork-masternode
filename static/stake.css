@@ -1,0 +1,21 @@
+/*
+ * BASIC STYLES
+ */
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: rgb(40, 40, 40);
+  cursor: default;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow: hidden;
+}
+

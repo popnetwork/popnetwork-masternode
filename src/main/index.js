@@ -12,7 +12,8 @@ const log = require('./log')
 const menu = require('./menu')
 const State = require('../renderer/lib/state')
 const windows = require('./windows')
-
+const { prepareDialog } = require('electron-custom-dialog')
+const { remote } = require('electron');
 const POPNETWORK_VERSION = require('webtorrent/package.json').version
 
 let shouldQuit = false
@@ -77,7 +78,22 @@ function init() {
 
     function onReady(err, results) {
         if (err) throw err
+        prepareDialog({
+            name: 'stakeDlg',
+            load(win) {
+                win.loadURL(config.DIALOG_STAKE)
+            }, 
+            parent: windows.main.win,
+            windowOptions: {
+                width: 400,
+                height: 200,
+                center: true,
+                minimizable: false,
+                maximizable: false,
+                resizable: false,
+            }
 
+        })
         isReady = true
         const state = results.state
 
@@ -133,7 +149,11 @@ function init() {
     })
 
     app.on('activate', function() {
+        console.log('=============================activate');
+        
         if (isReady) windows.main.show()
+        
+        
     })
 }
 

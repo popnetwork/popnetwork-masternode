@@ -30,8 +30,7 @@ class Header extends React.Component {
           </i>
         </div>
         <div className='nav right float-right'>
-          <span className='header-info header-balance'><span>BALANCE: </span>{this.getBalance()}</span>
-          <span className='header-info header-staked'><span>STAKED: </span>{this.getStakedBalance()}</span>
+          {this.showWalletStatus()}
           {this.getAddButton()}
         </div>
       </div>
@@ -57,6 +56,24 @@ class Header extends React.Component {
         add
       </i>
     )
+  }
+
+  showWalletStatus () {
+    const { wallet } = this.props.state
+    if (!!wallet) 
+      return (
+        <span className='wallet-status'>
+          <i className='icon'>fiber_manual_record</i>
+          <span>Wallet Connected</span>
+        </span>
+      )
+    else
+      return (
+        <span className='wallet-status'>
+          <i className='icon'>lock</i>
+          <span>Wallet Locked</span>
+        </span>
+      )
   }
 
   getBalance () {

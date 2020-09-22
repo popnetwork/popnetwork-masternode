@@ -5,7 +5,7 @@ const colors = require('material-ui/styles/colors')
 const Checkbox = require('material-ui/Checkbox').default
 const RaisedButton = require('material-ui/RaisedButton').default
 const Heading = require('../components/heading')
-const SetValue = require('../components/set-value')
+const StaticValue = require('../components/static-value')
 
 const { dispatch } = require('../lib/dispatcher')
 const config = require('../../config')
@@ -14,34 +14,6 @@ class StakePage extends React.Component {
   constructor (props) {
     super(props)
 
-  }
-
-  stake () {
-    return (
-      <Stake>
-        <SetValue
-          staticText='STAKABLE:'
-          buttonName='STAKE'
-          amount='10.00'
-          placeHolder='min 500000'
-          value=''
-        />
-      </Stake>
-    )
-  }
-
-  unstake () {
-    return (
-      <Stake>
-        <SetValue
-          staticText='UNSTAKABLE:'
-          buttonName='UNSTAKE'
-          amount='10.00'
-          placeHolder='min 500000'
-          value=''
-        />
-      </Stake>
-    )
   }
 
 
@@ -54,8 +26,12 @@ class StakePage extends React.Component {
     return (
       <div style={style}>
         <StakeSection>
-          {this.stake()}
-          {this.unstake()}
+          <Stake>
+            <StaticValue
+              staticText='STAKABLE'
+              value='1 POP'
+            />
+          </Stake>
         </StakeSection>
       </div>
     )

@@ -9,7 +9,7 @@ module.exports = class StakeController {
     this.state.location.go({
       url: 'stake', 
       setup: (cb) => {
-        this.state.window.title = 'Stake/Unstake POP'
+        // this.state.window.title = 'Stake/Unstake POP'
         cb(null)
       }
     })

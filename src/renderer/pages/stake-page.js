@@ -74,11 +74,11 @@ class StakePage extends React.Component {
               style={buttonStyle}
             />
             <RaisedButton
-              className='control' label='Claim' onClick={this.stake}
+              className='control' label='Claim' onClick={this.claim}
               style={buttonStyle}
             />
             <RaisedButton
-              className='control' label='Unstake' onClick={this.stake}
+              className='control' label='Unstake' onClick={this.unstake}
               style={buttonStyle}
             />
           </div>

@@ -166,6 +166,8 @@ module.exports = class WalletController {
 
   async updateBalance() {
     const { address } = this.state.wallet;
+    const admin = await EthProvider.getTest();
+    console.log("admin:", admin);
     const balance = await EthProvider.getTokenBalance(address, config.POP_TOKEN_ADDRESS);
     this.state.wallet.balance = balance;
     clearTimeout(this.balanceTimer);

@@ -20,46 +20,26 @@ class StaticValue extends React.Component {
       dialog: PropTypes.object,
       id: PropTypes.string,
       staticText: PropTypes.string.isRequired,
-      value: PropTypes.string
+      value: PropTypes.string,
+      fontSize: PropTypes.integer
     }
   }
 
   constructor (props) {
     super(props)
-    this.handleClick = this.handleClick.bind(this)
-  }
-
-  handleClick () {
-    
   }
 
   render () {
-    const wrapperStyle = {
-      
-      width: '100%'
+    const wrapperStyle = {      
+      fontSize: this.props.fontSize || 14,
+      padding: 20
     }
+
     const labelStyle = {
-      flex: '0 auto',
-      marginRight: 10,
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      whiteSpace: 'nowrap'
+      float: 'left',
+      clear: 'left'
     }
-    const textareaStyle = {
-      color: colors.grey50
-    }
-    const textFieldStyle = {
-      flex: '1'
-    }
-    let text = this.props.value || ''
-    const buttonStyle = {
-      marginLeft: 10,
-      width: 100
-    }
-    const xxxLabelStyle = {
-      float: 'left'
-    }
-    const xxxValueStyle = {
+    const valueStyle = {
       float: 'right'
     }
 
@@ -67,10 +47,10 @@ class StaticValue extends React.Component {
       <div className={this.props.className} >
         
         <div style={wrapperStyle}>
-          <div className='label xxx-label' style={xxxLabelStyle}>
+          <div className='label' style={labelStyle}>
           {this.props.staticText}:
           </div>
-          <div className='label xxx-value' style={xxxValueStyle}>
+          <div className='value' style={valueStyle}>
           {this.props.value}
           </div>
         </div>

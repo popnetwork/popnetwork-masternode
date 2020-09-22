@@ -16,22 +16,72 @@ class StakePage extends React.Component {
 
   }
 
+  stake() {
 
+  }
+
+  unstake() {
+
+  }
+
+  claim() {
+
+  }
   render () {
     const style = {
-      color: colors.grey400,
-      marginLeft: 25,
-      marginRight: 25
+      marginTop: 20,
+      marginLeft: 20,
+      marginRight: 20
+      
+    }
+    const buttonStyle = {
+      margin: 18
+    }
+    const infoSectionStyle = {
+      marginTop: 50,
+      marginBottom: 50
+    }
+    const actionSectionStyle = {
+      clear: 'both',
+      maxWidth: 400,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      marginTop: 70,
     }
     return (
       <div style={style}>
         <StakeSection>
-          <Stake>
+          <div style={infoSectionStyle}>
             <StaticValue
-              staticText='STAKABLE'
-              value='1 POP'
+              staticText='BALANCE'
+              value='2400.15 POP'
+              fontSize={18}
             />
-          </Stake>
+            <StaticValue
+              staticText='PENDING REWARDS'
+              value='0.00 POP'
+              fontSize={18}
+            />
+            <StaticValue
+              staticText='STAKED'
+              value='12403.12 POP'
+              fontSize={18}
+            />
+          </div>
+          <div style={actionSectionStyle}>
+            <RaisedButton
+              className='control' label='Stake' onClick={this.stake}
+              style={buttonStyle}
+            />
+            <RaisedButton
+              className='control' label='Claim' onClick={this.stake}
+              style={buttonStyle}
+            />
+            <RaisedButton
+              className='control' label='Unstake' onClick={this.stake}
+              style={buttonStyle}
+            />
+          </div>
         </StakeSection>
       </div>
     )

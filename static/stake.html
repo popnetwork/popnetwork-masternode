@@ -2,18 +2,19 @@
 <html lang="en">
   <head>
     <title>STAKE POP</title>
+    <link rel="stylesheet" href="stake.css">
   </head>
   <body>
     <div id='body'>
-      <div>
-        <div class='label'>
+      <div class="input-group">
+        <div class='form-label'>
           AMOUNT
         </div>
-        <input type='text'>
+        <input class="form-control" type='number' placeholder="min 50000">
       </div>
-      <div>
-        <button id="cancelBtn">CANCEL</button>
-        <button id="stakeBtn">STAKE</button>
+      <div class="stake-pop-actions">
+        <button class="btn btn-white btn-cancel">CANCEL</button>
+        <button class="btn btn-pink btn-stake">STAKE</button>
       </div>
     </div>
   </body>

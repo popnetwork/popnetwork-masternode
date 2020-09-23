@@ -86,7 +86,7 @@ function init() {
             parent: windows.main.win,
             windowOptions: {
                 width: 400,
-                height: 200,
+                height: 190,
                 center: true,
                 minimizable: false,
                 maximizable: false,
@@ -149,11 +149,7 @@ function init() {
     })
 
     app.on('activate', function() {
-        console.log('=============================activate');
-        
         if (isReady) windows.main.show()
-        
-        
     })
 }
 

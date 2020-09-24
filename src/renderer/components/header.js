@@ -60,7 +60,7 @@ class Header extends React.Component {
 
   showWalletStatus () {
     const { wallet } = this.props.state
-    if (!!wallet) 
+    if (!!wallet && !!wallet.connected) 
       return (
         <span className='wallet-status'>
           <i className='icon'>fiber_manual_record</i>

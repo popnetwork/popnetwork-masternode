@@ -161,17 +161,17 @@ module.exports = class WalletController {
     this.state.wallet.chainId = chainId
     this.state.wallet.connected = true
     clearTimeout(this.balanceTimer);
-    this.balanceTimer = setTimeout(this.updateBalance, 0);
+    this.balanceTimer = setTimeout(this.updateWallet, 0);
   };
 
-  async updateBalance() {
+  async updateWallet() {
     const { address } = this.state.wallet;
-    const admin = await EthProvider.getTest();
-    console.log("admin:", admin);
+    // const admin = await EthProvider.getTest();
+    // console.log("admin:", admin);
     const balance = await EthProvider.getTokenBalance(address, config.POP_TOKEN_ADDRESS);
     this.state.wallet.balance = balance;
     clearTimeout(this.balanceTimer);
-    this.balanceTimer = setTimeout(this.updateBalance, 5000)
+    this.balanceTimer = setTimeout(this.updateWallet, 5000)
   }
 
   reset() {

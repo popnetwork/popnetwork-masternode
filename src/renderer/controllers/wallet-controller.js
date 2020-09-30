@@ -16,7 +16,7 @@ module.exports = class WalletController {
       bridge: "https://bridge.walletconnect.org",  // Required
       qrcodeModal: QRCodeModal
     });
-
+    
     this.state.wallet.connector = connector;
     
     // Check if connection is already established
@@ -46,6 +46,9 @@ module.exports = class WalletController {
     });
     this.state.wallet.connector = connector;
     console.log('connector', connector);
+    // if (connector) {
+    //   connector.killSession();
+    // }
     // Check if connection is already established
     if (!connector.connected) {
       const window = remote.BrowserWindow.getFocusedWindow();

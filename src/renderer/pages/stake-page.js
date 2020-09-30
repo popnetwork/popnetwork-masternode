@@ -10,27 +10,61 @@ const StaticValue = require('../components/static-value')
 const { dispatch } = require('../lib/dispatcher')
 const config = require('../../config')
 const { openDialog } = require('electron-custom-dialog')
-
+const EthProvider = require('../services/eth/eth-provider')
+const remote = require('electron').remote
 class StakePage extends React.Component {
   constructor (props) {
     super(props)
-
+    this.state = props.state
   }
 
-  async stake() {
-    openDialog('stakeDlg', {question: 'Are you sure?'}).then((result) => {
-      console.log('================', result) 
+  async stake(wallet) {
+    if(!!wallet.approval) {
+      openDialog('stakeDlg', {question: wallet.balance.toString()}).then((result) => {
+        // console.log('================', result) 
+      })
+    } else {
+      openDialog('pendingDlg').then((result) => {
+      })
+      const [txid, err] = await EthProvider.wcTokenApprove(wallet.connector, wallet.address, config.STAKING_CONTRACT_ADDRESS)
+      if (!!txid) {
+        remote.BrowserWindow.getAllWindows()
+          .filter(b => {
+            console.log('b', b, b.getTitle())
+            if (b.getTitle() == "PENDING") {
+              b.close()
+            }
+          })
+        const window = remote.BrowserWindow.getFocusedWindow();
+        const detail = "https://etherscan.io/tx/" + txid;
+        remote.dialog.showMessageBox(window, {
+          type: 'info',
+          buttons: ['OK'],
+          title: "WalletConnect",
+          message: "Transaction created successfully.",
+          detail: detail
+        })
+      } else {
+        remote.dialog.showErrorBox("WalletConnect", err)
+      }
+    }
+  }
+
+  async unstake(wallet) {
+    let count = remote.BrowserWindow.getAllWindows()
+    .filter(b => {
+      console.log('b', b, b.getTitle())
+      return b.isVisible()
     })
-  }
-
-  unstake() {
-
+    .length
+    console.log('asdfasd',count)
   }
 
   claim() {
 
   }
   render () {
+    const {wallet} = this.state
     const style = {
       marginTop: 20,
       marginLeft: 20,
@@ -38,7 +72,8 @@ class StakePage extends React.Component {
       
     }
     const buttonStyle = {
-      margin: 18
+      margin: 12,
+      width: 100
     }
     const infoSectionStyle = {
       marginTop: 50,
@@ -50,6 +85,7 @@ class StakePage extends React.Component {
       marginLeft: 'auto',
       marginRight: 'auto',
       marginTop: 70,
+      textAlign: 'center'
     }
     return (
       <div style={style}>
@@ -57,7 +93,7 @@ class StakePage extends React.Component {
           <div style={infoSectionStyle}>
             <StaticValue
               staticText='BALANCE'
-              value='2400.15 POP'
+              value={wallet.balance.toFixed(6) + ' POP'}
               fontSize={18}
             />
             <StaticValue
@@ -73,7 +109,7 @@ class StakePage extends React.Component {
           </div>
           <div style={actionSectionStyle}>
             <RaisedButton
-              className='control' label='Stake' onClick={this.stake}
+              className='control' label={!!wallet.approval ? 'Stake' : 'Approve'} onClick={()=>this.stake(wallet)}
               style={buttonStyle}
             />
             <RaisedButton
@@ -81,7 +117,7 @@ class StakePage extends React.Component {
               style={buttonStyle}
             />
             <RaisedButton
-              className='control' label='Unstake' onClick={this.unstake}
+              className='control' label='Unstake' onClick={this.unstake} onClick={()=>this.unstake(wallet)}
               style={buttonStyle}
             />
           </div>

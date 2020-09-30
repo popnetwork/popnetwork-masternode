@@ -16,6 +16,7 @@ const IS_PORTABLE = isPortable()
 
 const UI_HEADER_HEIGHT = 38
 const UI_TORRENT_HEIGHT = 100
+const ETH_NETWORK = "homestead"
 
 module.exports = {
     ANNOUNCEMENT_URL: 'https://thepopnetwork.org/masternode/announcement',
@@ -76,6 +77,7 @@ module.exports = {
     WINDOW_MAIN: 'file://' + path.join(__dirname, '..', 'static', 'main.html'),
     WINDOW_POPNETWORK: 'file://' + path.join(__dirname, '..', 'static', 'popnetwork.html'),
     DIALOG_STAKE: 'file://' + path.join(__dirname, '..', 'static', 'stake.html'),
+    DIALOG_PENDING: 'file://' + path.join(__dirname, '..', 'static', 'pending.html'),
     
     WINDOW_INITIAL_BOUNDS: {
         width: 500,
@@ -86,9 +88,9 @@ module.exports = {
 
     UI_HEADER_HEIGHT: UI_HEADER_HEIGHT,
     UI_TORRENT_HEIGHT: UI_TORRENT_HEIGHT,
-    ETH_NETWORK: "ropsten",
-    POP_TOKEN_ADDRESS: "0x5d858bcd53e085920620549214a8b27ce2f04670",
-    STAKING_CONTRACT_ADDRESS: "0xd06422ff1efaf96f7f5526aaeb70e410c43654fb"
+    ETH_NETWORK: ETH_NETWORK,
+    POP_TOKEN_ADDRESS: (ETH_NETWORK == "homestead" ? "0x5d858bcd53e085920620549214a8b27ce2f04670" : "0x83e8a9e9f44e19927708f4bb181f9a62141e2a90"), 
+    STAKING_CONTRACT_ADDRESS: (ETH_NETWORK == "homestead" ? "" : "0x4818159eb8893ba06852b9414ec17d77ed875554")
 }
 
 function getConfigPath() {

@@ -191,8 +191,13 @@ function onState (err, _state) {
   window.setTimeout(delayedInit, config.DELAYED_INIT)
 
   controllers.wallet().checkWalletConnect();
+  updateWallet();
   // Done! Ideally we want to get here < 500ms after the user clicks the app
   console.timeEnd('init')
+}
+async function updateWallet() {
+  await controllers.wallet().updateWallet(); 
+  setTimeout(updateWallet, 5000)
 }
 
 // Runs a few seconds after the app loads, to avoid slowing down startup time

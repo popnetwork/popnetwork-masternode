@@ -64,7 +64,22 @@ function init (state, options) {
           maximizable: false,
           resizable: false,
       }
-
+  })
+  prepareDialog({
+    name: 'pendingDlg',
+    load(win) {
+        win.loadURL(config.DIALOG_PENDING)
+    }, 
+    parent: main.win,
+    windowOptions: {
+        width: 420,
+        height: 170,
+        center: true,
+        minimizable: false,
+        maximizable: false,
+        resizable: false,
+        frame: false,
+    }
   })
   win.loadURL(config.WINDOW_MAIN)
 

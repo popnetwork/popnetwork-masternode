@@ -1,0 +1,30 @@
+/*
+ * BASIC STYLES
+ */
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: BlinkMacSystemFont, 'Helvetica Neue', Helvetica, sans-serif;
+  cursor: default;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow: hidden;
+}
+#body {
+  padding: 30px;
+}
+.text-group .label1 {
+  margin-top: 10px;
+}
+.text-group .label2 {
+  margin-top: 35px;
+}
+

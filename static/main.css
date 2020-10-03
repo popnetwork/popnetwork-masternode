@@ -201,13 +201,17 @@ table {
   margin-right: 10px;
 }
 
-.header .nav.right .header-info {
+.header .nav.right .wallet-status {
   font-weight: normal;
-  vertical-align: super;
+  float: left;
+  margin-top: 2px;
+  margin-right: 20px;
 }
 
-.header .nav.right .header-staked {
-  margin: 0 10px 0 10px;
+.header .nav.right .wallet-status .icon {
+  font-size: 14px;
+  margin-right: 4px;
+  vertical-align: text-top;
 }
 
 .app.is-darwin:not(.is-fullscreen) .header .nav.left {

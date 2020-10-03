@@ -16,6 +16,7 @@ const IS_PORTABLE = isPortable()
 
 const UI_HEADER_HEIGHT = 38
 const UI_TORRENT_HEIGHT = 100
+const ETH_NETWORK = "ropsten"
 
 module.exports = {
     ANNOUNCEMENT_URL: 'https://thepopnetwork.org/masternode/announcement',
@@ -75,7 +76,9 @@ module.exports = {
     WINDOW_ABOUT: 'file://' + path.join(__dirname, '..', 'static', 'about.html'),
     WINDOW_MAIN: 'file://' + path.join(__dirname, '..', 'static', 'main.html'),
     WINDOW_POPNETWORK: 'file://' + path.join(__dirname, '..', 'static', 'popnetwork.html'),
-
+    DIALOG_STAKE: 'file://' + path.join(__dirname, '..', 'static', 'stake.html'),
+    DIALOG_PENDING: 'file://' + path.join(__dirname, '..', 'static', 'pending.html'),
+    
     WINDOW_INITIAL_BOUNDS: {
         width: 500,
         height: UI_HEADER_HEIGHT + (UI_TORRENT_HEIGHT * 6) // header + 6 torrents
@@ -85,8 +88,10 @@ module.exports = {
 
     UI_HEADER_HEIGHT: UI_HEADER_HEIGHT,
     UI_TORRENT_HEIGHT: UI_TORRENT_HEIGHT,
-    ETH_NETWORK: "homestead",
-    POP_TOKEN_ADDRESS: "0x5d858bcd53e085920620549214a8b27ce2f04670"
+    ETH_NETWORK: ETH_NETWORK,
+    POP_TOKEN_ADDRESS: (ETH_NETWORK == "homestead" ? "0x5d858bcd53e085920620549214a8b27ce2f04670" : "0x9d1c366260cb60add4fa341fe8aa2f4a183e2064"), 
+    POP_TOKEN_DECIMALS: (ETH_NETWORK == "homestead" ? 18 : 18), 
+    STAKING_CONTRACT_ADDRESS: (ETH_NETWORK == "homestead" ? "" : "0x77bb9998ed5749afca28f235dab6dd8715d2e543")
 }
 
 function getConfigPath() {

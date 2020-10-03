@@ -12,7 +12,6 @@ const log = require('./log')
 const menu = require('./menu')
 const State = require('../renderer/lib/state')
 const windows = require('./windows')
-
 const POPNETWORK_VERSION = require('webtorrent/package.json').version
 
 let shouldQuit = false
@@ -77,14 +76,13 @@ function init() {
 
     function onReady(err, results) {
         if (err) throw err
-
+        
         isReady = true
         const state = results.state
 
         windows.main.init(state, { hidden: hidden })
         windows.popnetwork.init()
         menu.init()
-
         // To keep app startup fast, some code is delayed.
         setTimeout(() => {
             delayedInit(state)

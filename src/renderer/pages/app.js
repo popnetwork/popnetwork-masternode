@@ -16,7 +16,8 @@ const Views = {
   player: createGetter(() => require('./player-page')),
   'create-torrent': createGetter(() => require('./create-torrent-page')),
   preferences: createGetter(() => require('./preferences-page')),
-  'iframe-code': createGetter(() => require('./iframe-code-page'))
+  'iframe-code': createGetter(() => require('./iframe-code-page')),
+  'stake': createGetter(() => require('./stake-page')),
 }
 
 const Modals = {

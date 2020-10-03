@@ -280,7 +280,12 @@ function getMenuTemplate() {
         },
         {
             label: 'Wallet',
-            submenu: [{
+            submenu: [
+                {
+                    label: 'Stake',
+                    click: () => windows.main.dispatch('stake')
+                },
+                {
                     label: 'WalletConnect',
                     click: () => windows.main.dispatch('walletConnect')
                 },

@@ -1,0 +1,52 @@
+/*
+ * BASIC STYLES
+ */
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: BlinkMacSystemFont, 'Helvetica Neue', Helvetica, sans-serif;
+  cursor: default;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow: hidden;
+}
+#body {
+  padding: 30px;
+}
+.input-group .form-label {
+  margin-bottom: 8px;
+}
+.input-group .form-control {
+  width: 240px;
+  padding: 8px 6px;
+}
+.stake-pop-actions {
+  float: right;
+  margin-top: 35px;
+  
+}
+.btn {
+  margin: 5px;
+  padding: 8px;
+  border: 1px solid #888;
+}
+.btn:focus {
+  opacity: 0.75;
+}
+.btn-white {
+  background-color: #FFF;
+  border: 1px solid #979797
+}
+.btn-pink {
+  background-color: #FE0293;
+  color: #FFF;
+  border: 1px solid #20092F;
+}

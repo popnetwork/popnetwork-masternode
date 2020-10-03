@@ -1,17 +1,13 @@
 const electron = require('electron')
-const { dispatch } = require('../lib/dispatcher')
+const {BigNumber} = require('bignumber.js')
 const WalletConnect = require('@walletconnect/client').default;
 const QRCodeModal = require('@walletconnect/qrcode-modal');
-const EtherApi = require('../helpers/ether-api')
-const EtherProvider = require('../helpers/ether-provider')
-const { ethers } = require('ethers');
+const EthProvider = require('../services/eth/eth-provider')
 const config = require('../../config');
 const remote = electron.remote
-
 module.exports = class WalletController {
   constructor (state) {
     this.state = state
-    this.balanceTimer = null;
     this.reset();
   }
 
@@ -20,7 +16,7 @@ module.exports = class WalletController {
       bridge: "https://bridge.walletconnect.org",  // Required
       qrcodeModal: QRCodeModal
     });
-
+    
     this.state.wallet.connector = connector;
     
     // Check if connection is already established
@@ -30,7 +26,8 @@ module.exports = class WalletController {
       await connector.createSession();
       console.log('created new session')
     } else {
-      remote.dialog.showMessageBox({
+      const window = remote.BrowserWindow.getFocusedWindow();
+      remote.dialog.showMessageBox(window, {
         type: 'info',
         buttons: ['OK'],
         title: "WalletConnect",
@@ -47,12 +44,15 @@ module.exports = class WalletController {
       bridge: "https://bridge.walletconnect.org",  // Required
       qrcodeModal: QRCodeModal
     });
-
     this.state.wallet.connector = connector;
     console.log('connector', connector);
+    // if (connector) {
+    //   connector.killSession();
+    // }
     // Check if connection is already established
     if (!connector.connected) {
-      remote.dialog.showMessageBox({
+      const window = remote.BrowserWindow.getFocusedWindow();
+      remote.dialog.showMessageBox(window, {
         type: 'warning',
         buttons: ['OK'],
         title: "WalletConnect",
@@ -119,7 +119,6 @@ module.exports = class WalletController {
     if (connector) {
       connector.killSession();
     }
-    clearTimeout(this.balanceTimer);
     this.reset();
   };
 
@@ -131,9 +130,6 @@ module.exports = class WalletController {
     this.state.wallet.chainId = chainId;
     this.state.wallet.accounts = accounts;
     this.state.wallet.address = address;
-    // await this.getAccountAssets();
-    clearTimeout(this.balanceTimer);
-    this.balanceTimer = setTimeout(this.updateBalance, 0);
   };
 
   async getAccountAssets () {
@@ -162,16 +158,25 @@ module.exports = class WalletController {
     this.state.wallet.address = address
     this.state.wallet.chainId = chainId
     this.state.wallet.connected = true
-    clearTimeout(this.balanceTimer);
-    this.balanceTimer = setTimeout(this.updateBalance, 0);
   };
 
-  async updateBalance() {
-    const { address } = this.state.wallet;
-    const balance = await EtherProvider.getTokenBalance(address, config.POP_TOKEN_ADDRESS);
-    this.state.wallet.balance = balance;
-    clearTimeout(this.balanceTimer);
-    this.balanceTimer = setTimeout(this.updateBalance, 5000)
+  async updateWallet() {
+    
+    const { wallet } = this.state;
+    if (!!wallet && !!wallet.connected) {
+      const balance = await EthProvider.getTokenBalance(wallet.address);
+      this.state.wallet.balance = balance;
+      let approval = false;
+      const remainingAllowance = await EthProvider.getTokenAllowance(wallet.address, config.STAKING_CONTRACT_ADDRESS, config.POP_TOKEN_ADDRESS);
+      if (remainingAllowance.comparedTo(balance) == 1) {
+        approval = true;
+      }
+      this.state.wallet.approval = approval;
+      const pendingRewards = await EthProvider.getPendingPop(wallet.address);
+      this.state.wallet.pendingRewards = pendingRewards;
+      const stakedBalance = await EthProvider.getStakedBalance(wallet.address);
+      this.state.wallet.stakedBalance = stakedBalance;
+    }
   }
 
   reset() {
@@ -181,8 +186,10 @@ module.exports = class WalletController {
     wallet.connected = false;
     wallet.chainId = 1;
     wallet.uri = "";
-    wallet.balance = -1;
-    wallet.stakedBalance = -1;
+    wallet.balance = new BigNumber(0);
+    wallet.stakedBalance = new BigNumber(0);
+    wallet.pendingRewards = new BigNumber(0);
+    wallet.approval = false;
     wallet.address = 0;
     wallet.accounts = [];
     this.state.wallet = wallet;

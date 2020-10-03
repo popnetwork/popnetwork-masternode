@@ -30,8 +30,7 @@ class Header extends React.Component {
           </i>
         </div>
         <div className='nav right float-right'>
-          <span className='header-info header-balance'><span>BALANCE: </span>{this.getBalance()}</span>
-          <span className='header-info header-staked'><span>STAKED: </span>{this.getStakedBalance()}</span>
+          {this.showWalletStatus()}
           {this.getAddButton()}
         </div>
       </div>
@@ -59,20 +58,22 @@ class Header extends React.Component {
     )
   }
 
-  getBalance () {
+  showWalletStatus () {
     const { wallet } = this.props.state
-    let balance = "LOCKED";
-    if (!!wallet && wallet.balance >= 0) 
-      balance = wallet.balance.toFixed(2) + " POP";
-    return (<span>{balance}</span>)
-  }
-
-  getStakedBalance () {
-    const { wallet } = this.props.state
-    let balance = "LOCKED";
-    if (!!wallet && wallet.stakedBalance >= 0) 
-      balance = wallet.stakedBalance.toFixed(2) + " POP";
-    return (<span>{balance}</span>)
+    if (!!wallet && !!wallet.connected) 
+      return (
+        <span className='wallet-status'>
+          <i className='icon'>fiber_manual_record</i>
+          <span>Wallet Connected</span>
+        </span>
+      )
+    else
+      return (
+        <span className='wallet-status'>
+          <i className='icon'>lock</i>
+          <span>Wallet Locked</span>
+        </span>
+      )
   }
 }
 

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>STAKE POP</title>
+    <link rel="stylesheet" href="stake.css">
+  </head>
+  <body>
+    <div id='body'>
+      <div class="input-group">
+        <div class='form-label'>
+          AMOUNT
+        </div>
+        <input id="stake_amount" class="form-control" type='number' placeholder="min 50000">
+      </div>
+      <div class="stake-pop-actions">
+        <button id="cancel_btn" class="btn btn-white btn-cancel">CANCEL</button>
+        <button id="stake_btn" class="btn btn-pink btn-stake">STAKE</button>
+      </div>
+    </div>
+  </body>
+  <script>require('../build/renderer/stake.js')</script>
+</html>

@@ -12,29 +12,28 @@ const config = require('../../config')
 const { openDialog } = require('electron-custom-dialog')
 const EthProvider = require('../services/eth/eth-provider')
 const remote = require('electron').remote
+const { ethers } = require('ethers')
 class StakePage extends React.Component {
   constructor (props) {
     super(props)
     this.state = props.state
   }
-
+  
   async stake(wallet) {
     if(!!wallet.approval) {
-      openDialog('stakeDlg', {question: wallet.balance.toString()}).then((result) => {
-        // console.log('================', result) 
-      })
-    } else {
+      const result = await openDialog('stakeDlg', {balance: wallet.balance})
+      if ( result <= 0) return
+      const balance = ethers.utils.parseUnits(result.toString(), config.POP_TOKEN_DECIMALS)
       openDialog('pendingDlg').then((result) => {
       })
-      const [txid, err] = await EthProvider.wcTokenApprove(wallet.connector, wallet.address, config.STAKING_CONTRACT_ADDRESS)
+      const [txid, err] = await EthProvider.wcPopChefDeposit(wallet.connector, wallet.address, balance.toString())
+      remote.BrowserWindow.getAllWindows()
+        .filter(b => {
+          if (b.getTitle() == "PENDING") {
+            b.close()
+          }
+        })
       if (!!txid) {
-        remote.BrowserWindow.getAllWindows()
-          .filter(b => {
-            console.log('b', b, b.getTitle())
-            if (b.getTitle() == "PENDING") {
-              b.close()
-            }
-          })
         const window = remote.BrowserWindow.getFocusedWindow();
         const detail = "https://etherscan.io/tx/" + txid;
         remote.dialog.showMessageBox(window, {
@@ -45,23 +44,83 @@ class StakePage extends React.Component {
           detail: detail
         })
       } else {
-        remote.dialog.showErrorBox("WalletConnect", err)
+        remote.dialog.showErrorBox("WalletConnect", err.toString())
+      }
+    } else {
+      openDialog('pendingDlg').then((result) => {
+      })
+      const [txid, err] = await EthProvider.wcTokenApprove(wallet.connector, wallet.address, config.STAKING_CONTRACT_ADDRESS)
+      remote.BrowserWindow.getAllWindows()
+      .filter(b => {
+        if (b.getTitle() == "PENDING") {
+          b.close()
+        }
+      })
+      if (!!txid) {
+        const window = remote.BrowserWindow.getFocusedWindow();
+        const detail = "https://etherscan.io/tx/" + txid;
+        remote.dialog.showMessageBox(window, {
+          type: 'info',
+          buttons: ['OK'],
+          title: "WalletConnect",
+          message: "Transaction created successfully.",
+          detail: detail
+        })
+      } else {
+        remote.dialog.showErrorBox("WalletConnect", err.toString())
       }
     }
   }
 
   async unstake(wallet) {
-    let count = remote.BrowserWindow.getAllWindows()
-    .filter(b => {
-      console.log('b', b, b.getTitle())
-      return b.isVisible()
+    const balance = ethers.utils.parseUnits(wallet.stakedBalance.toString(), config.POP_TOKEN_DECIMALS)
+    openDialog('pendingDlg').then((result) => {
     })
-    .length
-    console.log('asdfasd',count)
+    const [txid, err] = await EthProvider.wcPopChefWithdraw(wallet.connector, wallet.address, balance.toString())
+    remote.BrowserWindow.getAllWindows()
+      .filter(b => {
+        if (b.getTitle() == "PENDING") {
+          b.close()
+        }
+      })
+    if (!!txid) {
+      const window = remote.BrowserWindow.getFocusedWindow();
+      const detail = "https://etherscan.io/tx/" + txid;
+      remote.dialog.showMessageBox(window, {
+        type: 'info',
+        buttons: ['OK'],
+        title: "WalletConnect",
+        message: "Transaction created successfully.",
+        detail: detail
+      })
+    } else {
+      remote.dialog.showErrorBox("WalletConnect", err.toString())
+    }
   }
 
-  claim() {
-
+  async claim(wallet) {
+    openDialog('pendingDlg').then((result) => {
+    })
+    const [txid, err] = await EthProvider.wcPopChefDeposit(wallet.connector, wallet.address, 0)
+    remote.BrowserWindow.getAllWindows()
+        .filter(b => {
+          if (b.getTitle() == "PENDING") {
+            b.close()
+          }
+        })
+    if (!!txid) {
+      const window = remote.BrowserWindow.getFocusedWindow();
+      const detail = "https://etherscan.io/tx/" + txid;
+      remote.dialog.showMessageBox(window, {
+        type: 'info',
+        buttons: ['OK'],
+        title: "WalletConnect",
+        message: "Transaction created successfully.",
+        detail: detail
+      })
+    } else {
+      remote.dialog.showErrorBox("WalletConnect", err.toString())
+    }
   }
   render () {
     const {wallet} = this.state
@@ -98,12 +157,12 @@ class StakePage extends React.Component {
             />
             <StaticValue
               staticText='PENDING REWARDS'
-              value='0.00 POP'
+              value={wallet.pendingRewards.toFixed(6) + ' POP'}
               fontSize={18}
             />
             <StaticValue
               staticText='STAKED'
-              value='12403.12 POP'
+              value={wallet.stakedBalance.toFixed(6) + ' POP'}
               fontSize={18}
             />
           </div>
@@ -113,7 +172,7 @@ class StakePage extends React.Component {
               style={buttonStyle}
             />
             <RaisedButton
-              className='control' label='Claim' onClick={this.claim}
+              className='control' label='Claim' onClick={()=>this.claim(wallet)}
               style={buttonStyle}
             />
             <RaisedButton

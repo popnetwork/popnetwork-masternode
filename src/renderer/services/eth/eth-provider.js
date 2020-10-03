@@ -1,8 +1,8 @@
 const { ethers } = require('ethers');
 const { BigNumber } = require('bignumber.js');
 const config = require('../../../config');
-const { erc20ABI } = require('./ERC20.js');
-const { stakingABI } = require('./Staking.js');
+const { erc20ABI } = require('./erc20.js');
+const { popchefABI } = require('./popchef.js');
 var abi = require('ethereumjs-abi');
 module.exports = {
   getTokenBalance,
@@ -10,10 +10,15 @@ module.exports = {
   tokenApprove,
   wcSendTransaction,
   wcTokenApprove,
+  wcPopChefDeposit,
+  wcPopChefWithdraw,
+  getPendingPop,
+  getStakedBalance,
+  convertToWei,
   getTest,
 }
 
-async function getTokenBalance (address, tokenAddress) {
+async function getTokenBalance (address, tokenAddress = config.POP_TOKEN_ADDRESS) {
   try {
     provider = ethers.getDefaultProvider(config.ETH_NETWORK)
     provider.getBalance = provider.getBalance.bind(provider)
@@ -54,6 +59,35 @@ async function tokenApprove (spender, amount=0xfffffffffffffffffffffffffffffffff
     return ""
   }
 }
+
+async function getPendingPop(address, pid = 0) {
+  try {
+    provider = ethers.getDefaultProvider(config.ETH_NETWORK)
+    provider.getBalance = provider.getBalance.bind(provider)
+    const contract = new ethers.Contract(config.STAKING_CONTRACT_ADDRESS, popchefABI, provider) 
+    const res = await contract.pendingPop(pid, address)
+    const balance = ethers.utils.formatUnits(res, config.POP_TOKEN_DECIMALS)
+    return new BigNumber(balance)
+  } catch (err) {
+    console.log('getPendingPop: ', err)
+    return new BigNumber(0)
+  }
+}
+
+async function getStakedBalance(address, pid = 0) {
+  try {
+    provider = ethers.getDefaultProvider(config.ETH_NETWORK)
+    provider.getBalance = provider.getBalance.bind(provider)
+    const contract = new ethers.Contract(config.STAKING_CONTRACT_ADDRESS, popchefABI, provider) 
+    const res = await contract.userInfo(pid, address)
+    let balance = ethers.utils.formatUnits(res.amount, config.POP_TOKEN_DECIMALS)
+    return new BigNumber(balance)
+  } catch (err) {
+    console.log('getStakedBalance: ', err)
+    return new BigNumber(0)
+  }
+}
+
 async function wcTokenApprove (connector, fromAddress, spender, amount='0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff') {
   try {
     const encoded = abi.simpleEncode("approve(address,uint256):(bool)", spender, amount)
@@ -66,6 +100,30 @@ async function wcTokenApprove (connector, fromAddress, spender, amount='0xffffff
     return [null, err]
   }
 }
+async function wcPopChefDeposit (connector, fromAddress, amount, pid = 0) {
+  try {
+    const encoded = abi.simpleEncode("deposit(uint256,uint256)", pid, amount)
+    const toAddress = config.STAKING_CONTRACT_ADDRESS
+    const data = '0x' + encoded.toString('hex')
+    const value = '0x'
+    return (await wcSendTransaction(connector, fromAddress, toAddress, data, value))
+  } catch (err) {
+    console.log('wcPopChefWithdraw: ', err)
+    return [null, err]
+  }
+}
+async function wcPopChefWithdraw (connector, fromAddress, amount, pid = 0) {
+  try {
+    const encoded = abi.simpleEncode("withdraw(uint256,uint256)", pid, amount)
+    const toAddress = config.STAKING_CONTRACT_ADDRESS
+    const data = '0x' + encoded.toString('hex')
+    const value = '0x'
+    return (await wcSendTransaction(connector, fromAddress, toAddress, data, value))
+  } catch (err) {
+    console.log('wcPopChefWithdraw: ', err)
+    return [null, err]
+  }
+}
 async function wcSendTransaction (connector, fromAddress, toAddress, data, value) {
   try {
     provider = ethers.getDefaultProvider(config.ETH_NETWORK)
@@ -75,7 +133,7 @@ async function wcSendTransaction (connector, fromAddress, toAddress, data, value
       "from": fromAddress,
       "to": toAddress,
       "data": data,
-      "gas": "0x186A0", // 100, 000
+      "gas": "0x30D40", // 200, 000
       "gasPrice": "0x2e90edd000", // 200,000,000,000
       "value": value, // 2441406250
       "nonce": pendingTxCnt 
@@ -83,6 +141,7 @@ async function wcSendTransaction (connector, fromAddress, toAddress, data, value
     const txid = await connector.sendTransaction(tx)
     // const hash = hashTypedDataMessage(message)
     // const valid = await verifySignature(address, result, hash, connector.chainId)
+    console.log('txid: ', txid)
     return [txid, null]
   } catch (err) {
     console.log('wcSendTransaction: ', err)
@@ -90,12 +149,15 @@ async function wcSendTransaction (connector, fromAddress, toAddress, data, value
   }
 }
 
+function convertToWei(balance) {
+  return (new BigNumber(balance)).multipliedBy(Math.pow(10, config.POP_TOKEN_DECIMALS))
+}
 async function getTest () {
-  provider = ethers.getDefaultProvider(config.ETH_NETWORK)
-  provider.getBalance = provider.getBalance.bind(provider)
-  const contract = new ethers.Contract(config.STAKING_CONTRACT_ADDRESS, stakingABI, provider) 
-  const admin = await contract.admin();
+  // provider = ethers.getDefaultProvider(config.ETH_NETWORK)
+  // provider.getBalance = provider.getBalance.bind(provider)
+  // const contract = new ethers.Contract(config.STAKING_CONTRACT_ADDRESS, stakingABI, provider) 
+  // const admin = await contract.admin();
   // const decimals = await contract.decimals()
   // const tokenBalance = ethers.utils.formatUnits(balance, decimals)
-  return admin;
+  // return admin;
 }

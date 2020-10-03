@@ -164,7 +164,7 @@ module.exports = class WalletController {
     
     const { wallet } = this.state;
     if (!!wallet && !!wallet.connected) {
-      const balance = await EthProvider.getTokenBalance(wallet.address, config.POP_TOKEN_ADDRESS);
+      const balance = await EthProvider.getTokenBalance(wallet.address);
       this.state.wallet.balance = balance;
       let approval = false;
       const remainingAllowance = await EthProvider.getTokenAllowance(wallet.address, config.STAKING_CONTRACT_ADDRESS, config.POP_TOKEN_ADDRESS);
@@ -172,6 +172,10 @@ module.exports = class WalletController {
         approval = true;
       }
       this.state.wallet.approval = approval;
+      const pendingRewards = await EthProvider.getPendingPop(wallet.address);
+      this.state.wallet.pendingRewards = pendingRewards;
+      const stakedBalance = await EthProvider.getStakedBalance(wallet.address);
+      this.state.wallet.stakedBalance = stakedBalance;
     }
   }
 
@@ -183,8 +187,8 @@ module.exports = class WalletController {
     wallet.chainId = 1;
     wallet.uri = "";
     wallet.balance = new BigNumber(0);
-    wallet.stakedBalance = 0;
-    wallet.pendingRewards = 0;
+    wallet.stakedBalance = new BigNumber(0);
+    wallet.pendingRewards = new BigNumber(0);
     wallet.approval = false;
     wallet.address = 0;
     wallet.accounts = [];

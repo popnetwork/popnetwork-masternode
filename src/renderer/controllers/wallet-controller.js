@@ -27,13 +27,16 @@ module.exports = class WalletController {
       console.log('created new session')
     } else {
       const window = remote.BrowserWindow.getFocusedWindow();
-      remote.dialog.showMessageBox(window, {
+      const {response} = await remote.dialog.showMessageBox(window, {
         type: 'info',
-        buttons: ['OK'],
+        buttons: ['No', 'Yes'],
         title: "WalletConnect",
-        message: "WalletConnect already connected.",
+        message: "WalletConnect already connected.\n Do you want to disconnect?",
         detail: ""
       })
+      if (response == true && connector) {
+        connector.killSession();
+      } 
     }
 
     await this.subscribeToEvents();
@@ -46,9 +49,7 @@ module.exports = class WalletController {
     });
     this.state.wallet.connector = connector;
     console.log('connector', connector);
-    // if (connector) {
-    //   connector.killSession();
-    // }
+    
     // Check if connection is already established
     if (!connector.connected) {
       const window = remote.BrowserWindow.getFocusedWindow();

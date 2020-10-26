@@ -130,6 +130,10 @@ function onState (err, _state) {
       const StakeController = require('./controllers/stake-controller')
       return new StakeController(state)
     }),
+    actionCable: createGetter(() => {
+      const ActionCableController = require('./controllers/action-cable-controller')
+      return new ActionCableController(state)
+    }),
   }
 
   // Add first page to location history
@@ -192,6 +196,7 @@ function onState (err, _state) {
 
   controllers.wallet().checkWalletConnect();
   updateWallet();
+  controllers.actionCable().createConsumer();
   // Done! Ideally we want to get here < 500ms after the user clicks the app
   console.timeEnd('init')
 }
@@ -361,7 +366,6 @@ const dispatchHandlers = {
   // Wallet
   walletConnect: () => controllers.wallet().walletConnect(),
   stake: () => controllers.stake().show(),
-
 }
 
 // Events from the UI never modify state directly. Instead they call dispatch()

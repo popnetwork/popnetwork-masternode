@@ -173,7 +173,7 @@ module.exports = class WalletController {
         approval = true;
       }
       this.state.wallet.approval = approval;
-      const pendingRewards = await EthProvider.getPendingPop(wallet.address);
+      const pendingRewards = await EthProvider.getClaimablePop(wallet.address);
       this.state.wallet.pendingRewards = pendingRewards;
       const stakedBalance = await EthProvider.getStakedBalance(wallet.address);
       this.state.wallet.stakedBalance = stakedBalance;

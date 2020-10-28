@@ -12,7 +12,7 @@ module.exports = {
   wcTokenApprove,
   wcPopChefDeposit,
   wcPopChefWithdraw,
-  getPendingPop,
+  getClaimablePop,
   getStakedBalance,
   convertToWei,
   getTest,
@@ -60,26 +60,26 @@ async function tokenApprove (spender, amount=0xfffffffffffffffffffffffffffffffff
   }
 }
 
-async function getPendingPop(address, pid = 0) {
+async function getClaimablePop(address) {
   try {
     provider = ethers.getDefaultProvider(config.ETH_NETWORK)
     provider.getBalance = provider.getBalance.bind(provider)
     const contract = new ethers.Contract(config.STAKING_CONTRACT_ADDRESS, popchefABI, provider) 
-    const res = await contract.pendingPop(pid, address)
+    const res = await contract.claimablePop(address)
     const balance = ethers.utils.formatUnits(res, config.POP_TOKEN_DECIMALS)
     return new BigNumber(balance)
   } catch (err) {
-    console.log('getPendingPop: ', err)
+    console.log('getClaimablePop: ', err)
     return new BigNumber(0)
   }
 }
 
-async function getStakedBalance(address, pid = 0) {
+async function getStakedBalance(address) {
   try {
     provider = ethers.getDefaultProvider(config.ETH_NETWORK)
     provider.getBalance = provider.getBalance.bind(provider)
     const contract = new ethers.Contract(config.STAKING_CONTRACT_ADDRESS, popchefABI, provider) 
-    const res = await contract.userInfo(pid, address)
+    const res = await contract.userInfo(address)
     let balance = ethers.utils.formatUnits(res.amount, config.POP_TOKEN_DECIMALS)
     return new BigNumber(balance)
   } catch (err) {
@@ -100,9 +100,9 @@ async function wcTokenApprove (connector, fromAddress, spender, amount='0xffffff
     return [null, err]
   }
 }
-async function wcPopChefDeposit (connector, fromAddress, amount, pid = 0) {
+async function wcPopChefDeposit (connector, fromAddress, amount) {
   try {
-    const encoded = abi.simpleEncode("deposit(uint256,uint256)", pid, amount)
+    const encoded = abi.simpleEncode("deposit(uint256)", amount)
     const toAddress = config.STAKING_CONTRACT_ADDRESS
     const data = '0x' + encoded.toString('hex')
     const value = '0x'
@@ -112,9 +112,9 @@ async function wcPopChefDeposit (connector, fromAddress, amount, pid = 0) {
     return [null, err]
   }
 }
-async function wcPopChefWithdraw (connector, fromAddress, amount, pid = 0) {
+async function wcPopChefWithdraw (connector, fromAddress, amount) {
   try {
-    const encoded = abi.simpleEncode("withdraw(uint256,uint256)", pid, amount)
+    const encoded = abi.simpleEncode("withdraw(uint256)", amount)
     const toAddress = config.STAKING_CONTRACT_ADDRESS
     const data = '0x' + encoded.toString('hex')
     const value = '0x'

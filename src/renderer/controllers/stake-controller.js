@@ -7,7 +7,6 @@ module.exports = class StakeController {
   }
 
   show () {
-    console.log("state:", state)
     const {wallet} = this.state
     if (!!wallet && !!wallet.connected) {
       this.state.location.go({

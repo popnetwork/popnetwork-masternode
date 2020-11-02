@@ -4,6 +4,8 @@ const config = require('../../../config');
 const { erc20ABI } = require('./erc20.js');
 const { popchefABI } = require('./popchef.js');
 var abi = require('ethereumjs-abi');
+const electron = require('electron')
+const remote = electron.remote
 module.exports = {
   getTokenBalance,
   getTokenAllowance,
@@ -14,13 +16,17 @@ module.exports = {
   wcPopChefWithdraw,
   getClaimablePop,
   getStakedBalance,
-  convertToWei,
-  getTest,
+  getPopPerBlock,
+  convertToWei
 }
 
-async function getTokenBalance (address, tokenAddress = config.POP_TOKEN_ADDRESS) {
+async function getTokenBalance (address, tokenAddress = remote.process.env.POP_TOKEN_ADDRESS) {
   try {
-    provider = ethers.getDefaultProvider(config.ETH_NETWORK)
+    provider = ethers.getDefaultProvider(remote.process.env.ETH_NETWORK, {
+      etherscan: remote.process.env.ETHERSCAN_API_KEY,
+      infura: remote.process.env.INFURA_API_KEY,
+      alchemy: remote.process.env.ALCHEMY_API_KEY,
+    })
     provider.getBalance = provider.getBalance.bind(provider)
     const contract = new ethers.Contract(tokenAddress, erc20ABI, provider) 
     const balance = await contract.balanceOf(address);
@@ -35,8 +41,11 @@ async function getTokenBalance (address, tokenAddress = config.POP_TOKEN_ADDRESS
 
 async function getTokenAllowance (tokenOwner, spender, tokenAddress) {
   try {
-    provider = ethers.getDefaultProvider(config.ETH_NETWORK)
-    provider.getBalance = provider.getBalance.bind(provider)
+    provider = ethers.getDefaultProvider(remote.process.env.ETH_NETWORK, {
+      etherscan: remote.process.env.ETHERSCAN_API_KEY,
+      infura: remote.process.env.INFURA_API_KEY,
+      alchemy: remote.process.env.ALCHEMY_API_KEY,
+    })
     const contract = new ethers.Contract(tokenAddress, erc20ABI, provider) 
     let remaining = await contract.allowance(tokenOwner, spender)
     const decimals = await contract.decimals()
@@ -49,8 +58,11 @@ async function getTokenAllowance (tokenOwner, spender, tokenAddress) {
 }
 async function tokenApprove (spender, amount=0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff) {
   try {
-    provider = ethers.getDefaultProvider(config.ETH_NETWORK)
-    provider.getBalance = provider.getBalance.bind(provider)
+    provider = ethers.getDefaultProvider(remote.process.env.ETH_NETWORK, {
+      etherscan: remote.process.env.ETHERSCAN_API_KEY,
+      infura: remote.process.env.INFURA_API_KEY,
+      alchemy: remote.process.env.ALCHEMY_API_KEY,
+    })
     const contract = new ethers.Contract(tokenAddress, erc20ABI, provider) 
     const txid = await contract.approve(spender, amount)
     return txid
@@ -62,11 +74,14 @@ async function tokenApprove (spender, amount=0xfffffffffffffffffffffffffffffffff
 
 async function getClaimablePop(address) {
   try {
-    provider = ethers.getDefaultProvider(config.ETH_NETWORK)
-    provider.getBalance = provider.getBalance.bind(provider)
-    const contract = new ethers.Contract(config.STAKING_CONTRACT_ADDRESS, popchefABI, provider) 
+    provider = ethers.getDefaultProvider(remote.process.env.ETH_NETWORK, {
+      etherscan: remote.process.env.ETHERSCAN_API_KEY,
+      infura: remote.process.env.INFURA_API_KEY,
+      alchemy: remote.process.env.ALCHEMY_API_KEY,
+    })
+    const contract = new ethers.Contract(remote.process.env.STAKING_CONTRACT_ADDRESS, popchefABI, provider) 
     const res = await contract.claimablePop(address)
-    const balance = ethers.utils.formatUnits(res, config.POP_TOKEN_DECIMALS)
+    const balance = ethers.utils.formatUnits(res, remote.process.env.POP_TOKEN_DECIMALS)
     return new BigNumber(balance)
   } catch (err) {
     console.log('getClaimablePop: ', err)
@@ -76,14 +91,34 @@ async function getClaimablePop(address) {
 
 async function getStakedBalance(address) {
   try {
-    provider = ethers.getDefaultProvider(config.ETH_NETWORK)
-    provider.getBalance = provider.getBalance.bind(provider)
-    const contract = new ethers.Contract(config.STAKING_CONTRACT_ADDRESS, popchefABI, provider) 
+    provider = ethers.getDefaultProvider(remote.process.env.ETH_NETWORK, {
+      etherscan: remote.process.env.ETHERSCAN_API_KEY,
+      infura: remote.process.env.INFURA_API_KEY,
+      alchemy: remote.process.env.ALCHEMY_API_KEY,
+    })
+    const contract = new ethers.Contract(remote.process.env.STAKING_CONTRACT_ADDRESS, popchefABI, provider) 
     const res = await contract.userInfo(address)
-    let balance = ethers.utils.formatUnits(res.amount, config.POP_TOKEN_DECIMALS)
+    let balance = ethers.utils.formatUnits(res.amount, remote.process.env.POP_TOKEN_DECIMALS)
     return new BigNumber(balance)
   } catch (err) {
     console.log('getStakedBalance: ', err)
+    return new BigNumber(0)
+  }
+}
+async function getPopPerBlock() {
+  try {
+    provider = ethers.getDefaultProvider(remote.process.env.ETH_NETWORK, {
+      etherscan: remote.process.env.ETHERSCAN_API_KEY,
+      infura: remote.process.env.INFURA_API_KEY,
+      alchemy: remote.process.env.ALCHEMY_API_KEY,
+    })
+    const contract = new ethers.Contract(remote.process.env.STAKING_CONTRACT_ADDRESS, popchefABI, provider) 
+    const res = await contract.popPerBlock()
+    let balance = ethers.utils.formatUnits(res, 18)
+    console.log('balance', balance)
+    return new BigNumber(balance)
+  } catch (err) {
+    console.log('getPopPerBlock: ', err)
     return new BigNumber(0)
   }
 }
@@ -91,7 +126,7 @@ async function getStakedBalance(address) {
 async function wcTokenApprove (connector, fromAddress, spender, amount='0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff') {
   try {
     const encoded = abi.simpleEncode("approve(address,uint256):(bool)", spender, amount)
-    const toAddress = config.POP_TOKEN_ADDRESS
+    const toAddress = remote.process.env.POP_TOKEN_ADDRESS
     const data = '0x' + encoded.toString('hex')
     const value = '0x'
     return (await wcSendTransaction(connector, fromAddress, toAddress, data, value))
@@ -103,7 +138,7 @@ async function wcTokenApprove (connector, fromAddress, spender, amount='0xffffff
 async function wcPopChefDeposit (connector, fromAddress, amount) {
   try {
     const encoded = abi.simpleEncode("deposit(uint256)", amount)
-    const toAddress = config.STAKING_CONTRACT_ADDRESS
+    const toAddress = remote.process.env.STAKING_CONTRACT_ADDRESS
     const data = '0x' + encoded.toString('hex')
     const value = '0x'
     return (await wcSendTransaction(connector, fromAddress, toAddress, data, value))
@@ -115,7 +150,7 @@ async function wcPopChefDeposit (connector, fromAddress, amount) {
 async function wcPopChefWithdraw (connector, fromAddress, amount) {
   try {
     const encoded = abi.simpleEncode("withdraw(uint256)", amount)
-    const toAddress = config.STAKING_CONTRACT_ADDRESS
+    const toAddress = remote.process.env.STAKING_CONTRACT_ADDRESS
     const data = '0x' + encoded.toString('hex')
     const value = '0x'
     return (await wcSendTransaction(connector, fromAddress, toAddress, data, value))
@@ -126,8 +161,11 @@ async function wcPopChefWithdraw (connector, fromAddress, amount) {
 }
 async function wcSendTransaction (connector, fromAddress, toAddress, data, value) {
   try {
-    provider = ethers.getDefaultProvider(config.ETH_NETWORK)
-    provider.getBalance = provider.getBalance.bind(provider)
+    provider = ethers.getDefaultProvider(remote.process.env.ETH_NETWORK, {
+      etherscan: remote.process.env.ETHERSCAN_API_KEY,
+      infura: remote.process.env.INFURA_API_KEY,
+      alchemy: remote.process.env.ALCHEMY_API_KEY,
+    })
     pendingTxCnt = await provider.getTransactionCount(fromAddress, "pending")
     const tx = {
       "from": fromAddress,
@@ -150,14 +188,5 @@ async function wcSendTransaction (connector, fromAddress, toAddress, data, value
 }
 
 function convertToWei(balance) {
-  return (new BigNumber(balance)).multipliedBy(Math.pow(10, config.POP_TOKEN_DECIMALS))
-}
-async function getTest () {
-  // provider = ethers.getDefaultProvider(config.ETH_NETWORK)
-  // provider.getBalance = provider.getBalance.bind(provider)
-  // const contract = new ethers.Contract(config.STAKING_CONTRACT_ADDRESS, stakingABI, provider) 
-  // const admin = await contract.admin();
-  // const decimals = await contract.decimals()
-  // const tokenBalance = ethers.utils.formatUnits(balance, decimals)
-  // return admin;
+  return (new BigNumber(balance)).multipliedBy(Math.pow(10, remote.process.env.POP_TOKEN_DECIMALS))
 }

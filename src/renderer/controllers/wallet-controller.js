@@ -4,6 +4,7 @@ const WalletConnect = require('@walletconnect/client').default;
 const QRCodeModal = require('@walletconnect/qrcode-modal');
 const EthProvider = require('../services/eth/eth-provider')
 const config = require('../../config');
+const { dispatch } = require('../lib/dispatcher');
 const remote = electron.remote
 module.exports = class WalletController {
   constructor (state) {
@@ -92,7 +93,6 @@ module.exports = class WalletController {
       if (error) {
         throw error;
       }
-
       this.onConnect(payload);
     });
 
@@ -131,6 +131,8 @@ module.exports = class WalletController {
     this.state.wallet.chainId = chainId;
     this.state.wallet.accounts = accounts;
     this.state.wallet.address = address;
+    dispatch('disconnectActionCable');
+    dispatch('connectActionCable');
   };
 
   async getAccountAssets () {
@@ -151,6 +153,7 @@ module.exports = class WalletController {
   async onDisconnect () {
     this.killSession();
     // this.resetApp();
+    dispatch('disconnectActionCable');
   };
 
   async onSessionUpdate (accounts, chainId) {
@@ -161,22 +164,40 @@ module.exports = class WalletController {
     this.state.wallet.connected = true
   };
 
+  async initWallet() {
+    
+    const { wallet } = this.state;
+    if (!!wallet ) {
+      
+    }
+  }
+
   async updateWallet() {
     
     const { wallet } = this.state;
+    if (this.state.wallet.popPerBlock.isLessThanOrEqualTo(0)) {
+      EthProvider.getPopPerBlock().then((result) => {
+        this.state.wallet.popPerBlock = result;
+        this.state.wallet.pendingRewards = this.state.wallet.popPerBlock.multipliedBy(state.wallet.pendingBlockCnt)
+      });
+    }
     if (!!wallet && !!wallet.connected) {
-      const balance = await EthProvider.getTokenBalance(wallet.address);
-      this.state.wallet.balance = balance;
-      let approval = false;
-      const remainingAllowance = await EthProvider.getTokenAllowance(wallet.address, config.STAKING_CONTRACT_ADDRESS, config.POP_TOKEN_ADDRESS);
-      if (remainingAllowance.comparedTo(balance) == 1) {
-        approval = true;
-      }
-      this.state.wallet.approval = approval;
-      const pendingRewards = await EthProvider.getClaimablePop(wallet.address);
-      this.state.wallet.pendingRewards = pendingRewards;
-      const stakedBalance = await EthProvider.getStakedBalance(wallet.address);
-      this.state.wallet.stakedBalance = stakedBalance;
+      EthProvider.getTokenBalance(wallet.address).then(result => {
+        this.state.wallet.balance = result;
+        EthProvider.getTokenAllowance(wallet.address, remote.process.env.STAKING_CONTRACT_ADDRESS, remote.process.env.POP_TOKEN_ADDRESS).then(result => {
+          let approval = false;
+          if (result.comparedTo(this.state.wallet.balance) == 1) {
+            approval = true;
+          }
+          this.state.wallet.approval = approval;
+        });
+      });
+      EthProvider.getClaimablePop(wallet.address).then(result => {
+        this.state.wallet.claimableRewards = result;
+      });     
+      EthProvider.getStakedBalance(wallet.address).then(result => {
+        this.state.wallet.stakedBalance = result;
+      });
     }
   }
 
@@ -190,9 +211,14 @@ module.exports = class WalletController {
     wallet.balance = new BigNumber(0);
     wallet.stakedBalance = new BigNumber(0);
     wallet.pendingRewards = new BigNumber(0);
+    wallet.claimableRewards = new BigNumber(0);
+    wallet.pendingBlockCnt = 0;
+    wallet.popPerBlock = new BigNumber(0);
     wallet.approval = false;
-    wallet.address = 0;
+    wallet.address = null;
+    wallet.token = null;
     wallet.accounts = [];
+    
     this.state.wallet = wallet;
   }
 }

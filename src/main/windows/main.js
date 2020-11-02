@@ -23,6 +23,7 @@ const config = require('../../config')
 const log = require('../log')
 const menu = require('../menu')
 const { prepareDialog } = require('electron-custom-dialog')
+require('dotenv').config()
 
 function init (state, options) {
   if (main.win) {

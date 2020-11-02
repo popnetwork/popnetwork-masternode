@@ -9,3 +9,7 @@ release_conf
 .idea
 *.iml
 /docs/_config.yml
+
+.env
+.env.ropsten
+.env.mainnet

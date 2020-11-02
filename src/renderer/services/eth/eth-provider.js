@@ -115,7 +115,6 @@ async function getPopPerBlock() {
     const contract = new ethers.Contract(remote.process.env.STAKING_CONTRACT_ADDRESS, popchefABI, provider) 
     const res = await contract.popPerBlock()
     let balance = ethers.utils.formatUnits(res, 18)
-    console.log('balance', balance)
     return new BigNumber(balance)
   } catch (err) {
     console.log('getPopPerBlock: ', err)

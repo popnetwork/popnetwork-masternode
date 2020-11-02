@@ -39,7 +39,6 @@ module.exports = class ActionCableController {
         console.log('cable disconnected');
       },
       received(data) {
-        console.log('data', data, state)
         if (data.type === "pending_blocks") {
           state.wallet.pendingBlockCnt = data.pending_block_cnt;
         } else if (data.type === "new_blocks") {

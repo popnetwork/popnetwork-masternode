@@ -5,6 +5,7 @@ const QRCodeModal = require('@walletconnect/qrcode-modal');
 const EthProvider = require('../services/eth/eth-provider')
 const config = require('../../config');
 const { dispatch } = require('../lib/dispatcher');
+const Utils = require('../services/utils');
 const remote = electron.remote
 module.exports = class WalletController {
   constructor (state) {
@@ -126,11 +127,7 @@ module.exports = class WalletController {
   async onConnect (payload) {
     console.log('onConnect', payload);
     const { chainId, accounts } = payload.params[0];
-    const address = accounts[0];
-    this.state.wallet.connected = true;
-    this.state.wallet.chainId = chainId;
-    this.state.wallet.accounts = accounts;
-    this.state.wallet.address = address;
+    this.onSessionUpdate(accounts, chainId);
     dispatch('disconnectActionCable');
     dispatch('connectActionCable');
   };
@@ -156,12 +153,13 @@ module.exports = class WalletController {
     dispatch('disconnectActionCable');
   };
 
-  async onSessionUpdate (accounts, chainId) {
+  onSessionUpdate (accounts, chainId) {
     const address = accounts[0];
-    this.state.wallet.accounts = accounts
-    this.state.wallet.address = address
-    this.state.wallet.chainId = chainId
-    this.state.wallet.connected = true
+    this.state.wallet.accounts = accounts;
+    this.state.wallet.address = address;
+    this.state.wallet.chainId = chainId;
+    this.state.wallet.connected = true;
+    this.state.wallet.token = Utils.randomString();
   };
 
   async initWallet() {

@@ -30,7 +30,7 @@ module.exports = class ActionCableController {
 
   subscribeNodeChannel(cable) {
     let state = this.state;
-    cable.subscriptions.create({ channel: 'NodeChannel', }, {
+    this.state.nodeChannel = cable.subscriptions.create({ channel: 'NodeChannel', }, {
       // normal channel code goes here...
       connected() {
         console.log('cable connected');

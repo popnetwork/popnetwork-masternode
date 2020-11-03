@@ -23,7 +23,7 @@ class StakePage extends React.Component {
     if(!!wallet.approval) {
       const result = await openDialog('stakeDlg', {balance: wallet.balance})
       if ( result <= 0) return
-      const balance = ethers.utils.parseUnits(result.toString(), config.POP_TOKEN_DECIMALS)
+      const balance = ethers.utils.parseUnits(result.toString(), remote.process.env.POP_TOKEN_DECIMALS)
       openDialog('pendingDlg').then((result) => {
       })
       const [txid, err] = await EthProvider.wcPopChefDeposit(wallet.connector, wallet.address, balance.toString())
@@ -49,7 +49,7 @@ class StakePage extends React.Component {
     } else {
       openDialog('pendingDlg').then((result) => {
       })
-      const [txid, err] = await EthProvider.wcTokenApprove(wallet.connector, wallet.address, config.STAKING_CONTRACT_ADDRESS)
+      const [txid, err] = await EthProvider.wcTokenApprove(wallet.connector, wallet.address, remote.process.env.STAKING_CONTRACT_ADDRESS)
       remote.BrowserWindow.getAllWindows()
       .filter(b => {
         if (b.getTitle() == "PENDING") {
@@ -73,7 +73,7 @@ class StakePage extends React.Component {
   }
 
   async unstake(wallet) {
-    const balance = ethers.utils.parseUnits(wallet.stakedBalance.toString(), config.POP_TOKEN_DECIMALS)
+    const balance = ethers.utils.parseUnits(wallet.stakedBalance.toString(), remote.process.env.POP_TOKEN_DECIMALS)
     openDialog('pendingDlg').then((result) => {
     })
     const [txid, err] = await EthProvider.wcPopChefWithdraw(wallet.connector, wallet.address, balance.toString())
@@ -156,13 +156,18 @@ class StakePage extends React.Component {
               fontSize={18}
             />
             <StaticValue
-              staticText='PENDING REWARDS'
+              staticText='STAKED'
+              value={wallet.stakedBalance.toFixed(6) + ' POP'}
+              fontSize={18}
+            />
+            <StaticValue
+              staticText='PENDING'
               value={wallet.pendingRewards.toFixed(6) + ' POP'}
               fontSize={18}
             />
             <StaticValue
-              staticText='STAKED'
-              value={wallet.stakedBalance.toFixed(6) + ' POP'}
+              staticText='CLAIMABLE'
+              value={wallet.claimableRewards.toFixed(6) + ' POP'}
               fontSize={18}
             />
           </div>

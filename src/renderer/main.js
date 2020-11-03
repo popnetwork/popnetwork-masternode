@@ -130,6 +130,10 @@ function onState (err, _state) {
       const StakeController = require('./controllers/stake-controller')
       return new StakeController(state)
     }),
+    actionCable: createGetter(() => {
+      const ActionCableController = require('./controllers/action-cable-controller')
+      return new ActionCableController(state)
+    }),
   }
 
   // Add first page to location history
@@ -191,13 +195,20 @@ function onState (err, _state) {
   window.setTimeout(delayedInit, config.DELAYED_INIT)
 
   controllers.wallet().checkWalletConnect();
-  updateWallet();
+  initWallet();
+  controllers.actionCable().connect();
   // Done! Ideally we want to get here < 500ms after the user clicks the app
   console.timeEnd('init')
 }
+
+async function initWallet() {
+  await controllers.wallet().initWallet(); 
+  updateWallet();
+}
+
 async function updateWallet() {
   await controllers.wallet().updateWallet(); 
-  setTimeout(updateWallet, 5000)
+  setTimeout(updateWallet, 10000)
 }
 
 // Runs a few seconds after the app loads, to avoid slowing down startup time
@@ -362,6 +373,9 @@ const dispatchHandlers = {
   walletConnect: () => controllers.wallet().walletConnect(),
   stake: () => controllers.stake().show(),
 
+  // ActionCable
+  connectActionCable: () => controllers.actionCable().connect(),
+  disconnectActionCable: () => controllers.actionCable().disconnect(),
 }
 
 // Events from the UI never modify state directly. Instead they call dispatch()

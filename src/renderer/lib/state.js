@@ -133,6 +133,10 @@ function setupStateSaved () {
     },
     torrents: config.DEFAULT_TORRENTS.map(createTorrentObject),
     torrentsToResume: [],
+    wallet: {
+      address: null,
+      token: null
+    },
     version: config.APP_VERSION /* make sure we can upgrade gracefully later */
   }
 

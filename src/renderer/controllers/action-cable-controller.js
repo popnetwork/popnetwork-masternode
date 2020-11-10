@@ -44,7 +44,7 @@ module.exports = class ActionCableController {
         } else if (data.type === "new_blocks") {
           state.wallet.pendingBlockCnt += data.new_block_cnt;
         }
-        state.wallet.pendingRewards = state.wallet.popPerBlock.multipliedBy(state.wallet.pendingBlockCnt)
+        state.wallet.pendingRewards = state.wallet.stakedBalance.multipliedBy(state.wallet.popPerBlock.multipliedBy(state.wallet.pendingBlockCnt))
       }
     });
   }

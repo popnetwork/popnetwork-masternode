@@ -185,7 +185,7 @@ class StakePage extends React.Component {
           <div style={actionSectionStyle}>
             <RaisedButton
               className='control' label={!!wallet.approval ? 'Stake' : 'Approve'} onClick={()=>this.stake(wallet, nodeChannel)}
-              style={buttonStyle} disabled={!!wallet.fetching ? 'true' : ''}
+              style={buttonStyle} disabled={!!wallet.fetching ? true : ''}
             />
             <RaisedButton
               className='control' label='Claim' onClick={()=>this.claim(wallet, nodeChannel)}

@@ -202,7 +202,7 @@ module.exports = class WalletController {
     if (this.state.wallet.popPerBlock.isLessThanOrEqualTo(0)) {
       EthProvider.getPopPerBlock().then((result) => {
         this.state.wallet.popPerBlock = result;
-        this.state.wallet.pendingRewards = this.state.wallet.popPerBlock.multipliedBy(state.wallet.pendingBlockCnt)
+        this.state.wallet.pendingRewards = this.state.wallet.stakedBalance.multipliedBy(this.state.wallet.popPerBlock.multipliedBy(this.state.wallet.pendingBlockCnt))
       });
     }
     if (!!wallet && !!wallet.connected) {

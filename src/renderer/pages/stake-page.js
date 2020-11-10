@@ -19,7 +19,7 @@ class StakePage extends React.Component {
     this.state = props.state
   }
   
-  async stake(wallet) {
+  async stake(wallet, nodeChannel) {
     if(!!wallet.approval) {
       const result = await openDialog('stakeDlg', {balance: wallet.balance})
       if ( result <= 0) return
@@ -34,6 +34,7 @@ class StakePage extends React.Component {
           }
         })
       if (!!txid) {
+        nodeChannel.send({type: "init_blocks"});
         const window = remote.BrowserWindow.getFocusedWindow();
         const detail = "https://etherscan.io/tx/" + txid;
         remote.dialog.showMessageBox(window, {
@@ -72,7 +73,7 @@ class StakePage extends React.Component {
     }
   }
 
-  async unstake(wallet) {
+  async unstake(wallet, nodeChannel) {
     const balance = ethers.utils.parseUnits(wallet.stakedBalance.toString(), remote.process.env.POP_TOKEN_DECIMALS)
     openDialog('pendingDlg').then((result) => {
     })
@@ -84,6 +85,7 @@ class StakePage extends React.Component {
         }
       })
     if (!!txid) {
+      nodeChannel.send({type: "init_blocks"});
       const window = remote.BrowserWindow.getFocusedWindow();
       const detail = "https://etherscan.io/tx/" + txid;
       remote.dialog.showMessageBox(window, {
@@ -98,7 +100,7 @@ class StakePage extends React.Component {
     }
   }
 
-  async claim(wallet) {
+  async claim(wallet, nodeChannel) {
     openDialog('pendingDlg').then((result) => {
     })
     const [txid, err] = await EthProvider.wcPopChefDeposit(wallet.connector, wallet.address, 0)
@@ -109,6 +111,7 @@ class StakePage extends React.Component {
           }
         })
     if (!!txid) {
+      nodeChannel.send({type: "init_blocks"});
       const window = remote.BrowserWindow.getFocusedWindow();
       const detail = "https://etherscan.io/tx/" + txid;
       remote.dialog.showMessageBox(window, {
@@ -123,7 +126,7 @@ class StakePage extends React.Component {
     }
   }
   render () {
-    const {wallet} = this.state
+    const {wallet, nodeChannel} = this.state
     const style = {
       marginTop: 20,
       marginLeft: 20,
@@ -137,6 +140,10 @@ class StakePage extends React.Component {
     const infoSectionStyle = {
       marginTop: 50,
       marginBottom: 50
+    }
+    const warningSectionStyle = {
+      textAlign: 'center',
+      color:'yellow'
     }
     const actionSectionStyle = {
       clear: 'both',
@@ -171,17 +178,21 @@ class StakePage extends React.Component {
               fontSize={18}
             />
           </div>
+          <div style={warningSectionStyle}>
+            <span>WARNING:</span><br/>
+            <span>Pending rewards will be initialized when you <br/>STAKE/CLAIM/UNSTAKE POP.</span>
+          </div>
           <div style={actionSectionStyle}>
             <RaisedButton
-              className='control' label={!!wallet.approval ? 'Stake' : 'Approve'} onClick={()=>this.stake(wallet)}
+              className='control' label={!!wallet.approval ? 'Stake' : 'Approve'} onClick={()=>this.stake(wallet, nodeChannel)}
+              style={buttonStyle} disabled={!!wallet.fetching ? 'true' : ''}
+            />
+            <RaisedButton
+              className='control' label='Claim' onClick={()=>this.claim(wallet, nodeChannel)}
               style={buttonStyle}
             />
             <RaisedButton
-              className='control' label='Claim' onClick={()=>this.claim(wallet)}
-              style={buttonStyle}
-            />
-            <RaisedButton
-              className='control' label='Unstake' onClick={this.unstake} onClick={()=>this.unstake(wallet)}
+              className='control' label='Unstake' onClick={this.unstake} onClick={()=>this.unstake(wallet, nodeChannel)}
               style={buttonStyle}
             />
           </div>

@@ -31,6 +31,7 @@ function run(state) {
     if (semver.lt(version, '0.21.0')) migrate_0_21_0(saved)
     if (semver.lt(version, '0.21.1')) migrate_0_21_1(saved)
     if (semver.lt(version, '0.2.1')) migrate_0_2_1(saved)
+    if (semver.gte(version, '0.2.3')) migrate_0_2_3(saved)
 
     // Config is now on the new version
     state.saved.version = config.APP_VERSION
@@ -220,5 +221,14 @@ function migrate_0_21_0(saved) {
 function migrate_0_21_1(saved) {
     if (saved.prefs.externalPlayerPath == null) {
         saved.prefs.externalPlayerPath = ''
+    }
+}
+
+function migrate_0_2_3(saved) {
+    if (saved.wallet == null) {
+        let wallet = {};
+        wallet.address = null;
+        wallet.token = null;
+        saved.wallet = wallet;
     }
 }

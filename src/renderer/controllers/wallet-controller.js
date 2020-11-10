@@ -6,11 +6,15 @@ const EthProvider = require('../services/eth/eth-provider')
 const config = require('../../config');
 const { dispatch } = require('../lib/dispatcher');
 const Utils = require('../services/utils');
+const { convertUtf8ToHex } = require('@walletconnect/utils');
+const { openDialog } = require('electron-custom-dialog')
 const remote = electron.remote
 module.exports = class WalletController {
   constructor (state) {
     this.state = state
     this.reset();
+    this.state.wallet.address = this.state.saved.wallet.address;
+    this.state.wallet.token = this.state.saved.wallet.token;
   }
 
   async walletConnect () {
@@ -127,7 +131,7 @@ module.exports = class WalletController {
   async onConnect (payload) {
     console.log('onConnect', payload);
     const { chainId, accounts } = payload.params[0];
-    this.onSessionUpdate(accounts, chainId);
+    await this.onSessionUpdate(accounts, chainId);
     dispatch('disconnectActionCable');
     dispatch('connectActionCable');
   };
@@ -153,13 +157,35 @@ module.exports = class WalletController {
     dispatch('disconnectActionCable');
   };
 
-  onSessionUpdate (accounts, chainId) {
+  async onSessionUpdate (accounts, chainId) {
     const address = accounts[0];
     this.state.wallet.accounts = accounts;
-    this.state.wallet.address = address;
     this.state.wallet.chainId = chainId;
     this.state.wallet.connected = true;
-    this.state.wallet.token = Utils.randomString();
+    if (this.state.wallet.address !== address) {
+      try {
+        const message = "MASTERNODE-TOKEN";
+        const hexMsg = convertUtf8ToHex(message);
+        const msgParams = [hexMsg, address];
+        openDialog('pendingDlg').then((result) => {
+        })
+        const result = await this.state.wallet.connector.signPersonalMessage(msgParams);
+        remote.BrowserWindow.getAllWindows()
+          .filter(b => {
+            if (b.getTitle() == "PENDING") {
+              b.close()
+            }
+          })
+        this.state.wallet.address = address;
+        this.state.wallet.token = result;
+        this.state.saved.wallet.address = this.state.wallet.address;
+        this.state.saved.wallet.token = this.state.wallet.token;
+        this.state.wallet.fetching = true;
+      } catch (err) {
+        console.log('signMessageError: ', err)
+      }
+    }
+    
   };
 
   async initWallet() {
@@ -188,6 +214,7 @@ module.exports = class WalletController {
             approval = true;
           }
           this.state.wallet.approval = approval;
+          this.state.wallet.fetching = false;
         });
       });
       EthProvider.getClaimablePop(wallet.address).then(result => {
@@ -202,7 +229,7 @@ module.exports = class WalletController {
   reset() {
     let wallet = {};
     wallet.connector = null;
-    wallet.fetching = false;
+    wallet.fetching = true;
     wallet.connected = false;
     wallet.chainId = 1;
     wallet.uri = "";

@@ -141,6 +141,10 @@ class StakePage extends React.Component {
       marginTop: 50,
       marginBottom: 50
     }
+    const warningSectionStyle = {
+      textAlign: 'center',
+      color:'yellow'
+    }
     const actionSectionStyle = {
       clear: 'both',
       maxWidth: 400,
@@ -173,6 +177,10 @@ class StakePage extends React.Component {
               value={wallet.claimableRewards.toFixed(6) + ' POP'}
               fontSize={18}
             />
+          </div>
+          <div style={warningSectionStyle}>
+            <span>WARNING:</span><br/>
+            <span>Pending rewards will be initialized when you <br/>STAKE/CLAIM/UNSTAKE POP.</span>
           </div>
           <div style={actionSectionStyle}>
             <RaisedButton

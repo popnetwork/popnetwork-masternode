@@ -28,9 +28,17 @@ body {
   width: 240px;
   padding: 8px 6px;
 }
+.input-group .alert {
+  width: 240px;
+  color: #f44336;
+  font-size: 11px;
+  height: 20px;
+  margin-top: 5px;
+  /* padding: 2px 6px; */
+}
 .stake-pop-actions {
   float: right;
-  margin-top: 35px;
+  margin-top: 10px;
   
 }
 .btn {
@@ -38,7 +46,7 @@ body {
   padding: 8px;
   border: 1px solid #888;
 }
-.btn:focus {
+.btn:hover {
   opacity: 0.75;
 }
 .btn-white {
@@ -49,4 +57,7 @@ body {
   background-color: #FE0293;
   color: #FFF;
   border: 1px solid #20092F;
+}
+input[type=number]::-webkit-inner-spin-button {
+  opacity: 1;
 }

@@ -180,6 +180,7 @@ module.exports = class WalletController {
         this.state.wallet.token = result;
         this.state.saved.wallet.address = this.state.wallet.address;
         this.state.saved.wallet.token = this.state.wallet.token;
+        this.state.wallet.fetching = true;
       } catch (err) {
         console.log('signMessageError: ', err)
       }
@@ -213,6 +214,7 @@ module.exports = class WalletController {
             approval = true;
           }
           this.state.wallet.approval = approval;
+          this.state.wallet.fetching = false;
         });
       });
       EthProvider.getClaimablePop(wallet.address).then(result => {
@@ -227,7 +229,7 @@ module.exports = class WalletController {
   reset() {
     let wallet = {};
     wallet.connector = null;
-    wallet.fetching = false;
+    wallet.fetching = true;
     wallet.connected = false;
     wallet.chainId = 1;
     wallet.uri = "";

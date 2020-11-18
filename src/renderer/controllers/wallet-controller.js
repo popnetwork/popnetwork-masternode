@@ -5,7 +5,7 @@ const QRCodeModal = require('@walletconnect/qrcode-modal');
 const EthProvider = require('../services/eth/eth-provider')
 const config = require('../../config');
 const { dispatch } = require('../lib/dispatcher');
-const Utils = require('../services/utils');
+const {normalizeAddress} = require('../services/utils');
 const { convertUtf8ToHex } = require('@walletconnect/utils');
 const { openDialog } = require('electron-custom-dialog')
 const remote = electron.remote
@@ -41,7 +41,10 @@ module.exports = class WalletController {
         detail: ""
       })
       if (response == true && connector) {
-        connector.killSession();
+        this.state.saved.wallet.address = null;
+        this.state.saved.wallet.token = null;
+        dispatch('stateSaveImmediate');
+        this.killSession();
       } 
     }
 
@@ -158,7 +161,7 @@ module.exports = class WalletController {
   };
 
   async onSessionUpdate (accounts, chainId) {
-    const address = accounts[0];
+    const address = normalizeAddress(accounts[0]);
     this.state.wallet.accounts = accounts;
     this.state.wallet.chainId = chainId;
     this.state.wallet.connected = true;
@@ -178,9 +181,10 @@ module.exports = class WalletController {
           })
         this.state.wallet.address = address;
         this.state.wallet.token = result;
+        this.state.wallet.fetching = true;
         this.state.saved.wallet.address = this.state.wallet.address;
         this.state.saved.wallet.token = this.state.wallet.token;
-        this.state.wallet.fetching = true;
+        dispatch('stateSaveImmediate')
       } catch (err) {
         console.log('signMessageError: ', err)
       }

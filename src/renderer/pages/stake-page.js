@@ -8,7 +8,7 @@ const Heading = require('../components/heading')
 const StaticValue = require('../components/static-value')
 
 const { dispatch } = require('../lib/dispatcher')
-const config = require('../../config')
+const sConfig = require('../../sconfig')
 const { openDialog } = require('electron-custom-dialog')
 const EthProvider = require('../services/eth/eth-provider')
 const remote = require('electron').remote
@@ -23,7 +23,7 @@ class StakePage extends React.Component {
     if(!!wallet.approval) {
       const result = await openDialog('stakeDlg', {balance: wallet.balance})
       if ( result <= 0) return
-      const balance = ethers.utils.parseUnits(result.toString(), remote.process.env.POP_TOKEN_DECIMALS)
+      const balance = ethers.utils.parseUnits(result.toString(), sConfig.POP_TOKEN_DECIMALS)
       openDialog('pendingDlg').then((result) => {
       })
       const [txid, err] = await EthProvider.wcPopChefDeposit(wallet.connector, wallet.address, balance.toString())
@@ -50,7 +50,7 @@ class StakePage extends React.Component {
     } else {
       openDialog('pendingDlg').then((result) => {
       })
-      const [txid, err] = await EthProvider.wcTokenApprove(wallet.connector, wallet.address, remote.process.env.STAKING_CONTRACT_ADDRESS)
+      const [txid, err] = await EthProvider.wcTokenApprove(wallet.connector, wallet.address, sConfig.STAKING_CONTRACT_ADDRESS)
       remote.BrowserWindow.getAllWindows()
       .filter(b => {
         if (b.getTitle() == "PENDING") {
@@ -74,7 +74,7 @@ class StakePage extends React.Component {
   }
 
   async unstake(wallet, nodeChannel) {
-    const balance = ethers.utils.parseUnits(wallet.stakedBalance.toString(), remote.process.env.POP_TOKEN_DECIMALS)
+    const balance = ethers.utils.parseUnits(wallet.stakedBalance.toString(), sConfig.POP_TOKEN_DECIMALS)
     openDialog('pendingDlg').then((result) => {
     })
     const [txid, err] = await EthProvider.wcPopChefWithdraw(wallet.connector, wallet.address, balance.toString())

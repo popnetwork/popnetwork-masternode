@@ -3,7 +3,7 @@ const {BigNumber} = require('bignumber.js')
 const WalletConnect = require('@walletconnect/client').default;
 const QRCodeModal = require('@walletconnect/qrcode-modal');
 const EthProvider = require('../services/eth/eth-provider')
-const config = require('../../config');
+const sConfig = require('../../sconfig');
 const { dispatch } = require('../lib/dispatcher');
 const {normalizeAddress} = require('../services/utils');
 const { convertUtf8ToHex } = require('@walletconnect/utils');
@@ -212,7 +212,7 @@ module.exports = class WalletController {
     if (!!wallet && !!wallet.connected) {
       EthProvider.getTokenBalance(wallet.address).then(result => {
         this.state.wallet.balance = result;
-        EthProvider.getTokenAllowance(wallet.address, remote.process.env.STAKING_CONTRACT_ADDRESS, remote.process.env.POP_TOKEN_ADDRESS).then(result => {
+        EthProvider.getTokenAllowance(wallet.address, sConfig.STAKING_CONTRACT_ADDRESS, sConfig.POP_TOKEN_ADDRESS).then(result => {
           let approval = false;
           if (result.comparedTo(this.state.wallet.balance) == 1) {
             approval = true;

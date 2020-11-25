@@ -10,6 +10,7 @@ release_conf
 *.iml
 /docs/_config.yml
 
+src/sconfig.js
 .env
 .env.ropsten
 .env.mainnet

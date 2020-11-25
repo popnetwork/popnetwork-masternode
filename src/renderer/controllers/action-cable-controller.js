@@ -3,8 +3,7 @@ const {BigNumber} = require('bignumber.js')
 // const WalletConnect = require('@walletconnect/client').default;
 // const QRCodeModal = require('@walletconnect/qrcode-modal');
 const ActionCable = require('actioncable')
-const config = require('../../config');
-const remote = electron.remote
+const sConfig = require('../../sconfig');
 module.exports = class ActionCableController {
   constructor (state) {
     this.state = state
@@ -12,7 +11,7 @@ module.exports = class ActionCableController {
 
   connect() {
     if (!!this.state.wallet.address) {
-      let cable = ActionCable.createConsumer(remote.process.env.WEBSOCKET_URL + 
+      let cable = ActionCable.createConsumer(sConfig.WEBSOCKET_URL + 
         '?address=' + this.state.wallet.address +
         '&token=' + this.state.wallet.token);
       console.log('cable connect', cable)

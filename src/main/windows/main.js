@@ -59,7 +59,7 @@ function init (state, options) {
       parent: main.win,
       windowOptions: {
           width: 400,
-          height: 190,
+          height: 210,
           center: true,
           minimizable: false,
           maximizable: false,

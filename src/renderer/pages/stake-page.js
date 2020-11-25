@@ -22,7 +22,7 @@ class StakePage extends React.Component {
   async stake(wallet, nodeChannel) {
     if(!!wallet.approval) {
       const result = await openDialog('stakeDlg', {balance: wallet.balance})
-      if ( result <= 0) return
+      if ( !result || result <= 0) return
       const balance = ethers.utils.parseUnits(result.toString(), sConfig.POP_TOKEN_DECIMALS)
       openDialog('pendingDlg').then((result) => {
       })

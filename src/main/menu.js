@@ -57,7 +57,8 @@ function setAllowNav(flag) {
         getMenuItem('Create New Torrent...').enabled = flag
     } else {
         getMenuItem('Create New Torrent from Folder...').enabled = flag
-        getMenuItem('Create New Torrent from File...').enabled = flag
+        // TODO we don't show this menu for now
+        // getMenuItem('Create New Torrent from File...').enabled = flag
     }
 }
 
@@ -81,34 +82,36 @@ function getMenuItem(label) {
 function getMenuTemplate() {
     const template = [{
             label: 'File',
-            submenu: [{
-                    label: process.platform === 'darwin' ?
-                        'Create New Torrent...' : 'Create New Torrent from Folder...',
-                    accelerator: 'CmdOrCtrl+N',
-                    click: () => {
-                        const dialog = require('./dialog')
-                        dialog.openSeedDirectory()
-                    }
-                },
-                {
-                    label: 'Open Torrent File...',
-                    accelerator: 'CmdOrCtrl+O',
-                    click: () => {
-                        const dialog = require('./dialog')
-                        dialog.openTorrentFile()
-                    }
-                },
-                {
-                    label: 'Open Torrent Address...',
-                    accelerator: 'CmdOrCtrl+U',
-                    click: () => {
-                        const dialog = require('./dialog')
-                        dialog.openTorrentAddress()
-                    }
-                },
-                {
-                    type: 'separator'
-                },
+            submenu: [
+                // TODO we don't show these menus for now
+                // {
+                //     label: process.platform === 'darwin' ?
+                //         'Create New Torrent...' : 'Create New Torrent from Folder...',
+                //     accelerator: 'CmdOrCtrl+N',
+                //     click: () => {
+                //         const dialog = require('./dialog')
+                //         dialog.openSeedDirectory()
+                //     }
+                // },
+                // {
+                //     label: 'Open Torrent File...',
+                //     accelerator: 'CmdOrCtrl+O',
+                //     click: () => {
+                //         const dialog = require('./dialog')
+                //         dialog.openTorrentFile()
+                //     }
+                // },
+                // {
+                //     label: 'Open Torrent Address...',
+                //     accelerator: 'CmdOrCtrl+U',
+                //     click: () => {
+                //         const dialog = require('./dialog')
+                //         dialog.openTorrentAddress()
+                //     }
+                // },
+                // {
+                //     type: 'separator'
+                // },
                 {
                     role: 'close'
                 }
@@ -412,13 +415,14 @@ function getMenuTemplate() {
     // folders and files, so add an extra menu item so there is one for each type.
     if (process.platform === 'linux' || process.platform === 'win32') {
         // File menu (Windows, Linux)
-        template[0].submenu.unshift({
-            label: 'Create New Torrent from File...',
-            click: () => {
-                const dialog = require('./dialog')
-                dialog.openSeedFile()
-            }
-        })
+        // TODO we don't show this menu for now
+        // template[0].submenu.unshift({
+        //     label: 'Create New Torrent from File...',
+        //     click: () => {
+        //         const dialog = require('./dialog')
+        //         dialog.openSeedFile()
+        //     }
+        // })
 
         // Edit menu (Windows, Linux)
         template[1].submenu.push({

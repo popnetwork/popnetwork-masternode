@@ -55,6 +55,7 @@ function getDefaultState () {
     modal: null, /* modal popover */
     errors: [], /* user-facing errors */
     nextTorrentKey: 1, /* identify torrents for IPC between the main and popnetwork windows */
+    isFetchingTorrents: false, /* status fetching torrents from server */
 
     /*
      * Saved state is read from and written to a file every time the app runs.

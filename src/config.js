@@ -34,18 +34,19 @@ module.exports = {
     CONFIG_PATH: getConfigPath(),
 
     DEFAULT_TORRENTS: [
-        {
-            testID: 'pop',
-            name: 'POPNetwork',
-            posterFileName: 'popnetwork.png',
-            torrentFileName: 'popnetwork.torrent'
-        },
-        {
-            testID: 'psp',
-            name: 'POPNetwork-SGBW-panel',
-            posterFileName: 'POPNetwork-SGBW-panel.jpg',
-            torrentFileName: 'POPNetwork-SGBW-panel.torrent'
-        },
+        // TODO we don't use static default torrents and fetch them from server now
+        // {
+        //     testID: 'pop',
+        //     name: 'POPNetwork',
+        //     posterFileName: 'popnetwork.png',
+        //     torrentFileName: 'popnetwork.torrent'
+        // },
+        // {
+        //     testID: 'psp',
+        //     name: 'POPNetwork-SGBW-panel',
+        //     posterFileName: 'POPNetwork-SGBW-panel.jpg',
+        //     torrentFileName: 'POPNetwork-SGBW-panel.torrent'
+        // },
      ],
 
     DELAYED_INIT: 3000 /* 3 seconds */ ,
@@ -56,6 +57,7 @@ module.exports = {
     GITHUB_URL_ISSUES: 'https://github.com/popnetwork/popnetwork-masternode/issues',
     GITHUB_URL_RAW: 'https://raw.githubusercontent.com/popnetwork/popnetwork-masternode/master',
     GITHUB_URL_RELEASES: 'https://github.com/popnetwork/popnetwork-masternode/releases',
+    API_BASE_URL: 'https://masternode.popnet.work/api/v1',
 
     HOME_PAGE_URL: 'https://thepopnetwork.org',
     HOME_PAGE_SHORTENED_URL: 'https://popnet.work',

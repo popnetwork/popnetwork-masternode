@@ -147,6 +147,7 @@ function onState (err, _state) {
 
   // Restart everything we were torrenting last time the app ran
   resumeTorrents()
+  fetchTorrents()
 
   // Initialize ReactDOM
   app = ReactDOM.render(<App state={state} />, document.querySelector('#body'))
@@ -407,6 +408,7 @@ function setupIpc () {
   ipcRenderer.on('windowBoundsChanged', onWindowBoundsChanged)
 
   const tc = controllers.torrent()
+  ipcRenderer.on('pn-ready', (e, ...args) => controllers.torrentList().torrentReady(...args))
   ipcRenderer.on('pn-parsed', (e, ...args) => tc.torrentParsed(...args))
   ipcRenderer.on('pn-metadata', (e, ...args) => tc.torrentMetadata(...args))
   ipcRenderer.on('pn-done', (e, ...args) => tc.torrentDone(...args))
@@ -461,6 +463,11 @@ function resumeTorrents () {
     })
     .filter((s) => s.status !== 'paused')
     .forEach((s) => controllers.torrentList().startTorrentingSummary(s.torrentKey))
+}
+
+// Fetch torrents from admin server
+function fetchTorrents () {
+  controllers.torrentList().fetchTorrents()
 }
 
 // Set window dimensions to match video dimensions or fill the screen

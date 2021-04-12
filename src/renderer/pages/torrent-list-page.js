@@ -28,15 +28,17 @@ module.exports = class TorrentList extends React.Component {
       (torrentSummary) => this.renderTorrent(torrentSummary)
     )
     contents.push(...torrentElems)
-    contents.push(
-      <div key='torrent-placeholder' className='torrent-placeholder'>
-        <span className='ellipsis'>Drop a torrent file here or paste a magnet link</span>
-      </div>
-    )
+    // TODO we don't show this panel for now
+    // contents.push(
+    //   <div key='torrent-placeholder' className='torrent-placeholder'>
+    //     <span className='ellipsis'>Drop a torrent file here or paste a magnet link</span>
+    //   </div>
+    // )
 
     return (
       <div key='torrent-list' className='torrent-list'>
         {contents}
+        {state.isFetchingTorrents && this.renderLoadingOverlay()}
       </div>
     )
   }
@@ -79,7 +81,7 @@ module.exports = class TorrentList extends React.Component {
 
   // Show name, download status, % complete
   renderTorrentMetadata (torrentSummary) {
-    const name = torrentSummary.name || 'Loading torrent...'
+    const name = torrentSummary.title || torrentSummary.name || 'Loading torrent...'
     const elements = [(
       <div key='name' className='name ellipsis'>{name}</div>
     )]
@@ -403,6 +405,24 @@ module.exports = class TorrentList extends React.Component {
       </div>
     )
   }
+
+  renderLoadingOverlay() {
+	const style = { backgroundImage: cssBackgroundImageDarkGradient() }
+
+    return (
+	  <div key='overlay' className='media-overlay-background' style={style}>
+		<div className='media-overlay'>
+		  <div key='loading' className='media-stalled'>
+			<div key='loading-spinner' className='loading-spinner' />
+		  </div>
+		</div>
+	  </div>
+	)
+  }
+}
+
+function cssBackgroundImageDarkGradient () {
+  return 'radial-gradient(circle at center, ' + 'rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 100%)'
 }
 
 function stopPropagation (e) {

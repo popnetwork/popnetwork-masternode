@@ -47,8 +47,7 @@ class StakePage extends React.Component {
 		})
 		try {
 		  const response = await apiCreateRewardHistory(wallet.token, wallet.address, 'Stake', result)
-		  const storedWallet = this.state.saved.wallet
-		  storedWallet.rewardHistories.push(response)
+		  wallet.rewardHistories.push(response)
 		} catch(e) {
 			console.log('Error Creating Stake History', e)
 		}
@@ -105,8 +104,7 @@ class StakePage extends React.Component {
 	  })
 	  try {
 		const response = await apiCreateRewardHistory(wallet.token, wallet.address, 'Unstake', parseFloat(wallet.stakedBalance.toString()))
-		const storedWallet = this.state.saved.wallet
-		storedWallet.rewardHistories.push(response)
+		wallet.rewardHistories.push(response)
 	  } catch(e) {
 		console.log('Error Creating Unstake History', e)
 	  }
@@ -138,8 +136,7 @@ class StakePage extends React.Component {
 	  })
 	  try {
 		const response = await apiCreateRewardHistory(wallet.token, wallet.address, 'Claim', parseFloat(wallet.claimableRewards.toString()))
-		const storedWallet = this.state.saved.wallet
-		storedWallet.rewardHistories.push(response)
+		wallet.rewardHistories.push(response)
 	  } catch(e) {
 		console.log('Error Creating Claim History', e)
 	  }
@@ -228,7 +225,7 @@ class StakePage extends React.Component {
   }
 
   renderHistory () {
-	const wallet = this.state.saved.wallet
+	const { wallet } = this.state
 
 	const style = {
 		flex: 1,

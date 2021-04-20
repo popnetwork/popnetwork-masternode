@@ -127,7 +127,7 @@ module.exports = class WalletController {
   };
 
   async fetchRewardHistories() {
-	const wallet = this.state.saved.wallet
+  const { wallet }  = this.state
 	if (!wallet || !wallet.address) return
 	const rewardHistories = await apiGetRewardHistories(wallet.address, wallet.token)
 	wallet.rewardHistories = rewardHistories || []
@@ -258,6 +258,7 @@ module.exports = class WalletController {
     wallet.address = null;
     wallet.token = null;
     wallet.accounts = [];
+    wallet.rewardHistories = [];
     
     this.state.wallet = wallet;
   }

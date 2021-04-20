@@ -3,6 +3,7 @@ const {BigNumber} = require('bignumber.js')
 const WalletConnect = require('@walletconnect/client').default;
 const QRCodeModal = require('@walletconnect/qrcode-modal');
 const EthProvider = require('../services/eth/eth-provider')
+const { apiGetRewardHistories } = require('../services/api')
 const sConfig = require('../../sconfig');
 const { dispatch } = require('../lib/dispatcher');
 const {normalizeAddress} = require('../services/utils');
@@ -48,7 +49,8 @@ module.exports = class WalletController {
       } 
     }
 
-    await this.subscribeToEvents();
+	await this.subscribeToEvents();
+	this.fetchRewardHistories()
   }
 
   checkWalletConnect () {
@@ -70,7 +72,8 @@ module.exports = class WalletController {
         detail: "To use POPNetwork-Masternode service fully, \n login wallet with walletconnect first. \n Wallet->WalletConnect"
       })
     } else {
-      this.subscribeToEvents();
+	  this.subscribeToEvents();
+	  this.fetchRewardHistories()
     }
   }
 
@@ -123,6 +126,13 @@ module.exports = class WalletController {
     this.state.wallet.connector = connector;
   };
 
+  async fetchRewardHistories() {
+	const wallet = this.state.saved.wallet
+	if (!wallet || !wallet.address) return
+	const rewardHistories = await apiGetRewardHistories(wallet.address, wallet.token)
+	wallet.rewardHistories = rewardHistories || []
+  }
+
   async killSession () {
     const { connector } = this.state.wallet;
     if (connector) {
@@ -134,9 +144,10 @@ module.exports = class WalletController {
   async onConnect (payload) {
     console.log('onConnect', payload);
     const { chainId, accounts } = payload.params[0];
-    await this.onSessionUpdate(accounts, chainId);
+	await this.onSessionUpdate(accounts, chainId);
     dispatch('disconnectActionCable');
-    dispatch('connectActionCable');
+	dispatch('connectActionCable');
+	this.fetchRewardHistories();
   };
 
   async getAccountAssets () {

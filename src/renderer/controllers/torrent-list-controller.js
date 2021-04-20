@@ -83,40 +83,44 @@ module.exports = class TorrentListController {
 	const newTorrents = this.state.addedTorrents || []
 	const savedTorrents = this.state.saved.torrents
 	this.state.isFetchingTorrents = true
-	let serverTorrents = await apiGetTorrents() || []
-	this.state.isFetchingTorrents = false
-
-	serverTorrents = serverTorrents.map(torrentInfo => {
-		return {
-			...torrentInfo,
-			...parseTorrent(torrentInfo.magnet_link)
+  	try {
+		let serverTorrents = await apiGetTorrents() || []
+		this.state.isFetchingTorrents = false
+	
+		serverTorrents = serverTorrents.map(torrentInfo => {
+			return {
+				...torrentInfo,
+				...parseTorrent(torrentInfo.magnet_link)
+			}
+		})
+	
+		if (serverTorrents.length > 0) {
+		  serverTorrents.forEach(torrentInfo => {
+			let torrentId = torrentInfo.magnet_link
+			const foundTorrent = savedTorrents.find(torrent => torrentInfo.infoHash && torrent.infoHash === torrentInfo.infoHash)
+			if (!foundTorrent) {
+				torrentId = torrentId.replace(`dn=${torrentInfo.name}`, `dn=${torrentInfo.title}`)
+				this.addTorrent(torrentId)
+				newTorrents.push(torrentInfo)
+			} else {
+				foundTorrent.title = torrentInfo.title
+			}
+		  })
+		  
+		  if (newTorrents.length > 0) {
+			this.state.addedTorrents = newTorrents
+		  }
 		}
-	})
-
-    if (serverTorrents.length > 0) {
-      serverTorrents.forEach(torrentInfo => {
-		let torrentId = torrentInfo.magnet_link
-		const foundTorrent = savedTorrents.find(torrent => torrentInfo.infoHash && torrent.infoHash === torrentInfo.infoHash)
-		if (!foundTorrent) {
-			torrentId = torrentId.replace(`dn=${torrentInfo.name}`, `dn=${torrentInfo.title}`)
-			this.addTorrent(torrentId)
-			newTorrents.push(torrentInfo)
-		} else {
-			foundTorrent.title = torrentInfo.title
-		}
-	  })
-	  
-	  if (newTorrents.length > 0) {
-		this.state.addedTorrents = newTorrents
-	  }
+	
+		savedTorrents.forEach(torrent => {
+			const matchedTorrent = serverTorrents.find(torrentInfo => torrentInfo.infoHash && torrent.infoHash === torrentInfo.infoHash)
+			if (!matchedTorrent) {
+				this.deleteTorrent(torrent.infoHash, true)
+			}
+		})
+	} catch(e) {
+		this.state.isFetchingTorrents = false
 	}
-
-	savedTorrents.forEach(torrent => {
-		const matchedTorrent = serverTorrents.find(torrentInfo => torrentInfo.infoHash && torrent.infoHash === torrentInfo.infoHash)
-		if (!matchedTorrent) {
-			this.deleteTorrent(torrent.infoHash, true)
-		}
-	})
   }
 
   torrentReady(torrentKey, info) {

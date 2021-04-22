@@ -117,6 +117,12 @@ module.exports = class TorrentController {
         return
       }
       torrentSummary.progress = p
+      if (p.title) {
+        torrentSummary.title = p.title
+      }
+      if (p.imageLink) {
+		torrentSummary.imageLink = p.imageLink
+	  }
     })
 
     // TODO: Find an efficient way to re-enable this line, which allows subtitle

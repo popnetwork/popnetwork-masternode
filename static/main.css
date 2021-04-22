@@ -363,6 +363,15 @@ textarea,
   animation: fadein 0.5s;
 }
 
+.torrent-cover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .torrent,
 .torrent-placeholder {
   height: 100px;

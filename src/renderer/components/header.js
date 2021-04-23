@@ -31,7 +31,7 @@ class Header extends React.Component {
         </div>
         <div className='nav right float-right'>
           {this.showWalletStatus()}
-          {this.getAddButton()}
+          {/* {this.getAddButton()} */}
         </div>
       </div>
     )

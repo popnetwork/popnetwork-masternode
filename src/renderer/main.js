@@ -408,7 +408,6 @@ function setupIpc () {
   ipcRenderer.on('windowBoundsChanged', onWindowBoundsChanged)
 
   const tc = controllers.torrent()
-  ipcRenderer.on('pn-ready', (e, ...args) => controllers.torrentList().torrentReady(...args))
   ipcRenderer.on('pn-parsed', (e, ...args) => tc.torrentParsed(...args))
   ipcRenderer.on('pn-metadata', (e, ...args) => tc.torrentMetadata(...args))
   ipcRenderer.on('pn-done', (e, ...args) => tc.torrentDone(...args))

@@ -20,7 +20,7 @@ module.exports = class TorrentListController {
 
   // Adds a torrent to the list, starts downloading/seeding.
   // TorrentID can be a magnet URI, infohash, or torrent file: https://git.io/vik9M
-  addTorrent (torrentId) {
+  addTorrent (torrentId, torrentTitle, torrentImageLink) {
     if (torrentId.path) {
       // Use path string instead of W3C File object
       torrentId = torrentId.path
@@ -37,9 +37,16 @@ module.exports = class TorrentListController {
     }
 
     const torrentKey = this.state.nextTorrentKey++
-    const path = this.state.saved.prefs.downloadPath
+	const path = this.state.saved.prefs.downloadPath
+	let otherInfo = null
+	if (torrentTitle || torrentImageLink) {
+		otherInfo = {
+			title: torrentTitle,
+			imageLink: torrentImageLink
+		}
+	}
 
-    ipcRenderer.send('pn-start-torrenting', torrentKey, torrentId, path)
+    ipcRenderer.send('pn-start-torrenting', torrentKey, torrentId, path, null, null, otherInfo)
 
     dispatch('backToList')
   }
@@ -80,57 +87,46 @@ module.exports = class TorrentListController {
 
   // Starts fetching torrents
   async fetchTorrents () {
-	const newTorrents = this.state.addedTorrents || []
 	const savedTorrents = this.state.saved.torrents
 	this.state.isFetchingTorrents = true
-  	try {
-		let serverTorrents = await apiGetTorrents() || []
-		this.state.isFetchingTorrents = false
-	
-		serverTorrents = serverTorrents.map(torrentInfo => {
-			return {
-				...torrentInfo,
+	let serverTorrents = await apiGetTorrents() || []
+	this.state.isFetchingTorrents = false
+
+	serverTorrents = serverTorrents.map(torrentInfo => {
+		let torrentData = torrentInfo
+		try {
+			torrentData = {
+				...torrentData,
 				...parseTorrent(torrentInfo.magnet_link)
 			}
-		})
-	
-		if (serverTorrents.length > 0) {
-		  serverTorrents.forEach(torrentInfo => {
+		} catch (e) {
+			console.log(e)
+		}
+		return torrentData
+	})
+
+	if (serverTorrents.length > 0) {
+		serverTorrents.forEach(torrentInfo => {
 			let torrentId = torrentInfo.magnet_link
 			const foundTorrent = savedTorrents.find(torrent => torrentInfo.infoHash && torrent.infoHash === torrentInfo.infoHash)
 			if (!foundTorrent) {
-				torrentId = torrentId.replace(`dn=${torrentInfo.name}`, `dn=${torrentInfo.title}`)
-				this.addTorrent(torrentId)
-				newTorrents.push(torrentInfo)
+				if (torrentInfo.infoHash) {
+					torrentId = torrentId.replace(`dn=${torrentInfo.name}`, `dn=${torrentInfo.title}`)
+					this.addTorrent(torrentId, torrentInfo.title, torrentInfo.image_link)
+				}
 			} else {
 				foundTorrent.title = torrentInfo.title
-			}
-		  })
-		  
-		  if (newTorrents.length > 0) {
-			this.state.addedTorrents = newTorrents
-		  }
-		}
-	
-		savedTorrents.forEach(torrent => {
-			const matchedTorrent = serverTorrents.find(torrentInfo => torrentInfo.infoHash && torrent.infoHash === torrentInfo.infoHash)
-			if (!matchedTorrent) {
-				this.deleteTorrent(torrent.infoHash, true)
+				foundTorrent.imageLink = torrentInfo.image_link
 			}
 		})
-	} catch(e) {
-		this.state.isFetchingTorrents = false
 	}
-  }
 
-  torrentReady(torrentKey, info) {
-	const addedTorrents = this.state.addedTorrents || [] 
-	const torrentSummary = TorrentSummary.getByKey(this.state, torrentKey)
-	if (!torrentSummary) return
-	const foundTorrent = addedTorrents.find(torrentInfo => info && torrentInfo.infoHash === info.infoHash)
-	if (!torrentSummary.title && foundTorrent) {
-		torrentSummary.title = foundTorrent.title
-	}
+	savedTorrents.forEach(torrent => {
+		const matchedTorrent = serverTorrents.find(torrentInfo => torrentInfo.infoHash && torrent.infoHash === torrentInfo.infoHash)
+		if (!matchedTorrent) {
+			this.deleteTorrent(torrent.infoHash, true)
+		}
+	})
   }
 
   // Starts downloading and/or seeding a given torrentSummary.

@@ -50,11 +50,14 @@ module.exports = class TorrentList extends React.Component {
 
     // Background image: show some nice visuals, like a frame from the movie, if possible
     const style = {}
+    let imageUrl = null
     if (torrentSummary.posterFileName) {
       const gradient = 'linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%)'
       const posterPath = TorrentSummary.getPosterPath(torrentSummary)
       style.backgroundImage = `${gradient}, url('${posterPath}')`
-    }
+    } else {
+		imageUrl = torrentSummary.imageLink
+	}
 
     // Foreground: name of the torrent, basic info like size, play button,
     // cast buttons if available, and delete
@@ -71,6 +74,7 @@ module.exports = class TorrentList extends React.Component {
         onContextMenu={infoHash && dispatcher('openTorrentContextMenu', infoHash)}
         onClick={infoHash && dispatcher('toggleSelectTorrent', infoHash)}
       >
+	  	{imageUrl && <img className="torrent-cover" src={imageUrl} />}
         {this.renderTorrentMetadata(torrentSummary)}
         {infoHash ? this.renderTorrentButtons(torrentSummary) : null}
         {isSelected ? this.renderTorrentDetails(torrentSummary) : null}

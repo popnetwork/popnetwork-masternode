@@ -73,8 +73,8 @@ init()
 function init() {
     listenToClientEvents()
 
-    ipc.on('pn-start-torrenting', (e, torrentKey, torrentID, path, fileModtimes, selections) =>
-        startTorrenting(torrentKey, torrentID, path, fileModtimes, selections))
+    ipc.on('pn-start-torrenting', (e, torrentKey, torrentID, path, fileModtimes, selections, otherInfo) =>
+        startTorrenting(torrentKey, torrentID, path, fileModtimes, selections, otherInfo))
     ipc.on('pn-stop-torrenting', (e, infoHash) =>
         stopTorrenting(infoHash))
     ipc.on('pn-create-torrent', (e, torrentKey, options) =>
@@ -109,7 +109,7 @@ function listenToClientEvents() {
 
 // Starts a given TorrentID, which can be an infohash, magnet URI, etc.
 // Returns a PopNetwork object. See https://git.io/vik9M
-function startTorrenting(torrentKey, torrentID, path, fileModtimes, selections) {
+function startTorrenting(torrentKey, torrentID, path, fileModtimes, selections, otherInfo = null) {
     console.log('starting torrent %s: %s', torrentKey, torrentID)
 
     const torrent = client.add(torrentID, {
@@ -117,6 +117,10 @@ function startTorrenting(torrentKey, torrentID, path, fileModtimes, selections) 
         fileModtimes: fileModtimes
     })
     torrent.key = torrentKey
+    if (otherInfo) {
+        torrent.titleName = otherInfo.title
+        torrent.imageLink = otherInfo.imageLink
+    }
 
     // Listen for ready event, progress notifications, etc
     addTorrentEvents(torrent)
@@ -290,7 +294,9 @@ function getTorrentProgress() {
             numPeers: torrent.numPeers,
             length: torrent.length,
             bitfield: torrent.bitfield,
-            files: fileProg
+            files: fileProg,
+            title: torrent.titleName,
+            imageLink: torrent.imageLink
         }
     })
 

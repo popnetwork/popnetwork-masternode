@@ -438,7 +438,10 @@ function getMenuTemplate() {
             type: 'separator'
         }, {
             label: 'About ' + config.APP_NAME,
-            click: () => windows.about.init()
+            click: () => {
+                const dialog = require('./dialog')
+                dialog.openAbout()
+            }
         })
     }
     // Add "File > Quit" menu item so Linux distros where the system tray icon is

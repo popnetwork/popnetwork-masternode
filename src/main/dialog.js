@@ -3,7 +3,8 @@ module.exports = {
   openSeedDirectory,
   openTorrentFile,
   openTorrentAddress,
-  openFiles
+  openFiles,
+  openAbout,
 }
 
 const electron = require('electron')
@@ -111,6 +112,13 @@ function openTorrentFile () {
 function openTorrentAddress () {
   log('openTorrentAddress')
   windows.main.dispatch('openTorrentAddress')
+}
+
+/*
+ * Show modal dialog to open a about
+ */
+function openAbout () {
+  windows.main.dispatch('openAbout')
 }
 
 /**

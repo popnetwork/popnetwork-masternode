@@ -1,14 +1,46 @@
 const React = require('react')
 const prettyBytes = require('prettier-bytes')
+const config = require('../../config')
+const theme = require('../../main/theme')
 
 const Checkbox = require('material-ui/Checkbox').default
 const LinearProgress = require('material-ui/LinearProgress').default
 
 const TorrentSummary = require('../lib/torrent-summary')
 const TorrentPlayer = require('../lib/torrent-player')
+const CustomButton = require('../components/custom-button')
+const SelectField = require('../components/custom-select')
 const { dispatcher } = require('../lib/dispatcher')
 
+const SORT_DATA = [
+  { value: 1, text: 'Last Added' },
+  { value: 2, text: 'TOP Seeds' },
+  { value: 3, text: 'Most profitable'}
+]
+
 module.exports = class TorrentList extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      sort: SORT_DATA[0],
+    }
+    this.onAddVideo = this.onAddVideo.bind(this)
+    this.onFirstVideo = this.onFirstVideo.bind(this)
+    this.onChangeSort = this.onChangeSort.bind(this)
+  }
+
+  onAddVideo() {
+
+  }
+
+  onFirstVideo() {
+    console.log('first video')
+  }
+
+  onChangeSort(value) {
+
+  }
+
   render () {
     const state = this.props.state
 
@@ -27,7 +59,7 @@ module.exports = class TorrentList extends React.Component {
     const torrentElems = state.saved.torrents.map(
       (torrentSummary) => this.renderTorrent(torrentSummary)
     )
-    contents.push(...torrentElems)
+    // contents.push(...torrentElems)
     // TODO we don't show this panel for now
     // contents.push(
     //   <div key='torrent-placeholder' className='torrent-placeholder'>
@@ -37,7 +69,38 @@ module.exports = class TorrentList extends React.Component {
 
     return (
       <div key='torrent-list' className='torrent-list'>
-        {contents}
+        <div className="list-header">
+          <span className="content-title">My video torrents</span>
+          <div className="button-wrapper">
+            <SelectField
+              data={SORT_DATA}
+              selectedData={this.state.sort}
+              onChange={(index) => this.setState({ sort: SORT_DATA[index] })}
+            />
+            <CustomButton
+              label="Add Video"
+              onOk={this.onAddVideo}
+              img={`${config.STATIC_PATH}/Add.png`}
+              style={{ background: '#B169F6', boxShadow: '0px 20px 31px #0D0E11', width: 150, height: 40, marginLeft: 20 }}
+            />
+          </div>
+        </div>
+        {contents.length === 0
+          ?
+            <div className="empty-torrents">
+              <img src={`${config.STATIC_PATH}/EmptyTorrents.png`} className="empty-image" />
+              <div className="content-title">You don't have any videos yet.</div>
+              <div className="gray-title">Share your video and earn real money from staking POP coin</div>
+              <CustomButton
+                label="Add your first video"
+                onOk={this.onFirstVideo}
+                img={`${config.STATIC_PATH}/FirstAdd.png`}
+                style={{ background: '#1F202A', width: 210 }}
+              />
+            </div>
+          :
+          contents
+        }
         {state.isFetchingTorrents && this.renderLoadingOverlay()}
       </div>
     )

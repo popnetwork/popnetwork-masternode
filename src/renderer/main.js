@@ -377,6 +377,9 @@ const dispatchHandlers = {
   // ActionCable
   connectActionCable: () => controllers.actionCable().connect(),
   disconnectActionCable: () => controllers.actionCable().disconnect(),
+
+  // About
+  openAbout: () => { state.modal = { id: 'about-modal' } },
 }
 
 // Events from the UI never modify state directly. Instead they call dispatch()

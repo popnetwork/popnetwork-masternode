@@ -280,7 +280,7 @@ module.exports = class TorrentList extends React.Component {
           {getErrorMessage(torrentSummary)}
         </>
       )
-    } else if (torrentSummary.status !== 'paused' && prog) {
+    } else {
       progElem = (
         <>
           <div className="summary-header">
@@ -288,7 +288,7 @@ module.exports = class TorrentList extends React.Component {
               <img src={`${config.STATIC_PATH}/${!selectedTorrents.includes(torrentSummary.infoHash) ? 'Checkbox.png' : 'CheckboxActive.png' }`} />
             </div>
             <div className="action-wrapper">
-              <span className="peers">{`Peers: ${prog.numPeers}`}</span>
+              {prog && <span className="peers">{`Peers: ${prog.numPeers}`}</span>}
               <div className="show">
                 <img src={`${config.STATIC_PATH}/Show.png`} />
               </div>
@@ -325,7 +325,7 @@ module.exports = class TorrentList extends React.Component {
           </div>
           <div className="summary-title-wrapper">
             <span className="summary-title">{name}</span>
-            <span className='size'>{prettyBytes(prog.length || 0)}</span>
+            <span className='size'>{`${prog ? prettyBytes(prog.length || 0) : ''}`}</span>
           </div>
           <img src={imageUrl} className="cover-image" />
           {/* {imageUrl && <img className="torrent-cover" src={imageUrl} />} */}
@@ -334,12 +334,6 @@ module.exports = class TorrentList extends React.Component {
             {renderProgress()}
           </div>
         </>
-      )
-    } else {
-      progElem = (
-        <div className="bottom-wrapper">
-          {renderTorrentStatus()}
-        </div>
       )
     }
 
@@ -381,7 +375,7 @@ module.exports = class TorrentList extends React.Component {
           </div>
           <div className="status-wrapper">
             {renderTorrentStatus()}
-            <span className="downloaded">{` ${prettyBytes(prog.downloaded)}`}</span>
+            {prog && <span className="downloaded">{` ${prettyBytes(prog.downloaded)}`}</span>}
           </div>
         </>
       )

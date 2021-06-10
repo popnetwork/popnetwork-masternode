@@ -25,7 +25,7 @@ class Header extends React.Component {
         <div className="wallet-wrapper">
           <CustomButton
             label="Add Wallet"
-            onOk={this.onAddWallet}
+            onClick={this.onAddWallet}
             img={`${config.STATIC_PATH}/Wallet.png`}
           />
           <div className="help-button">

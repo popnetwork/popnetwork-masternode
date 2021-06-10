@@ -524,7 +524,7 @@ textarea,
 }
 
 .torrent-list .empty-torrents .gray-title {
-  margin-top: 8px;
+  margin-top: 8px; 
   margin-bottom: 30px;
   color: #7E8494;
   line-height: 22px;
@@ -539,11 +539,184 @@ textarea,
   align-items: center;
 }
 
+.torrent-list .list-container .list-toolbar .selected-all {
+  margin-left: 17px;
+}
+
+.torrent-list .list-container .list-toolbar .selected-value {
+  color: #7E8494;
+  margin-left: 20px;
+}
+
+.torrent-list .list-container .list-toolbar .vertical-divider {
+  width: 1px;
+  height: 16px;
+  border-radius: 20px;
+  background: #47495E;
+  margin: 0 20px;
+}
+
+.torrent-list .list-container .list-toolbar .action-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.torrent-list .list-container .list-toolbar .action-wrapper .custom-button {
+  background: #212333;
+  color: #9EA1C9;
+  border: 1px solid #2A2C3A;
+  height: 40px;
+}
+
+.torrent-list .list-container .list-toolbar .action-wrapper .custom-button:hover {
+  border: 1px solid #B169F6;
+  color: #B169F6;
+}
+
+.torrent-list .list-container .list-toolbar .action-wrapper .custom-button img {
+  margin-right: 8px;
+}
+
+.torrent-list .list-container .list-toolbar .action-wrapper .pause-button {
+  width: 136px;
+}
+
+.torrent-list .list-container .list-toolbar .action-wrapper .resume-button {
+  width: 148px;
+}
+
+.torrent-list .list-container .list-toolbar .action-wrapper .delete-button {
+  width: 85px;
+}
+
 .torrent-list .list-container .list-toolbar .all-check {
   width: 18px;
   height: 18px;
-  border: 1px solid #9EA1C9;
   border-radius: 6px;
+}
+
+.torrent-list .list-container .list-wrapper {
+  margin-left: -22.5px;
+  margin-right: -22.5px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary-wrapper {
+  width: 25%;
+  padding: 22.5px;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(220.96deg, #212333 33.33%, rgba(55, 56, 73, 0.42) 76.76%);
+  border: 1px solid #2A2D3B;
+  border-radius: 12px;
+  padding: 20px 16px;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .summary-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .summary-header .summary-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .summary-header .action-wrapper {
+  display: flex;
+  align-items: center;
+  height: 24px;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .summary-header .peers {
+  color: #9EA1C9;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .summary-header .action-wrapper .show {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 15px;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .summary-header .action-wrapper .more {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .summary-header .action-wrapper .more .normal {
+  display: block;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .summary-header .action-wrapper .more .hover {
+  display: none;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .summary-header .action-wrapper .more:hover .normal {
+  display: none;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .summary-header .action-wrapper .more:hover .hover {
+  display: block;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .summary-title-wrapper {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 28px;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .summary-title-wrapper .summary-title {
+  flex: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .summary-title-wrapper .size {
+  color: #9EA1C9;
+  margin-left: 16px;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .cover-image {
+  height: 180px;
+  border-radius: 15.5556px;
+  margin: 16px 0;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .horizontal-divider {
+  background: #2A2C3A;
+  height: 1px;
+  width: 100%;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .bottom-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .bottom-wrapper .status-wrapper {
+  margin-left: 40px;
+  font-size: 12px;
+}
+
+.torrent-list .list-container .list-wrapper .torrent-summary .bottom-wrapper .status-wrapper .torrent-status {
+  color: #6C6E8B;
 }
 
 .torrent-list p {
@@ -1100,7 +1273,7 @@ video::-webkit-media-text-track-container {
   cursor: default !important;
 }
 
-.custom-botton {
+.custom-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1108,7 +1281,26 @@ video::-webkit-media-text-track-container {
   height: 50px;
   background: #2A2D3B;
   border-radius: 12px;
-  cursor: pointer;
+}
+
+.custom-button img {
+  margin-right: 10px;
+}
+
+.custom-button .normal {
+  display: block;
+}
+
+.custom-button .hover {
+  display: none;
+}
+
+.custom-button:hover .normal {
+  display: none;
+}
+
+.custom-button:hover .hover {
+  display: block;
 }
 
 .content-title {

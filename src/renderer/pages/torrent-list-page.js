@@ -10,7 +10,10 @@ const TorrentSummary = require('../lib/torrent-summary')
 const TorrentPlayer = require('../lib/torrent-player')
 const CustomButton = require('../components/custom-button')
 const SelectField = require('../components/custom-select')
-const { dispatcher } = require('../lib/dispatcher')
+const Popover = require('material-ui/Popover').default
+const Menu = require('material-ui/Menu').default
+const MenuItem = require('material-ui/MenuItem').default
+const { dispatch, dispatcher } = require('../lib/dispatcher')
 
 const SORT_DATA = [
   { value: 1, text: 'Last Added' },
@@ -23,10 +26,22 @@ module.exports = class TorrentList extends React.Component {
     super(props)
     this.state = {
       sort: SORT_DATA[0],
+      selectedTorrents: [],
+      moreOpen: false,
+      moreAnchorEl: null,
     }
     this.onAddVideo = this.onAddVideo.bind(this)
     this.onFirstVideo = this.onFirstVideo.bind(this)
     this.onChangeSort = this.onChangeSort.bind(this)
+    this.onSelectAll = this.onSelectAll.bind(this)
+    this.onSelectTorrent = this.onSelectTorrent.bind(this)
+    this.onPauseSeeding = this.onPauseSeeding.bind(this)
+    this.onResumeSedding = this.onResumeSedding.bind(this)
+    this.onDeleteSeeding = this.onDeleteSeeding.bind(this)
+    this.onMoreOpen = this.onMoreOpen.bind(this)
+    this.onMoreCancel = this.onMoreCancel.bind(this)
+    this.onMoreShare = this.onMoreShare.bind(this)
+    this.onMoreDelete = this.onMoreDelete.bind(this)
   }
 
   onAddVideo() {
@@ -41,8 +56,79 @@ module.exports = class TorrentList extends React.Component {
 
   }
 
+  onSelectAll() {
+    const { selectedTorrents } = this.state
+    const infoHashs = this.props.state.saved.torrents.map((torrentSummary) => torrentSummary.infoHash)
+    if (selectedTorrents.length !== infoHashs.length)
+      this.setState({ selectedTorrents: infoHashs })
+    else
+      this.setState({ selectedTorrents: [] })
+  }
+
+  onSelectTorrent(hash) {
+    const { selectedTorrents } = this.state
+    const tempTorrents = [...selectedTorrents]
+    let findIndex = selectedTorrents.findIndex((item) => item === hash)
+    if (findIndex !== -1) {
+      tempTorrents.splice(findIndex, 1)
+    } else {
+      tempTorrents.splice(tempTorrents.length, 0, hash)
+    }
+
+    this.setState({ selectedTorrents: tempTorrents })
+  }
+
+  onPauseSeeding() {
+    const { selectedTorrents } = this.state
+    if (selectedTorrents.length === 0)
+      return
+
+    selectedTorrents.map((infoHash) => {
+      dispatch('toggleTorrent', infoHash)
+    })
+  }
+
+  onResumeSedding() {
+    const { selectedTorrents } = this.state
+    if (selectedTorrents.length === 0)
+      return
+
+    selectedTorrents.map((infoHash) => {
+      dispatch('toggleTorrent', infoHash)
+    })
+  }
+
+  onDeleteSeeding() {
+    
+  }
+
+  onMoreOpen(event) {
+    event.preventDefault();
+
+    this.setState({
+      moreOpen: true,
+      moreAnchorEl: event.currentTarget,
+    });
+  };
+
+  onMoreShare() {
+    this.onMoreCancel()
+  }
+
+  onMoreDelete() {
+    this.onMoreCancel()
+  }
+
+  onMoreCancel() {
+    this.setState({
+      moreOpen: false,
+      moreAnchorEl: null,
+    });
+  }
+
   render () {
     const state = this.props.state
+    const { selectedTorrents } = this.state
 
     const contents = []
     if (state.downloadPathStatus === 'missing') {
@@ -56,10 +142,13 @@ module.exports = class TorrentList extends React.Component {
         </div>
       )
     }
-    const torrentElems = state.saved.torrents.map(
+    const torrents = state.saved.torrents
+    const torrentElems = torrents.map(
       (torrentSummary) => this.renderTorrent(torrentSummary)
     )
-    // contents.push(...torrentElems)
+
+    // console.log('torrents', state.saved.torrents)
+    contents.push(...torrentElems)
     // TODO we don't show this panel for now
     // contents.push(
     //   <div key='torrent-placeholder' className='torrent-placeholder'>
@@ -79,7 +168,7 @@ module.exports = class TorrentList extends React.Component {
             />
             <CustomButton
               label="Add Video"
-              onOk={this.onAddVideo}
+              onClick={this.onAddVideo}
               img={`${config.STATIC_PATH}/Add.png`}
               style={{ background: '#B169F6', boxShadow: '0px 20px 31px #0D0E11', width: 150, height: 40, marginLeft: 20 }}
             />
@@ -93,17 +182,210 @@ module.exports = class TorrentList extends React.Component {
               <div className="gray-title">Share your video and earn real money from staking POP coin</div>
               <CustomButton
                 label="Add your first video"
-                onOk={this.onFirstVideo}
+                onClick={this.onFirstVideo}
                 img={`${config.STATIC_PATH}/FirstAdd.png`}
                 style={{ background: '#1F202A', width: 210 }}
               />
             </div>
           :
-          contents
+          <div className="list-container">
+            <div className="list-toolbar">
+              <div className="all-check" onClick={this.onSelectAll}>
+                <img src={`${config.STATIC_PATH}/${selectedTorrents.length !== torrents.length ? 'Checkbox.png' : 'CheckboxAllActive.png' }`} />
+              </div>
+              <span className="selected-all">{`Select all`}</span>
+              <span className="selected-value">{`Selected: ${selectedTorrents.length}`}</span>
+              <div className="vertical-divider"></div>
+              <div className="action-wrapper" style={{ opacity: selectedTorrents.length === 0 ? 0.2 : 1 }}>
+                <span style={{ color: '#6C6E8B' }}>Actions:</span>
+                <CustomButton
+                  label="Pause seeding"
+                  className="pause-button"
+                  onClick={this.onPauseSeeding}
+                  img={`${config.STATIC_PATH}/Pause.png`}
+                  hoverImg={`${config.STATIC_PATH}/PauseHover.png`}
+                  style={{
+                    margin: '0 10px'
+                  }}
+                />
+                <CustomButton
+                  label="Resume seeding"
+                  className="resume-button"
+                  onClick={this.onResumeSedding}
+                  img={`${config.STATIC_PATH}/Resume.png`}
+                  style={{
+                    marginRight: 10
+                  }}
+                />
+                <CustomButton
+                  label="Delete"
+                  className="delete-button"
+                  onClick={this.onDeleteSeeding}
+                  img={`${config.STATIC_PATH}/Delete.png`}
+                />
+              </div>
+            </div>
+            <div className="list-wrapper">
+              {torrents.map((torrentSummary) => (
+                this.renderListTorrentSummary(torrentSummary)
+              ))}
+            </div>
+            {/* {contents} */}
+          </div>
         }
         {state.isFetchingTorrents && this.renderLoadingOverlay()}
       </div>
     )
+  }
+
+  renderListTorrentSummary(torrentSummary) {
+    const state = this.props.state
+    const { selectedTorrents } = this.state
+    const infoHash = torrentSummary.infoHash
+    const isSelected = infoHash && state.selectedInfoHash === infoHash
+
+    // Background image: show some nice visuals, like a frame from the movie, if possible
+    const styles = {
+      wrapper: {
+        display: 'inline-block',
+        flex: 1,
+      },
+      progress: {
+        height: 4,
+        width: '100%',
+      }
+    }
+    let imageUrl = null
+    if (torrentSummary.posterFileName) {
+      imageUrl = TorrentSummary.getPosterPath(torrentSummary)
+    } else {
+      imageUrl = torrentSummary.imageLink
+    }
+
+    const classes = ['torrent-summary']
+    if (isSelected) classes.push('selected')
+    if (!infoHash) classes.push('disabled')
+    if (!torrentSummary.torrentKey) throw new Error('Missing torrentKey')
+
+    const name = torrentSummary.title || torrentSummary.name || 'Loading torrent...'
+
+    const prog = torrentSummary.progress
+    let progElem
+    if (torrentSummary.error) {
+      progElem = (
+        <>
+          <div className="summary-title-wrapper">
+            <span className="summary-title">{name}</span>
+          </div>
+          {getErrorMessage(torrentSummary)}
+        </>
+      )
+    } else if (torrentSummary.status !== 'paused' && prog) {
+      progElem = (
+        <>
+          <div className="summary-header">
+            <div className="summary-check" onClick={() => this.onSelectTorrent(torrentSummary.infoHash)}>
+              <img src={`${config.STATIC_PATH}/${!selectedTorrents.includes(torrentSummary.infoHash) ? 'Checkbox.png' : 'CheckboxActive.png' }`} />
+            </div>
+            <div className="action-wrapper">
+              <span className="peers">{`Peers: ${prog.numPeers}`}</span>
+              <div className="show">
+                <img src={`${config.STATIC_PATH}/Show.png`} />
+              </div>
+              <div className="more" onClick={this.onMoreOpen}>
+                <img src={`${config.STATIC_PATH}/More.png`} className="normal" />
+                <img src={`${config.STATIC_PATH}/MoreHover.png`} className="hover" />
+                <Popover
+                  open={this.state.moreOpen}
+                  anchorEl={this.state.moreAnchorEl}
+                  anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                  targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                  onRequestClose={() => this.setState({
+                    moreOpen: false,
+                  })}
+                  className="custom-dropdown"
+                >
+                  <Menu>
+                      <MenuItem
+                        onClick={() => this.onMoreShare()}
+                        className={`menu-item`}
+                        style={{ borderRadius: 12, fontSize: 12 }}
+                        primaryText="Share"
+                      />
+                      <MenuItem
+                        onClick={() => this.onMoreDelete()}
+                        className={`menu-item`}
+                        style={{ borderRadius: 12, fontSize: 12 }}
+                        primaryText="Delete"
+                      />
+                  </Menu>
+                </Popover>
+              </div>
+            </div>
+          </div>
+          <div className="summary-title-wrapper">
+            <span className="summary-title">{name}</span>
+            <span className='size'>{prettyBytes(prog.length || 0)}</span>
+          </div>
+          <img src={imageUrl} className="cover-image" />
+          {/* {imageUrl && <img className="torrent-cover" src={imageUrl} />} */}
+          <div className="horizontal-divider"></div>
+          <div className="bottom-wrapper">
+            {renderProgress()}
+          </div>
+        </>
+      )
+    } else {
+      progElem = (
+        <div className="bottom-wrapper">
+          {renderTorrentStatus()}
+        </div>
+      )
+    }
+
+    return (
+      <div className="torrent-summary-wrapper">
+        <div
+          className={classes.join(' ')}
+        >
+          {progElem}
+        </div>
+      </div>
+    )
+
+    function renderTorrentStatus() {
+      let status
+      if (torrentSummary.status === 'paused') {
+        if (!torrentSummary.progress) status = ''
+        else if (torrentSummary.progress.progress === 1) status = 'Not seeding'
+        else status = 'Paused'
+      } else if (torrentSummary.status === 'downloading') {
+        if (!torrentSummary.progress) status = ''
+        else if (!torrentSummary.progress.ready) status = 'Verifying'
+        else status = 'Downloading'
+      } else if (torrentSummary.status === 'seeding') {
+        status = 'Seeding'
+      } else { // torrentSummary.status is 'new' or something unexpected
+        status = ''
+      }
+      return (<span className='torrent-status'>{`${status} -`}</span>)
+    }
+
+    function renderProgress () {
+      const progress = prog ? Math.floor(100 * prog.progress) : 0;
+
+      return (
+        <>
+          <div key='progress-bar' style={styles.wrapper}>
+            <LinearProgress style={styles.progress} mode='determinate' value={progress} color="#A9CC46" />
+          </div>
+          <div className="status-wrapper">
+            {renderTorrentStatus()}
+            <span className="downloaded">{` ${prettyBytes(prog.downloaded)}`}</span>
+          </div>
+        </>
+      )
+    }
   }
 
   renderTorrent (torrentSummary) {
@@ -119,8 +401,8 @@ module.exports = class TorrentList extends React.Component {
       const posterPath = TorrentSummary.getPosterPath(torrentSummary)
       style.backgroundImage = `${gradient}, url('${posterPath}')`
     } else {
-		imageUrl = torrentSummary.imageLink
-	}
+      imageUrl = torrentSummary.imageLink
+    }
 
     // Foreground: name of the torrent, basic info like size, play button,
     // cast buttons if available, and delete

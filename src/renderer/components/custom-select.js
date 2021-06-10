@@ -20,7 +20,6 @@ module.exports = class CustomSelect extends React.Component {
 
   handleClick(event) {
     // This prevents ghost click.
-    console.log('test')
     event.preventDefault();
 
     this.setState({

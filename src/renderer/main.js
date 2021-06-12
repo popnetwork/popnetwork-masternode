@@ -380,6 +380,10 @@ const dispatchHandlers = {
 
   // About
   openAbout: () => { state.modal = { id: 'about-modal' } },
+
+  // Create Torrent Dialog
+  createTorrentDialog: () => { state.modal = { id: 'create-torrent-modal' } },
+  createMagnetDialog: () => { state.modal = { id: 'create-magnet-modal' } },
 }
 
 // Events from the UI never modify state directly. Instead they call dispatch()

@@ -7,8 +7,8 @@ const { dispatch, dispatcher } = require('../lib/dispatcher')
 module.exports = class AboutModal extends React.Component {
   render () {
     return (
-      <div className='about-modal' onClick={dispatcher('exitModal')}>
-        <div className="close-btn">
+      <div className='custom-modal about-modal'>
+        <div className="close-btn" onClick={dispatcher('exitModal')}>
           <img src={`${config.STATIC_PATH}/Close.png`} />
         </div>
         <div className="icon-wrapper">

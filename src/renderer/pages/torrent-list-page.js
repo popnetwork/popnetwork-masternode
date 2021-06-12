@@ -31,7 +31,6 @@ module.exports = class TorrentList extends React.Component {
       moreAnchorEl: null,
     }
     this.onAddVideo = this.onAddVideo.bind(this)
-    this.onFirstVideo = this.onFirstVideo.bind(this)
     this.onChangeSort = this.onChangeSort.bind(this)
     this.onSelectAll = this.onSelectAll.bind(this)
     this.onSelectTorrent = this.onSelectTorrent.bind(this)
@@ -45,11 +44,7 @@ module.exports = class TorrentList extends React.Component {
   }
 
   onAddVideo() {
-
-  }
-
-  onFirstVideo() {
-    console.log('first video')
+    dispatch('createTorrentDialog')
   }
 
   onChangeSort(value) {
@@ -182,7 +177,7 @@ module.exports = class TorrentList extends React.Component {
               <div className="gray-title">Share your video and earn real money from staking POP coin</div>
               <CustomButton
                 label="Add your first video"
-                onClick={this.onFirstVideo}
+                onClick={this.onAddVideo}
                 img={`${config.STATIC_PATH}/FirstAdd.png`}
                 style={{ background: '#1F202A', width: 210 }}
               />
@@ -362,7 +357,7 @@ module.exports = class TorrentList extends React.Component {
       } else { // torrentSummary.status is 'new' or something unexpected
         status = ''
       }
-      return (<span className='torrent-status'>{`${status} -`}</span>)
+      return (<span className='torrent-status'>{`${status}`}</span>)
     }
 
     function renderProgress () {
@@ -375,7 +370,7 @@ module.exports = class TorrentList extends React.Component {
           </div>
           <div className="status-wrapper">
             {renderTorrentStatus()}
-            {prog && <span className="downloaded">{` ${prettyBytes(prog.downloaded)}`}</span>}
+            {prog && <span className="downloaded">{` - ${prettyBytes(prog.downloaded)}`}</span>}
           </div>
         </>
       )

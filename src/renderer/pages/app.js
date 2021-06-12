@@ -14,7 +14,8 @@ const TorrentListPage = require('./torrent-list-page')
 const Views = {
   home: createGetter(() => TorrentListPage),
   player: createGetter(() => require('./player-page')),
-  'create-torrent': createGetter(() => require('./create-torrent-page')),
+  'create-torrent': createGetter(() => require('./create-torrent-video-page')),
+  // 'create-torrent': createGetter(() => require('./create-torrent-page')),
   preferences: createGetter(() => require('./preferences-page')),
   'iframe-code': createGetter(() => require('./iframe-code-page')),
   'stake': createGetter(() => require('./stake-page')),
@@ -28,6 +29,8 @@ const Modals = {
   'update-available-modal': createGetter(() => require('../components/update-available-modal')),
   'unsupported-media-modal': createGetter(() => require('../components/unsupported-media-modal')),
   'about-modal': createGetter(() => require('../components/about-modal')),
+  'create-torrent-modal': createGetter(() => require('../components/create-torrent-modal')),
+  'create-magnet-modal': createGetter(() => require('../components/create-magnet-modal')),
 }
 
 const fontFamily = process.platform === 'win32'

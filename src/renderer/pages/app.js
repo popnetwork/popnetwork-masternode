@@ -31,6 +31,12 @@ const Modals = {
   'about-modal': createGetter(() => require('../components/about-modal')),
   'create-torrent-modal': createGetter(() => require('../components/create-torrent-modal')),
   'create-magnet-modal': createGetter(() => require('../components/create-magnet-modal')),
+  'create-iframe-modal': createGetter(() => require('../components/create-iframe-modal')),
+  'connect-wallet-modal': createGetter(() => require('../components/connect-wallet-modal')),
+  'delete-torrent-modal': createGetter(() => require('../components/delete-torrent-modal')),
+  'confirm-modal': createGetter(() => require('../components/confirm-modal')),
+  'connect-error-modal': createGetter(() => require('../components/connect-error-modal')),
+  'stake-modal': createGetter(() => require('../components/stake-modal')),
 }
 
 const fontFamily = process.platform === 'win32'

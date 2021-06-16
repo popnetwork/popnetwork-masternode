@@ -39,6 +39,7 @@ module.exports = class TorrentList extends React.Component {
     this.onDeleteSeeding = this.onDeleteSeeding.bind(this)
     this.onMoreOpen = this.onMoreOpen.bind(this)
     this.onMoreCancel = this.onMoreCancel.bind(this)
+    this.onIframeCode = this.onIframeCode.bind(this)
     this.onMoreShare = this.onMoreShare.bind(this)
     this.onMoreDelete = this.onMoreDelete.bind(this)
   }
@@ -106,12 +107,18 @@ module.exports = class TorrentList extends React.Component {
     });
   };
 
+  onIframeCode(infoHash) {
+    this.onMoreCancel()
+    dispatch('createIframeDialog', infoHash)
+  }
+
   onMoreShare() {
     this.onMoreCancel()
   }
 
-  onMoreDelete() {
+  onMoreDelete(infoHash) {
     this.onMoreCancel()
+    dispatch('deleteTorrentDialog', infoHash, false)
   }
 
   onMoreCancel() {
@@ -225,7 +232,7 @@ module.exports = class TorrentList extends React.Component {
                 this.renderListTorrentSummary(torrentSummary)
               ))}
             </div>
-            {/* {contents} */}
+            {contents}
           </div>
         }
         {state.isFetchingTorrents && this.renderLoadingOverlay()}
@@ -301,6 +308,12 @@ module.exports = class TorrentList extends React.Component {
                   className="custom-dropdown"
                 >
                   <Menu>
+                    <MenuItem
+                        onClick={() => this.onIframeCode(torrentSummary.infoHash)}
+                        className={`menu-item`}
+                        style={{ borderRadius: 12, fontSize: 12 }}
+                        primaryText="iFrame Code"
+                      />
                       <MenuItem
                         onClick={() => this.onMoreShare()}
                         className={`menu-item`}
@@ -308,7 +321,7 @@ module.exports = class TorrentList extends React.Component {
                         primaryText="Share"
                       />
                       <MenuItem
-                        onClick={() => this.onMoreDelete()}
+                        onClick={() => this.onMoreDelete(torrentSummary.infoHash)}
                         className={`menu-item`}
                         style={{ borderRadius: 12, fontSize: 12 }}
                         primaryText="Delete"

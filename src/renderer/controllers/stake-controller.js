@@ -25,6 +25,5 @@ module.exports = class StakeController {
         detail: "To use POPNetwork-Masternode service fully, \n login wallet with walletconnect first. \n Wallet->WalletConnect"
       })
     }
-    
   }
 }

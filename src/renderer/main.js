@@ -384,6 +384,12 @@ const dispatchHandlers = {
   // Create Torrent Dialog
   createTorrentDialog: () => { state.modal = { id: 'create-torrent-modal' } },
   createMagnetDialog: () => { state.modal = { id: 'create-magnet-modal' } },
+  createIframeDialog: (infoHash) => { state.modal = { id: 'create-iframe-modal', infoHash } },
+  connectWalletDialog: () => { state.modal = { id: 'connect-wallet-modal' } },
+  deleteTorrentDialog: (infoHash, deleteData) => { state.modal = { id: 'delete-torrent-modal', infoHash, deleteData } },
+  confirmDialog: () => { state.modal = { id: 'confirm-modal' } },
+  connectErrorDialog: () => { state.modal = { id: 'connect-error-modal' } },
+  stakeDialog: (wallet, nodeChannel) => { state.modal = { id: 'stake-modal', wallet, nodeChannel } },
 }
 
 // Events from the UI never modify state directly. Instead they call dispatch()

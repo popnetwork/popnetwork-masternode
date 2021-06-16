@@ -181,15 +181,21 @@ module.exports = class WalletController {
         const message = "MASTERNODE-TOKEN";
         const hexMsg = convertUtf8ToHex(message);
         const msgParams = [hexMsg, address];
-        openDialog('pendingDlg').then((result) => {
-        })
+        this.state.modal = {
+          id: 'confirm-modal',
+        }
         const result = await this.state.wallet.connector.signPersonalMessage(msgParams);
-        remote.BrowserWindow.getAllWindows()
-          .filter(b => {
-            if (b.getTitle() == "PENDING") {
-              b.close()
-            }
-          })
+        // openDialog('pendingDlg').then((result) => {
+        // })
+        // const result = await this.state.wallet.connector.signPersonalMessage(msgParams);
+        // remote.BrowserWindow.getAllWindows()
+        //   .filter(b => {
+        //     if (b.getTitle() == "PENDING") {
+        //       console.log('test close')
+        //       b.close()
+        //     }
+        //   })
+        this.state.modal = null
         this.state.wallet.address = address;
         this.state.wallet.token = result;
         this.state.wallet.fetching = true;
@@ -198,6 +204,9 @@ module.exports = class WalletController {
         dispatch('stateSaveImmediate')
       } catch (err) {
         console.log('signMessageError: ', err)
+        this.state.modal = {
+          id: 'connect-error-modal',
+        }
       }
     }
     

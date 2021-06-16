@@ -3,7 +3,7 @@ const React = require('react')
 const config = require('../../config')
 const CustomButton = require('./custom-button')
 
-const { dispatcher } = require('../lib/dispatcher')
+const { dispatch } = require('../lib/dispatcher')
 
 class Header extends React.Component {
   constructor (props) {
@@ -12,7 +12,7 @@ class Header extends React.Component {
   }
 
   onAddWallet() {
-
+    dispatch('connectWalletDialog')
   }
   
   render () {

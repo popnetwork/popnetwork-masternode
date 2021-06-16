@@ -39,8 +39,8 @@ module.exports = class CreateMagnetModal extends React.Component {
           <img src={`${config.STATIC_PATH}/Light.png`} />
         </div>
         <span className='content-title'>Enter Torrent address or magnet link</span>
-        <div className='gray-title'>If you want to upload a torrent file using a torrent address or magnet link,</div>
-        <div className='gray-title'>just paste it into the box below</div>
+        <div>If you want to upload a torrent file using a torrent address or magnet link,</div>
+        <div>just paste it into the box below</div>
         <div className="input-wrapper">
           <TextField
             placeholder="Paste here"

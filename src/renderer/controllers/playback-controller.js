@@ -28,7 +28,7 @@ module.exports = class PlaybackController {
   // * If no file index is provided, restore the most recently viewed file or autoplay the first
   playFile (infoHash, index /* optional */) {
     this.pauseActiveTorrents(infoHash)
-
+    
     const state = this.state
     if (state.location.url() === 'player') {
       this.updatePlayer(infoHash, index, false, (err) => {
@@ -37,26 +37,42 @@ module.exports = class PlaybackController {
       })
     } else {
       let initialized = false
-      state.location.go({
-        url: 'player',
-        setup: (cb) => {
-          const torrentSummary = TorrentSummary.getByKey(state, infoHash)
+      this.state.modal = {
+        id: 'play-video-modal',
+        infoHash,
+      }
 
-          if (index === undefined || initialized) index = torrentSummary.mostRecentFileIndex
-          if (index === undefined) index = torrentSummary.files.findIndex(TorrentPlayer.isPlayable)
-          if (index === undefined) return cb(new UnplayableTorrentError())
+      const torrentSummary = TorrentSummary.getByKey(state, infoHash)
+      if (index === undefined || initialized) index = torrentSummary.mostRecentFileIndex
+      if (index === undefined) index = torrentSummary.files.findIndex(TorrentPlayer.isPlayable)
+      if (index === undefined) return new UnplayableTorrentError()
 
-          initialized = true
+      initialized = true
 
-          this.openPlayer(infoHash, index, (err) => {
-            if (!err) this.play()
-            cb(err)
-          })
-        },
-        destroy: () => this.closePlayer()
-      }, (err) => {
-        if (err) dispatch('error', err)
+      this.openPlayer(infoHash, index, (err) => {
+        if (!err) this.play()
       })
+          
+      // state.location.go({
+      //   url: 'player',
+      //   setup: (cb) => {
+      //     const torrentSummary = TorrentSummary.getByKey(state, infoHash)
+
+      //     if (index === undefined || initialized) index = torrentSummary.mostRecentFileIndex
+      //     if (index === undefined) index = torrentSummary.files.findIndex(TorrentPlayer.isPlayable)
+      //     if (index === undefined) return cb(new UnplayableTorrentError())
+
+      //     initialized = true
+
+      //     this.openPlayer(infoHash, index, (err) => {
+      //       if (!err) this.play()
+      //       cb(err)
+      //     })
+      //   },
+      //   destroy: () => this.closePlayer()
+      // }, (err) => {
+      //   if (err) dispatch('error', err)
+      // })
     }
   }
 
@@ -72,7 +88,7 @@ module.exports = class PlaybackController {
   // Toggle (play or pause) the currently playing media
   playPause () {
     const state = this.state
-    if (state.location.url() !== 'player') return
+    // if (state.location.url() !== 'player') return
 
     // force rerendering if window is hidden,
     // in order to bypass `raf` and play/pause media immediately

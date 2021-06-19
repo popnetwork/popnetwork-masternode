@@ -28,7 +28,7 @@ module.exports = class CreateTorrentModal extends React.Component {
 
     dialog.showOpenDialog(opts)
     .then(result => {
-      if (!Array.isArray(result.filePaths)) return
+      if (!Array.isArray(result.filePaths) || result.filePaths.length === 0) return
       dispatch('showCreateTorrent', result.filePaths)
     })
   }

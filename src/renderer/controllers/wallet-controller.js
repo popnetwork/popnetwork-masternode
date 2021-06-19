@@ -185,16 +185,6 @@ module.exports = class WalletController {
           id: 'confirm-modal',
         }
         const result = await this.state.wallet.connector.signPersonalMessage(msgParams);
-        // openDialog('pendingDlg').then((result) => {
-        // })
-        // const result = await this.state.wallet.connector.signPersonalMessage(msgParams);
-        // remote.BrowserWindow.getAllWindows()
-        //   .filter(b => {
-        //     if (b.getTitle() == "PENDING") {
-        //       console.log('test close')
-        //       b.close()
-        //     }
-        //   })
         this.state.modal = null
         this.state.wallet.address = address;
         this.state.wallet.token = result;

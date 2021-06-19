@@ -298,6 +298,7 @@ const dispatchHandlers = {
   // Playback
   playFile: (infoHash, index) => controllers.playback().playFile(infoHash, index),
   playPause: () => controllers.playback().playPause(),
+  closePlayer: () => controllers.playback().closePlayer(),
   nextTrack: () => controllers.playback().nextTrack(),
   previousTrack: () => controllers.playback().previousTrack(),
   skip: (time) => controllers.playback().skip(time),

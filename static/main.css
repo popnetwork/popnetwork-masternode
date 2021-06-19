@@ -590,8 +590,8 @@ textarea,
 }
 
 .torrent-list .list-container .list-toolbar .all-check {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   border-radius: 6px;
 }
 
@@ -624,8 +624,8 @@ textarea,
 }
 
 .torrent-list .list-container .list-wrapper .torrent-summary .summary-header .summary-check {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   border-radius: 6px;
 }
 
@@ -839,15 +839,15 @@ body.drag .app::after {
  */
 
 .player {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: #000;
+  /* position: absolute; */
+  /* width: 100%; */
+  /* height: 100%; */
+  /* background-color: #000; */
 }
 
 .player .letterbox {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   display: flex;
   background-size: cover;
   background-position: center;
@@ -863,12 +863,16 @@ body.drag .app::after {
  */
 
 .player .controls {
-  position: fixed;
+  /* position: fixed; */
   background: rgba(40, 40, 40, 0.8);
   width: 100%;
-  height: 38px;
-  bottom: 0;
+  height: 40px;
+  /* bottom: 0; */
   transition: opacity 0.15s ease-out;
+}
+
+.player .controls .playback-bar {
+  position: relative;
 }
 
 .player .controls .icon {
@@ -953,25 +957,25 @@ body.drag .app::after {
 }
 
 .player .controls .loading-bar {
-  position: relative;
+  /* position: relative; */
   width: 100%;
-  top: -3px;
+  /* top: -3px; */
   height: 3px;
   background-color: rgba(0, 0, 0, 0.3);
   transition: all 0.1s ease-out;
-  position: absolute;
+  /* position: absolute; */
 }
 
 .player .controls .loading-bar-part {
-  position: absolute;
+  /* position: absolute; */
   background-color: #dd0000;
-  top: 0;
+  /* top: 0; */
   height: 100%;
 }
 
 .player .controls .playback-cursor {
   position: absolute;
-  top: -3px;
+  top: 0px;
   background-color: #FFF;
   width: 3px;
   height: 3px;
@@ -1537,6 +1541,64 @@ video::-webkit-media-text-track-container {
 
 .connect-wallet-modal .footer-wrapper .foot-text {
   color: #7E8494;
+}
+
+.video-model {
+  width: 1000px;
+  padding: 20px 30px 30px 30px;
+  justify-content: flex-start;
+}
+
+.video-model .close-btn {
+  position: inherit;
+  margin-left: 30px;
+}
+
+.video-model .tool-bar {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.video-model .tool-bar .video-title .size {
+  color: #9EA1C9;
+}
+
+.video-model .tool-bar .video-information {
+  display: flex;
+  align-items: center;
+}
+
+.video-model .tool-bar .video-information .status-wrapper {
+  margin-right: 40px;
+}
+
+.video-model .tool-bar .video-information .status-wrapper .torrent-status {
+  color: #9EA1C9;
+}
+
+.video-model .tool-bar .video-information .show {
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+.video-model .tool-bar .video-information .more .normal {
+  display: block;
+}
+
+.video-model .tool-bar .video-information .more .hover {
+  display: none;
+}
+
+.video-model .tool-bar .video-information .more:hover .normal {
+  display: none;
+}
+
+.video-model .tool-bar .video-information .more:hover .hover {
+  display: block;
 }
 
 .custom-dropdown {

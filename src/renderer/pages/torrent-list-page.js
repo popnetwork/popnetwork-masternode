@@ -54,21 +54,21 @@ module.exports = class TorrentList extends React.Component {
 
   onSelectAll() {
     const { selectedTorrents } = this.state
-    const infoHashs = this.props.state.saved.torrents.map((torrentSummary) => torrentSummary.infoHash)
-    if (selectedTorrents.length !== infoHashs.length)
-      this.setState({ selectedTorrents: infoHashs })
+    const { torrents } = this.props.state.saved
+    if (selectedTorrents.length !== torrents.length)
+      this.setState({ selectedTorrents: [...torrents] })
     else
       this.setState({ selectedTorrents: [] })
   }
 
-  onSelectTorrent(hash) {
+  onSelectTorrent(torrentSummary) {
     const { selectedTorrents } = this.state
     const tempTorrents = [...selectedTorrents]
-    let findIndex = selectedTorrents.findIndex((item) => item === hash)
+    let findIndex = selectedTorrents.findIndex((item) => item.infoHash === torrentSummary.infoHash)
     if (findIndex !== -1) {
       tempTorrents.splice(findIndex, 1)
     } else {
-      tempTorrents.splice(tempTorrents.length, 0, hash)
+      tempTorrents.splice(tempTorrents.length, 0, torrentSummary)
     }
 
     this.setState({ selectedTorrents: tempTorrents })
@@ -79,8 +79,10 @@ module.exports = class TorrentList extends React.Component {
     if (selectedTorrents.length === 0)
       return
 
-    selectedTorrents.map((infoHash) => {
-      dispatch('toggleTorrent', infoHash)
+    selectedTorrents.map((torrentSummary) => {
+      if (torrentSummary.status === 'downloading' || torrentSummary.status === 'seeding') {
+        dispatch('toggleTorrent', torrentSummary.infoHash)
+      }
     })
   }
 
@@ -89,13 +91,21 @@ module.exports = class TorrentList extends React.Component {
     if (selectedTorrents.length === 0)
       return
 
-    selectedTorrents.map((infoHash) => {
-      dispatch('toggleTorrent', infoHash)
+    selectedTorrents.map((torrentSummary) => {
+      if (torrentSummary.status === 'paused') {
+        dispatch('toggleTorrent', torrentSummary.infoHash)
+      }
     })
   }
 
   onDeleteSeeding() {
-    
+    const { selectedTorrents } = this.state
+    if (selectedTorrents.length === 0)
+      return
+
+    selectedTorrents.map((torrentSummary) => {
+      dispatch('deleteTorrentDialog', torrentSummary.infoHash, false)
+    })
   }
 
   onMoreOpen(event) {
@@ -232,7 +242,7 @@ module.exports = class TorrentList extends React.Component {
                 this.renderListTorrentSummary(torrentSummary)
               ))}
             </div>
-            {contents}
+            {/* {contents} */}
           </div>
         }
         {state.isFetchingTorrents && this.renderLoadingOverlay()}
@@ -286,8 +296,8 @@ module.exports = class TorrentList extends React.Component {
       progElem = (
         <>
           <div className="summary-header">
-            <div className="summary-check" onClick={() => this.onSelectTorrent(torrentSummary.infoHash)}>
-              <img src={`${config.STATIC_PATH}/${!selectedTorrents.includes(torrentSummary.infoHash) ? 'Checkbox.png' : 'CheckboxActive.png' }`} />
+            <div className="summary-check" onClick={() => this.onSelectTorrent(torrentSummary)}>
+              <img src={`${config.STATIC_PATH}/${!selectedTorrents.find((torrent) => torrent.infoHash === torrentSummary.infoHash) ? 'Checkbox.png' : 'CheckboxActive.png' }`} />
             </div>
             <div className="action-wrapper">
               {prog && <span className="peers">{`Peers: ${prog.numPeers}`}</span>}
@@ -335,7 +345,7 @@ module.exports = class TorrentList extends React.Component {
             <span className="summary-title">{name}</span>
             <span className='size'>{`${prog ? prettyBytes(prog.length || 0) : ''}`}</span>
           </div>
-          <img src={imageUrl} className="cover-image" />
+          <img src={imageUrl} className="cover-image" onClick={() => dispatch('playFile', infoHash)} />
           {/* {imageUrl && <img className="torrent-cover" src={imageUrl} />} */}
           <div className="horizontal-divider"></div>
           <div className="bottom-wrapper">

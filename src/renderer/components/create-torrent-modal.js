@@ -66,12 +66,12 @@ module.exports = class CreateTorrentModal extends React.Component {
         </div>
         <span className='content-title'>Create New Torrent from...</span>
         <div className="type-container">
-          <div className="dropzone-container">
+          {/* <div className="dropzone-container">
             <div className="dropzone-wrapper">
               <img src={`${config.STATIC_PATH}/Vector.png`} />
             </div>
             <div className="dropzone-title">Drag & Drop MP4, torrent file</div>
-          </div>
+          </div> */}
           <div className="fileopen-container">
             <div className="open-item" onClick={this.onTorrentFileFromVideo}>
               <div className="item-wrapper">

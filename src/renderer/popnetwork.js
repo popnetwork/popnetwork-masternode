@@ -192,7 +192,8 @@ function getTorrentInfo(torrent) {
         name: torrent.name,
         path: torrent.path,
         files: torrent.files.map(getTorrentFileInfo),
-        bytesReceived: torrent.received
+        bytesReceived: torrent.received,
+        private: torrent.private
     }
 }
 

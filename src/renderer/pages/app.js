@@ -19,6 +19,7 @@ const Views = {
   preferences: createGetter(() => require('./preferences-page')),
   'iframe-code': createGetter(() => require('./iframe-code-page')),
   'stake': createGetter(() => require('./stake-page')),
+  'stake-first': createGetter(() => require('./stake-first-page')),
 }
 
 const Modals = {

@@ -302,7 +302,7 @@ module.exports = class TorrentList extends React.Component {
             <div className="action-wrapper">
               {prog && <span className="peers">{`Peers: ${prog.numPeers}`}</span>}
               <div className="show">
-                <img src={`${config.STATIC_PATH}/Show.png`} />
+                <img src={`${config.STATIC_PATH}/${torrentSummary.private ? 'Hide.png' : 'Visibility.png'}`} />
               </div>
               <div className="more" onClick={this.onMoreOpen}>
                 <img src={`${config.STATIC_PATH}/More.png`} className="normal" />

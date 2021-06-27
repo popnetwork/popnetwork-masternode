@@ -21,7 +21,7 @@ module.exports = class DeleteTorrentModal extends React.Component {
 
   render () {
     return (
-      <div className='custom-modal create-magnet-modal'>
+      <div className='custom-modal create-magnet-modal' style={{ width: 678 }}>
         <div className="close-btn" onClick={dispatcher('exitModal')}>
           <img src={`${config.STATIC_PATH}/Close.png`} />
         </div>

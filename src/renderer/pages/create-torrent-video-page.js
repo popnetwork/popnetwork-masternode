@@ -9,14 +9,10 @@ const { dispatch, dispatcher } = require('../lib/dispatcher')
 
 const CustomButton = require('../components/custom-button')
 
-const FlatButton = require('material-ui/FlatButton').default
-const RaisedButton = require('material-ui/RaisedButton').default
 const TextField = require('material-ui/TextField').default
 const Checkbox = require('material-ui/Checkbox').default
 
 const CreateTorrentErrorPage = require('../components/create-torrent-error-page')
-const Heading = require('../components/heading')
-const ShowMore = require('../components/show-more')
 
 // Shows a basic UI to create a torrent, from an already-selected file or folder.
 // Includes a "Show Advanced..." button and more advanced UI.
@@ -94,14 +90,6 @@ class CreateTorrentPage extends React.Component {
               <div className="title">Name*</div>
               <div className="text">{this.state.defaultName}</div>
             </div>
-            <div className="name-wrapper">
-              <div className="title">Name*</div>
-              <div className="text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              </div>
-            </div>
             <div className="visibility-wrapper">
               <div className="visibility-check" onClick={() => this.setState({ isPrivate: false })}>
                 {!this.state.isPrivate && <div className="active"></div>}  
@@ -156,9 +144,9 @@ class CreateTorrentPage extends React.Component {
                   rowsMax={10}
                   value={this.state.trackers}
                   onChange={this.handleSetTrackers}
+                  underlineStyle={{ display: 'none' }}
                 />
               </div>
-              <div className="see-all">See all</div>
             </div>
           </div>
         </div>

@@ -2,6 +2,7 @@ const React = require('react')
 const PropTypes = require('prop-types')
 
 const colors = require('material-ui/styles/colors')
+const CustomButton = require('../components/custom-button')
 const Checkbox = require('material-ui/Checkbox').default
 const RaisedButton = require('material-ui/RaisedButton').default
 const Heading = require('../components/heading')
@@ -53,10 +54,10 @@ class PreferencesPage extends React.Component {
   openExternalPlayerCheckbox () {
     return (
       <Preference>
-        <Checkbox
+        <CustomCheckBox
           className='control'
           checked={!this.props.state.saved.prefs.openExternalPlayer}
-          label='Play torrent media files using popnetwork'
+          label='Play torrent media files using POP Network'
           onCheck={this.handleOpenExternalPlayerChange}
         />
       </Preference>
@@ -70,13 +71,13 @@ class PreferencesPage extends React.Component {
   highestPlaybackPriorityCheckbox () {
     return (
       <Preference>
-        <Checkbox
+        <CustomCheckBox
           className='control'
           checked={this.props.state.saved.prefs.highestPlaybackPriority}
           label='Highest Playback Priority'
           onCheck={this.handleHighestPlaybackPriorityChange}
         />
-        <p>Pauses all active torrents to allow playback to use all of the available bandwidth.</p>
+        <div className="left-margin" style={{ fontSize: 12, color: '#9EA1C9', marginBottom: 0, }}>Pauses all active torrents to allow playback to use all of the available bandwidth.</div>
       </Preference>
     )
   }
@@ -91,11 +92,11 @@ class PreferencesPage extends React.Component {
 
     const description = this.props.state.saved.prefs.openExternalPlayer
       ? `Torrent media files will always play in ${playerName}.`
-      : `Torrent media files will play in ${playerName} if popnetwork cannot play them.`
+      : `Torrent media files will play in ${playerName} if POP Network cannot play them.`
 
     return (
       <Preference>
-        <p>{description}</p>
+        <div className="left-margin" style={{ fontSize: 12, color: '#9EA1C9', marginBottom: 2, }}>{description}</div>
         <PathSelector
           dialog={{
             title: 'Select media player app',
@@ -104,6 +105,7 @@ class PreferencesPage extends React.Component {
           onChange={this.handleExternalPlayerPathChange}
           title='External player'
           value={playerPath}
+          className="left-margin"
         />
       </Preference>
     )
@@ -116,11 +118,12 @@ class PreferencesPage extends React.Component {
   autoAddTorrentsCheckbox () {
     return (
       <Preference>
-        <Checkbox
+        <CustomCheckBox
           className='control'
           checked={this.props.state.saved.prefs.autoAddTorrents}
           label='Watch for new .torrent files and add them immediately'
           onCheck={(e, value) => { this.handleAutoAddTorrentsChange(e, value) }}
+          style={{ marginTop: 20 }}
         />
       </Preference>
     )
@@ -157,6 +160,7 @@ class PreferencesPage extends React.Component {
           onChange={this.handleTorrentsFolderPathChange}
           title='Folder to watch'
           value={torrentsFolderPath}
+          className="left-margin"
         />
       </Preference>
     )
@@ -171,18 +175,20 @@ class PreferencesPage extends React.Component {
     if (isFileHandler) {
       return (
         <Preference>
-          <p>popnetwork is your default torrent app. Hooray!</p>
+          <div style={{ fontSize: 12 }}>Popnetwork is your default torrent app. Hooray!</div>
         </Preference>
       )
     }
     return (
       <Preference>
-        <p>popnetwork is not currently the default torrent app.</p>
-        <RaisedButton
-          className='control'
-          onClick={this.handleSetDefaultApp}
-          label='Make popnetwork the default'
-        />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ fontSize: 12 }}>Popnetwork is not currently the default torrent app.</div>
+          <CustomButton
+            label="Make POP Network the default Torrent App"
+            onClick={this.handleSetDefaultApp}
+            style={{ background: 'transparent', fontSize: 12, border: '1px solid #9EA1C9', width: 257, height: 52, color: '#9EA1C9', marginLeft: 50, }}
+          />
+        </div>
       </Preference>
     )
   }
@@ -198,7 +204,7 @@ class PreferencesPage extends React.Component {
 
     return (
       <Preference>
-        <Checkbox
+        <CustomCheckBox
           className='control'
           checked={this.props.state.saved.prefs.startup}
           label='Open popnetwork on startup'
@@ -211,11 +217,12 @@ class PreferencesPage extends React.Component {
   soundNotificationsCheckbox () {
     return (
       <Preference>
-        <Checkbox
+        <CustomCheckBox
           className='control'
           checked={this.props.state.saved.prefs.soundNotifications}
           label='Enable sounds'
           onCheck={this.handleSoundNotificationsChange}
+          style={{ marginTop: 20 }}
         />
       </Preference>
     )
@@ -230,13 +237,9 @@ class PreferencesPage extends React.Component {
   }
 
   render () {
-    const style = {
-      color: colors.grey400,
-      marginLeft: 25,
-      marginRight: 25
-    }
     return (
-      <div style={style}>
+      <div className="preference-page">
+        <div className="content-title" style={{ marginBottom: 24 }}>Preferences</div>
         <PreferencesSection title='Folders'>
           {this.downloadPathSelector()}
           {this.autoAddTorrentsCheckbox()}
@@ -267,13 +270,9 @@ class PreferencesSection extends React.Component {
   }
 
   render () {
-    const style = {
-      marginBottom: 25,
-      marginTop: 25
-    }
     return (
-      <div style={style}>
-        <Heading level={2}>{this.props.title}</Heading>
+      <div className="item-wrapper">
+        <div className="item-title">{this.props.title}</div>
         {this.props.children}
       </div>
     )
@@ -282,8 +281,21 @@ class PreferencesSection extends React.Component {
 
 class Preference extends React.Component {
   render () {
-    const style = { marginBottom: 10 }
+    const style = { marginBottom: 3 }
     return (<div style={style}>{this.props.children}</div>)
+  }
+}
+
+class CustomCheckBox extends React.Component {
+  render () {
+    return (
+      <div className="custom-checkbox-wrapper" style={this.props.style}>
+        <div className="custom-checkbox" onClick={(event) => this.props.onCheck(event, !this.props.checked)}>
+          <img src={`${config.STATIC_PATH}/${!this.props.checked ? 'Checkbox.png' : 'CheckboxActive.png' }`} />
+        </div>
+        <span className="check-label">{this.props.label}</span>
+      </div>
+    )
   }
 }
 

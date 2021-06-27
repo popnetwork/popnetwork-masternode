@@ -268,6 +268,7 @@ function updateElectron () {
 }
 
 const dispatchHandlers = {
+  home: () => controllers.torrentList().showHome(),
   // Torrent list: creating, deleting, selecting torrents
   openTorrentFile: () => ipcRenderer.send('openTorrentFile'),
   openFiles: () => ipcRenderer.send('openFiles'), /* shows the open file dialog */
@@ -374,6 +375,7 @@ const dispatchHandlers = {
   // Wallet
   walletConnect: () => controllers.wallet().walletConnect(),
   stake: () => controllers.stake().show(),
+  stakeFirst: () => controllers.stake().showFirst(),
 
   // ActionCable
   connectActionCable: () => controllers.actionCable().connect(),

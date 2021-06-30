@@ -12,7 +12,7 @@ const { apiCreateRewardHistory } = require("../services/api");
 const remote = require("electron").remote;
 const { ethers } = require("ethers");
 
-const MIN_VALUE = 5000
+const MIN_VALUE = 50000
 
 module.exports = class StakeModal extends React.Component {
   constructor(props) {
@@ -63,7 +63,7 @@ module.exports = class StakeModal extends React.Component {
           console.log("Error Creating Stake History", e);
         }
       } else {
-        remote.dialog.showErrorBox("WalletConnect", err.toString());
+        dispatch('connectErrorDialog')
       }
     } else {
       dispatch('confirmDialog')
@@ -84,7 +84,7 @@ module.exports = class StakeModal extends React.Component {
           detail: detail,
         });
       } else {
-        remote.dialog.showErrorBox("WalletConnect", err.toString());
+        dispatch('connectErrorDialog')
       }
     }
   }
@@ -102,7 +102,7 @@ module.exports = class StakeModal extends React.Component {
         </div>
         <span className='content-title'>Stake POP</span>
         <div>Pending rewards will be initialized when you will Stake at least min. </div>
-        <div>150000 POP</div>
+        <div>{MIN_VALUE} POP</div>
         <div className="input-wrapper" style={{ marginBottom: 50 }}>
           <TextField
             value={value}
@@ -111,7 +111,7 @@ module.exports = class StakeModal extends React.Component {
             fullWidth
             type="number"
             floatingLabelText="Amount"
-            step={5000}
+            step={MIN_VALUE}
             min={MIN_VALUE}
             floatingLabelStyle={{ padding: '0px 25px', color: '#9EA1C9'  }}
             floatingLabelFocusStyle={{ padding: '10px 25px 0' }}

@@ -13,6 +13,7 @@ module.exports = class CreateIframCodeModal extends React.Component {
 
     this.state = {
       iframeContent: null,
+      copied: false
     }
 
     this.handleCopy = this.handleCopy.bind(this); 
@@ -40,10 +41,14 @@ module.exports = class CreateIframCodeModal extends React.Component {
       return;
   
     clipboard.writeText(iframeContent.trim());
+    this.setState({ copied: true })
+    setTimeout(() => {
+      this.setState({ copied: false })
+    }, 1000)
   }
 
   render () {
-    const { iframeContent } = this.state
+    const { iframeContent, copied } = this.state
 
     return (
       <div className='custom-modal create-magnet-modal' style={{ width: 678 }}>
@@ -64,6 +69,7 @@ module.exports = class CreateIframCodeModal extends React.Component {
             fullWidth
             inputStyle={{ width: '440px', borderRadius: '12px', background: '#1F202A', border: '1px solid #2A2D3B', padding: '4px 20px', color: '#ffffff' }}
           />
+          {copied && <div className="copy-notification">Copied</div>}
         </div>
         <div className="button-container">
           <CustomButton

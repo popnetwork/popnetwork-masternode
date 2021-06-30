@@ -3,9 +3,6 @@ const Bitfield = require('bitfield')
 const prettyBytes = require('prettier-bytes')
 const config = require('../../config')
 
-const Popover = require('material-ui/Popover').default
-const Menu = require('material-ui/Menu').default
-const MenuItem = require('material-ui/MenuItem').default
 const TorrentSummary = require('../lib/torrent-summary')
 const Playlist = require('../lib/playlist')
 const { dispatch, dispatcher } = require('../lib/dispatcher')
@@ -19,12 +16,6 @@ module.exports = class PlayVideoModal extends React.Component {
       moreAnchorEl: null,
       torrentSummary: null
     }
-
-    this.onMoreOpen = this.onMoreOpen.bind(this)
-    this.onMoreCancel = this.onMoreCancel.bind(this)
-    this.onIframeCode = this.onIframeCode.bind(this)
-    this.onMoreShare = this.onMoreShare.bind(this)
-    this.onMoreDelete = this.onMoreDelete.bind(this)
   }
 
   componentDidMount() {
@@ -45,36 +36,6 @@ module.exports = class PlayVideoModal extends React.Component {
     tag.pause()
     tag.src = ''
     tag.load()
-  }
-
-  onMoreOpen(event) {
-    event.preventDefault();
-
-    this.setState({
-      moreOpen: true,
-      moreAnchorEl: event.currentTarget,
-    });
-  };
-
-  onIframeCode(infoHash) {
-    this.onMoreCancel()
-    dispatch('createIframeDialog', infoHash)
-  }
-
-  onMoreShare() {
-    this.onMoreCancel()
-  }
-
-  onMoreDelete(infoHash) {
-    this.onMoreCancel()
-    dispatch('deleteTorrentDialog', infoHash, false)
-  }
-
-  onMoreCancel() {
-    this.setState({
-      moreOpen: false,
-      moreAnchorEl: null,
-    });
   }
 
   render () {
@@ -100,41 +61,6 @@ module.exports = class PlayVideoModal extends React.Component {
               {prog && <span className="peers">{`Peers: ${prog.numPeers}`}</span>}
               <div className="show">
                 <img src={`${config.STATIC_PATH}/Show.png`} />
-              </div>
-              <div className="more" onClick={this.onMoreOpen}>
-                <img src={`${config.STATIC_PATH}/More.png`} className="normal" />
-                <img src={`${config.STATIC_PATH}/MoreHover.png`} className="hover" />
-                <Popover
-                  open={this.state.moreOpen}
-                  anchorEl={this.state.moreAnchorEl}
-                  anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                  targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                  onRequestClose={() => this.setState({
-                    moreOpen: false,
-                  })}
-                  className="custom-dropdown"
-                >
-                  <Menu>
-                    <MenuItem
-                        onClick={() => this.onIframeCode(torrentSummary.infoHash)}
-                        className={`menu-item`}
-                        style={{ borderRadius: 12, fontSize: 12 }}
-                        primaryText="iFrame Code"
-                      />
-                      <MenuItem
-                        onClick={() => this.onMoreShare()}
-                        className={`menu-item`}
-                        style={{ borderRadius: 12, fontSize: 12 }}
-                        primaryText="Share"
-                      />
-                      <MenuItem
-                        onClick={() => this.onMoreDelete(torrentSummary.infoHash)}
-                        className={`menu-item`}
-                        style={{ borderRadius: 12, fontSize: 12 }}
-                        primaryText="Delete"
-                      />
-                  </Menu>
-                </Popover>
               </div>
               <div className="close-btn" onClick={dispatcher('exitModal')}>
                 <img src={`${config.STATIC_PATH}/Close.png`} />
@@ -310,7 +236,7 @@ function renderMedia (state) {
       }
 
       // As soon as we know the video dimensions, resize the window
-      dispatch('setDimensions', dimensions)
+      // dispatch('setDimensions', dimensions)
 
       // set audioTracks
       const tracks = []

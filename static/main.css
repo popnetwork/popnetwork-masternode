@@ -1477,6 +1477,16 @@ video::-webkit-media-text-track-container {
 .create-magnet-modal .input-wrapper {
   margin-top: 40px;
   margin-bottom: 30px;
+  position: relative;
+}
+
+.create-magnet-modal .input-wrapper .copy-notification {
+  position: absolute;
+  top: 7px;
+  right: 10px;
+  background: #B169F6;
+  padding: 6px;
+  border-radius: 12px;
 }
 
 .create-magnet-modal .input-wrapper .error-text {

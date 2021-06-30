@@ -241,6 +241,12 @@ function getMenuTemplate() {
             label: 'Developer',
             submenu: [
                 {
+                    label: 'Developer Tools',
+                    accelerator: process.platform === 'darwin' ?
+                        'Alt+Command+I' : 'Ctrl+Shift+I',
+                    click: () => windows.main.toggleDevTools()
+                },
+                {
                     label: 'Developers\' Wiki',
                     click: () => {
                         const shell = require('./shell')
@@ -249,10 +255,9 @@ function getMenuTemplate() {
                 },
                 {
                     label: 'POP Network Process',
-                    click: () => {
-                        const shell = require('./shell')
-                        shell.openExternal(config.GITHUB_URL_RELEASES)
-                    }
+                    accelerator: process.platform === 'darwin' ?
+                        'Alt+Command+P' : 'Ctrl+Shift+P',
+                    click: () => windows.popnetwork.toggleDevTools()
                 },
                 {
                     label: 'Contribute on GitHub',

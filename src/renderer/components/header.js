@@ -16,18 +16,24 @@ class Header extends React.Component {
   }
   
   render () {
-    const loc = this.props.state.location
+    const { wallet } = this.props.state
+
     return (
       <div className='header'> 
         <div className="home-icon">
           <img src={`${config.STATIC_PATH}/Home.png`} />
         </div>
         <div className="wallet-wrapper">
-          <CustomButton
-            label="Add Wallet"
-            onClick={this.onAddWallet}
-            img={`${config.STATIC_PATH}/Wallet.png`}
-          />
+          {(!!wallet && !!wallet.connected)
+            ?
+            <div className="connected">Connected</div>
+            :
+            <CustomButton
+              label="Add Wallet"
+              onClick={this.onAddWallet}
+              img={`${config.STATIC_PATH}/Wallet.png`}
+            />
+          }
           <div className="help-button">
             <img src={`${config.STATIC_PATH}/Help.png`} />
           </div>

@@ -28,7 +28,7 @@ module.exports = class CreateMagnetModal extends React.Component {
           <CustomButton
             label="Try again"
             onClick={dispatcher('exitModal')}
-            style={{ background: '#1F202A', boxShadow: '0px 50px 94px #0A0D11', width: 170, height: 52, marginRight: 25 }}
+            style={{ background: '#1F202A', boxShadow: '0px 50px 94px #0A0D11', width: 170, height: 52 }}
           />
         </div>
       </div>

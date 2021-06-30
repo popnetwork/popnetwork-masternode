@@ -38,7 +38,7 @@ module.exports = class DeleteTorrentModal extends React.Component {
             style={{ background: '#1F202A', boxShadow: '0px 50px 94px #0A0D11', width: 170, height: 52, marginRight: 25 }}
           />
           <CustomButton
-            label="Ok"
+            label="Yes"
             onClick={this.onDeleteTorrent}
             style={{ background: '#B169F6', boxShadow: '0px 50px 94px #0A0D11', width: 170, height: 52 }}
           />

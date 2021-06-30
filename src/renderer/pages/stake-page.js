@@ -26,17 +26,13 @@ class StakePage extends React.Component {
       wallet.stakedBalance.toString(),
       sConfig.POP_TOKEN_DECIMALS
     );
-    openDialog("pendingDlg").then((result) => {});
+    dispatch('confirmDialog')
     const [txid, err] = await EthProvider.wcPopChefWithdraw(
       wallet.connector,
       wallet.address,
       balance.toString()
     );
-    remote.BrowserWindow.getAllWindows().filter((b) => {
-      if (b.getTitle() == "PENDING") {
-        b.close();
-      }
-    });
+    dispatch('exitModal')
     if (!!txid) {
       nodeChannel.send({ type: "init_blocks" });
       const window = remote.BrowserWindow.getFocusedWindow();
@@ -44,7 +40,7 @@ class StakePage extends React.Component {
       remote.dialog.showMessageBox(window, {
         type: "info",
         buttons: ["OK"],
-        title: "WalletConnect",
+        title: "WalletConnect", 
         message: "Transaction created successfully.",
         detail: detail,
       });
@@ -60,22 +56,18 @@ class StakePage extends React.Component {
         console.log("Error Creating Unstake History", e);
       }
     } else {
-      remote.dialog.showErrorBox("WalletConnect", err.toString());
+      dispatch('connectErrorDialog')
     }
   }
 
   async claim(wallet, nodeChannel) {
-    openDialog("pendingDlg").then((result) => {});
+    dispatch('confirmDialog')
     const [txid, err] = await EthProvider.wcPopChefDeposit(
       wallet.connector,
       wallet.address,
       0
     );
-    remote.BrowserWindow.getAllWindows().filter((b) => {
-      if (b.getTitle() == "PENDING") {
-        b.close();
-      }
-    });
+    dispatch('exitModal')
     if (!!txid) {
       nodeChannel.send({ type: "init_blocks" });
       const window = remote.BrowserWindow.getFocusedWindow();
@@ -99,11 +91,13 @@ class StakePage extends React.Component {
         console.log("Error Creating Claim History", e);
       }
     } else {
-      remote.dialog.showErrorBox("WalletConnect", err.toString());
+      dispatch('connectErrorDialog')
     }
   }
   render() {
     const { wallet, nodeChannel } = this.state;
+
+    console.log('history', wallet.rewardHistories)
     return (
       <div className="stake-page">
         <div className="header-wrapper">

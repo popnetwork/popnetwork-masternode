@@ -18,7 +18,6 @@ const { dispatch, dispatcher } = require('../lib/dispatcher')
 const SORT_DATA = [
   { value: 1, text: 'Last Added' },
   { value: 2, text: 'TOP Seeds' },
-  { value: 3, text: 'Most profitable'}
 ]
 
 module.exports = class TorrentList extends React.Component {
@@ -27,7 +26,7 @@ module.exports = class TorrentList extends React.Component {
     this.state = {
       sort: SORT_DATA[0],
       selectedTorrents: [],
-      moreOpen: false,
+      openedPopoverId: null,
       moreAnchorEl: null,
     }
     this.onAddVideo = this.onAddVideo.bind(this)
@@ -39,7 +38,6 @@ module.exports = class TorrentList extends React.Component {
     this.onDeleteSeeding = this.onDeleteSeeding.bind(this)
     this.onMoreOpen = this.onMoreOpen.bind(this)
     this.onMoreCancel = this.onMoreCancel.bind(this)
-    this.onIframeCode = this.onIframeCode.bind(this)
     this.onMoreShare = this.onMoreShare.bind(this)
     this.onMoreDelete = this.onMoreDelete.bind(this)
   }
@@ -108,22 +106,18 @@ module.exports = class TorrentList extends React.Component {
     })
   }
 
-  onMoreOpen(event) {
+  onMoreOpen(event, infoHash) {
     event.preventDefault();
 
     this.setState({
-      moreOpen: true,
+      openedPopoverId: infoHash,
       moreAnchorEl: event.currentTarget,
     });
   };
 
-  onIframeCode(infoHash) {
+  onMoreShare(infoHash) {
     this.onMoreCancel()
     dispatch('createIframeDialog', infoHash)
-  }
-
-  onMoreShare() {
-    this.onMoreCancel()
   }
 
   onMoreDelete(infoHash) {
@@ -133,7 +127,7 @@ module.exports = class TorrentList extends React.Component {
 
   onMoreCancel() {
     this.setState({
-      moreOpen: false,
+      openedPopoverId: null,
       moreAnchorEl: null,
     });
   }
@@ -154,12 +148,27 @@ module.exports = class TorrentList extends React.Component {
         </div>
       )
     }
-    const torrents = state.saved.torrents
+    const torrents = state.saved.torrents.sort((a, b) => {
+      if (this.state.sort.value === 1) {
+        if (!a.fileModtimes || !b.fileModtimes)
+          return 0
+        if (a.fileModtimes.length === 0 || b.fileModtimes.length === 0)
+          return 0
+        return b.fileModtimes[0] - a.fileModtimes[0]
+      }
+      else {
+        let firstProgress = a.progress
+        let secondProgress = b.progress
+        if (!firstProgress || !secondProgress)
+          return 0
+
+        return secondProgress.numPeers - firstProgress.numPeers
+      }
+    })
     const torrentElems = torrents.map(
       (torrentSummary) => this.renderTorrent(torrentSummary)
     )
 
-    // console.log('torrents', state.saved.torrents)
     contents.push(...torrentElems)
     // TODO we don't show this panel for now
     // contents.push(
@@ -297,45 +306,39 @@ module.exports = class TorrentList extends React.Component {
         <>
           <div className="summary-header">
             <div className="summary-check" onClick={() => this.onSelectTorrent(torrentSummary)}>
-              <img src={`${config.STATIC_PATH}/${!selectedTorrents.find((torrent) => torrent.infoHash === torrentSummary.infoHash) ? 'Checkbox.png' : 'CheckboxActive.png' }`} />
+              <img src={`${config.STATIC_PATH}/${!selectedTorrents.find((torrent) => torrent.infoHash === infoHash) ? 'Checkbox.png' : 'CheckboxActive.png' }`} />
             </div>
             <div className="action-wrapper">
               {prog && <span className="peers">{`Peers: ${prog.numPeers}`}</span>}
               <div className="show">
                 <img src={`${config.STATIC_PATH}/${torrentSummary.private ? 'Hide.png' : 'Visibility.png'}`} />
               </div>
-              <div className="more" onClick={this.onMoreOpen}>
+              <div className="more" onClick={(event) => this.onMoreOpen(event, infoHash)}>
                 <img src={`${config.STATIC_PATH}/More.png`} className="normal" />
                 <img src={`${config.STATIC_PATH}/MoreHover.png`} className="hover" />
                 <Popover
-                  open={this.state.moreOpen}
+                  open={this.state.openedPopoverId === infoHash}
                   anchorEl={this.state.moreAnchorEl}
                   anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
                   targetOrigin={{horizontal: 'right', vertical: 'top'}}
                   onRequestClose={() => this.setState({
-                    moreOpen: false,
+                    openedPopoverId: null,
                   })}
                   className="custom-dropdown"
                 >
                   <Menu>
                     <MenuItem
-                        onClick={() => this.onIframeCode(torrentSummary.infoHash)}
-                        className={`menu-item`}
-                        style={{ borderRadius: 12, fontSize: 12 }}
-                        primaryText="iFrame Code"
-                      />
-                      <MenuItem
-                        onClick={() => this.onMoreShare()}
-                        className={`menu-item`}
-                        style={{ borderRadius: 12, fontSize: 12 }}
-                        primaryText="Share"
-                      />
-                      <MenuItem
-                        onClick={() => this.onMoreDelete(torrentSummary.infoHash)}
-                        className={`menu-item`}
-                        style={{ borderRadius: 12, fontSize: 12 }}
-                        primaryText="Delete"
-                      />
+                      onClick={() => this.onMoreShare(torrentSummary.infoHash)}
+                      className={`menu-item`}
+                      style={{ borderRadius: 12, fontSize: 12 }}
+                      primaryText="Share"
+                    />
+                    <MenuItem
+                      onClick={() => this.onMoreDelete(torrentSummary.infoHash)}
+                      className={`menu-item`}
+                      style={{ borderRadius: 12, fontSize: 12 }}
+                      primaryText="Delete"
+                    />
                   </Menu>
                 </Popover>
               </div>

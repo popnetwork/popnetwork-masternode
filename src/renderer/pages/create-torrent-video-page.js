@@ -2,6 +2,10 @@ const createTorrent = require('create-torrent')
 const path = require('path')
 const prettyBytes = require('prettier-bytes')
 const React = require('react')
+const mkdirp = require('mkdirp')
+const http = require('http')
+const captureFrame = require('capture-frame')
+const fs = require('fs')
 
 const config = require('../../config')
 
@@ -14,11 +18,19 @@ const Checkbox = require('material-ui/Checkbox').default
 
 const CreateTorrentErrorPage = require('../components/create-torrent-error-page')
 
+const msgNoSuitablePoster = 'Cannot generate a poster from any files in the torrent'
+
+const mediaExtensions = require('../lib/media-extensions')
+
 // Shows a basic UI to create a torrent, from an already-selected file or folder.
 // Includes a "Show Advanced..." button and more advanced UI.
 class CreateTorrentPage extends React.Component {
   constructor (props) {
     super(props)
+
+    this.state = {
+      thumbnailPath: null
+    }
 
     const state = this.props.state
     const info = state.location.current()
@@ -64,6 +76,26 @@ class CreateTorrentPage extends React.Component {
       trackers
     }
 
+    var _this = this
+
+    torrentPoster(files, function(err, buf, extension) {
+      if (err) return console.log('error generating poster: %o', err)
+          // save it for next time
+      mkdirp(config.POSTER_PATH, function(err) {
+          if (err) return console.log('error creating poster dir: %o', err)
+          const currentTime = new Date().getTime();
+          const thumbnailFileName = 'newTorrentImage' + currentTime + extension
+          const thumbnailFilePath = path.join(config.POSTER_PATH, thumbnailFileName)
+          fs.writeFile(thumbnailFilePath, buf, function(err) {
+            if (err) return console.log('error saving poster: %o', err)
+            console.log('success', thumbnailFilePath)
+            setTimeout(() => {
+              _this.setState({ thumbnailPath: thumbnailFilePath.replace(/\\/g, '/') })
+            }, 1000)
+          })
+      })
+  })
+
     // Create React event handlers only once
     this.handleSetIsPrivate = (_, isPrivate) => this.setState({ isPrivate })
     this.handleSetComment = (_, comment) => this.setState({ comment })
@@ -106,12 +138,11 @@ class CreateTorrentPage extends React.Component {
             </div>
             <div className="thumbnail-wrapper">
               <div className="title">Add thumbnail:</div>
-              <div className="dropzone">
-                <div className="icon-wrapper">
-                  <img src={`${config.STATIC_PATH}/Vector.png`} />
+              {this.state.thumbnailPath && (
+                <div className="dropzone">
+                  <img src={this.state.thumbnailPath} />
                 </div>
-                <div className="dropzone-title">Drag & Drop MP4, torrent file</div>
-              </div>
+              )}
             </div>
             <div className="divider"></div>
           </div>
@@ -270,6 +301,169 @@ function findCommonPrefix (a, b) {
 function containsDots (path, pathPrefix) {
   const suffix = path.substring(pathPrefix.length).replace(/\\/g, '/')
   return ('/' + suffix).includes('/.')
+}
+
+function torrentPoster(files, cb) {
+  // First, try to use a poster image if available
+  const posterFile = files.filter(function (file) {
+    return /^poster\.(jpg|png|gif)$/.test(file.name)
+  })[0]
+  if (posterFile) return extractPoster(posterFile, cb)
+
+  // 'score' each media type based on total size present in torrent
+  const bestScore = ['audio', 'video', 'image'].map(mediaType => {
+    return {
+      type: mediaType,
+      size: calculateDataLengthByExtension(files, mediaExtensions[mediaType])
+    }
+  }).sort((a, b) => { // sort descending on size
+    return b.size - a.size
+  })[0]
+
+  if (bestScore.size === 0) {
+    // Admit defeat, no video, audio or image had a significant presence
+    return cb(new Error(msgNoSuitablePoster))
+  }
+
+  // Based on which media type is dominant we select the corresponding poster function
+  switch (bestScore.type) {
+    case 'audio':
+      return torrentPosterFromAudio(files, cb)
+    case 'image':
+      return torrentPosterFromImage(files, cb)
+    case 'video':
+      return torrentPosterFromVideo(files, cb)
+  }
+}
+
+function calculateDataLengthByExtension (files, extensions) {
+  const convertedFiles = filterOnExtension(files, extensions)
+  if (convertedFiles.length === 0) return 0
+  return convertedFiles
+    .map(file => file.size)
+    .reduce((a, b) => {
+      return a + b
+    })
+}
+
+function filterOnExtension (files, extensions) {
+  return files.filter(file => {
+    const extname = path.extname(file.name).toLowerCase()
+    return extensions.indexOf(extname) !== -1
+  })
+}
+
+function torrentPosterFromAudio (files, cb) {
+  const imageFiles = filterOnExtension(files, mediaExtensions.image)
+
+  if (imageFiles.length === 0) return cb(new Error(msgNoSuitablePoster))
+
+  const bestCover = imageFiles.map(file => {
+    return {
+      file: file,
+      score: scoreAudioCoverFile(file)
+    }
+  }).reduce((a, b) => {
+    if (a.score > b.score) {
+      return a
+    }
+    if (b.score > a.score) {
+      return b
+    }
+    // If score is equal, pick the largest file, aiming for highest resolution
+    if (a.file.length > b.file.length) {
+      return a
+    }
+    return b
+  })
+
+  const extname = path.extname(bestCover.file.name)
+  bestCover.file.getBuffer((err, buf) => cb(err, buf, extname))
+}
+
+function scoreAudioCoverFile (imgFile) {
+  const fileName = path.basename(imgFile.name, path.extname(imgFile.name)).toLowerCase()
+  const relevanceScore = {
+    cover: 80,
+    folder: 80,
+    album: 80,
+    front: 80,
+    back: 20,
+    spectrogram: -80
+  }
+
+  for (const keyword in relevanceScore) {
+    if (fileName === keyword) {
+      return relevanceScore[keyword]
+    }
+    if (fileName.indexOf(keyword) !== -1) {
+      return relevanceScore[keyword]
+    }
+  }
+  return 0
+}
+
+function torrentPosterFromImage (files, cb) {
+  const file = getLargestFileByExtension(files, mediaExtensions.image)
+  extractPoster(file, cb)
+}
+
+function getLargestFileByExtension (files, extensions) {
+  const convertedFiles = filterOnExtension(files, extensions)
+  if (convertedFiles.length === 0) return undefined
+  return convertedFiles.reduce((a, b) => {
+    return a.length > b.length ? a : b
+  })
+}
+
+function torrentPosterFromVideo (files, cb) {
+  const file = getLargestFileByExtension(files, mediaExtensions.video)
+  const server = http.createServer((req, res) => {
+    res.writeHead(200, {
+      'Content-Type': 'text/vtt;charset=utf-8',
+      'Access-Control-Allow-Origin': '*',
+      'Transfer-Encoding': 'chunked'
+    })
+    server.close()
+  }).listen(0, onListening)
+
+  function onListening () {
+    const port = server.address().port
+    const url = 'http://localhost:' + port + '/'
+    const video = document.createElement('video')
+    video.addEventListener('canplay', onCanPlay)
+
+    video.volume = 0
+    video.src = file.path;
+    video.play()
+
+    function onCanPlay () {
+      video.removeEventListener('canplay', onCanPlay)
+      video.addEventListener('seeked', onSeeked)
+
+      video.currentTime = Math.min((video.duration || 600) * 0.03, 60)
+    }
+
+    function onSeeked () {
+      video.removeEventListener('seeked', onSeeked)
+
+      const buf = captureFrame(video)
+
+      // unload video element
+      video.pause()
+      video.src = ''
+      video.load()
+
+      if (buf.length === 0) return cb(new Error(msgNoSuitablePoster))
+
+      cb(null, buf, '.jpg')
+    }
+  }
+}
+
+function extractPoster (file, cb) {
+  const extname = path.extname(file.name)
+  file.getBuffer((err, buf) => { return cb(err, buf, extname) })
 }
 
 module.exports = CreateTorrentPage

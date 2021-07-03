@@ -246,13 +246,13 @@ function getMenuTemplate() {
                         'Alt+Command+I' : 'Ctrl+Shift+I',
                     click: () => windows.main.toggleDevTools()
                 },
-                {
-                    label: 'Developers\' Wiki',
-                    click: () => {
-                        const shell = require('./shell')
-                        shell.openExternal(config.HOME_PAGE_URL)
-                    }
-                },
+                // {
+                //     label: 'Developers\' Wiki',
+                //     click: () => {
+                //         const shell = require('./shell')
+                //         shell.openExternal(config.HOME_PAGE_URL)
+                //     }
+                // },
                 {
                     label: 'POP Network Process',
                     accelerator: process.platform === 'darwin' ?

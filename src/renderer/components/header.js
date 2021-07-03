@@ -9,10 +9,15 @@ class Header extends React.Component {
   constructor (props) {
     super(props)
     this.onAddWallet = this.onAddWallet.bind(this)
+    this.onSetting = this.onSetting.bind(this)
   }
 
   onAddWallet() {
     dispatch('connectWalletDialog')
+  }
+
+  onSetting() {
+    dispatch('preferences')
   }
   
   render () {
@@ -37,7 +42,7 @@ class Header extends React.Component {
           <div className="help-button">
             <img src={`${config.STATIC_PATH}/Help.png`} />
           </div>
-          <div className="setting-button">
+          <div className="setting-button" onClick={this.onSetting}>
             <img src={`${config.STATIC_PATH}/Settings.png`} />
           </div>
         </div>

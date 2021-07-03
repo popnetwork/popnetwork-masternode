@@ -1588,6 +1588,10 @@ video::-webkit-media-text-track-container {
   margin-right: 40px;
 }
 
+.video-model .tool-bar .video-information .peers {
+  color: #9EA1C9;
+}
+
 .video-model .tool-bar .video-information .status-wrapper .torrent-status {
   color: #9EA1C9;
 }
@@ -1597,20 +1601,24 @@ video::-webkit-media-text-track-container {
   margin-right: 30px;
 }
 
-.video-model .tool-bar .video-information .more .normal {
-  display: block;
+.video-model.full-screen {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
 }
 
-.video-model .tool-bar .video-information .more .hover {
+.video-model.full-screen .tool-bar {
   display: none;
 }
 
-.video-model .tool-bar .video-information .more:hover .normal {
-  display: none;
+.video-model.full-screen .player {
+  width: 100%;
+  height: 100%;
 }
 
-.video-model .tool-bar .video-information .more:hover .hover {
-  display: block;
+.video-model.full-screen .player .controls {
+  position: fixed;
+  bottom: 0;
 }
 
 .custom-dropdown {
@@ -1645,7 +1653,6 @@ video::-webkit-media-text-track-container {
 
 .create-torrent-video {
   width: 1144px;
-  height: 891px;
   background: linear-gradient(220.96deg, #212333 33.33%, rgba(30, 31, 41, 0.42) 76.76%);
   border: 1px solid #2A2D3B;
   box-sizing: border-box;
@@ -1721,13 +1728,15 @@ video::-webkit-media-text-track-container {
 }
 
 .create-torrent-video .left-container .thumbnail-wrapper .dropzone {
-  border: 1px dashed #B169F6;
-  border-radius: 12px;
-  height: 192px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+.create-torrent-video .left-container .thumbnail-wrapper .dropzone img {
+  width: 100%;
+  border-radius: 12px;
 }
 
 .create-torrent-video .left-container .thumbnail-wrapper .icon-wrapper {
@@ -2041,7 +2050,6 @@ video::-webkit-media-text-track-container {
 @media screen and (max-width:1440px) {
   .create-torrent-video {
     width: 1000px;
-    height: 891px;
   }
   .stake-first-page {
     width: 910px;

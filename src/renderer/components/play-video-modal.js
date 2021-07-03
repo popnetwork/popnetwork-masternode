@@ -46,12 +46,12 @@ module.exports = class PlayVideoModal extends React.Component {
     const prog = torrentSummary ? torrentSummary.progress : null
 
     return (
-      <div className='custom-modal video-model'>
+      <div className={`custom-modal video-model ${state.window.isFullScreen ? 'full-screen' : null}`}>
         {torrentSummary && (
           <div className="tool-bar">
             <div className="video-title">
               <span className="name">{torrentSummary.title || torrentSummary.name || 'Loading torrent...'}</span>
-              <span className="size">{`: ${prog ? prettyBytes(prog.length || 0) : ''}`}</span>
+              <span className="size">{` ${prog ? prettyBytes(prog.length || 0) : ''}`}</span>
             </div>
             <div className="video-information">
               <div className="status-wrapper">

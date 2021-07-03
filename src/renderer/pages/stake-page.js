@@ -204,16 +204,14 @@ function getFullDateTime(datetime) {
   const dateObj = new Date(datetime);
   const date =
     dateObj.getFullYear() +
-    "-" +
-    (dateObj.getMonth() + 1) +
-    "-" +
-    dateObj.getDate();
+    "." +
+    String(dateObj.getMonth() + 1).padStart(2, '0') +
+    "." +
+    String(dateObj.getDate()).padStart(2, '0');
   const time =
-    dateObj.getHours() +
+    String(dateObj.getHours()).padStart(2, '0') +
     ":" +
-    dateObj.getMinutes() +
-    ":" +
-    dateObj.getSeconds();
+    String(dateObj.getMinutes()).padStart(2, '0')
   return date + " " + time;
 }
 class StakeSection extends React.Component {

@@ -1,20 +1,22 @@
 const React = require("react");
-const PropTypes = require("prop-types");
 
 const config = require("../../config");
 const CustomButton = require("../components/custom-button");
 
 const { dispatch } = require("../lib/dispatcher");
 const sConfig = require("../../sconfig");
-const { openDialog } = require("electron-custom-dialog");
 const EthProvider = require("../services/eth/eth-provider");
 const { apiCreateRewardHistory } = require("../services/api");
 const remote = require("electron").remote;
 const { ethers } = require("ethers");
+const shell = require('../../main/shell')
+
 class StakePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = props.state;
+
+    this.onTransaction = this.onTransaction.bind(this)
   }
 
   async stake(wallet, nodeChannel) {
@@ -49,7 +51,8 @@ class StakePage extends React.Component {
           wallet.token,
           wallet.address,
           "Unstake",
-          parseFloat(wallet.stakedBalance.toString())
+          parseFloat(wallet.stakedBalance.toString()),
+          txid
         );
         wallet.rewardHistories.push(response);
       } catch (e) {
@@ -84,7 +87,8 @@ class StakePage extends React.Component {
           wallet.token,
           wallet.address,
           "Claim",
-          parseFloat(wallet.claimableRewards.toString())
+          parseFloat(wallet.claimableRewards.toString()),
+          txid
         );
         wallet.rewardHistories.push(response);
       } catch (e) {
@@ -94,10 +98,14 @@ class StakePage extends React.Component {
       dispatch('connectErrorDialog')
     }
   }
+
+  onTransaction(url) {
+    shell.openExternal(url)
+  }
+
   render() {
     const { wallet, nodeChannel } = this.state;
 
-    console.log('history', wallet.rewardHistories)
     return (
       <div className="stake-page">
         <div className="header-wrapper">
@@ -185,7 +193,7 @@ class StakePage extends React.Component {
                   </div>
                 </div>
                 <div className="arrow">
-                  <div className="arrow-button">
+                  <div className="arrow-button" onClick={() => this.onTransaction(`https://etherscan.io/tx/${rewardHistory.txid}`)}>
                     <img src={`${config.STATIC_PATH}/LeftArrow.png`} />
                   </div>
                 </div>
@@ -213,20 +221,6 @@ function getFullDateTime(datetime) {
     ":" +
     String(dateObj.getMinutes()).padStart(2, '0')
   return date + " " + time;
-}
-class StakeSection extends React.Component {
-  static get propTypes() {
-    return {
-      title: PropTypes.string,
-    };
-  }
-
-  render() {
-    const style = {
-      marginBottom: 25,
-    };
-    return <div style={style}>{this.props.children}</div>;
-  }
 }
 
 module.exports = StakePage;

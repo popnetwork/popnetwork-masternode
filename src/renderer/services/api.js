@@ -4,12 +4,13 @@ module.exports = {
   apiGetTorrents,
   apiGetRewardHistories,
   apiCreateRewardHistory,
+  apiGetStakeConfig
 }
   
 const axios = require('axios');
 
 const api = axios.create({
-  baseURL: config.API_BASE_URL,
+  baseURL: config.DEV_API_BASE_URL,
   timeout: 30000, // 30 secs
   headers: {
     Accept: "application/json",
@@ -30,14 +31,21 @@ async function apiGetRewardHistories (address, token) {
   return data;
 }
 
-async function apiCreateRewardHistory (token, address, actionType, amount) {
+async function apiCreateRewardHistory (token, address, actionType, amount, txid) {
   const params = {
     token,
     address,
     action_type: actionType,
-    amount
+    amount,
+    txid,
   };
   const response = await api.post('/reward_histories', params);
+  const { data } = response.data;
+  return data;
+}
+
+async function apiGetStakeConfig() {
+  const response = await api.get(`/get_stake_config`);
   const { data } = response.data;
   return data;
 }

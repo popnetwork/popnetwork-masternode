@@ -53,6 +53,13 @@ module.exports = class WalletController {
 	this.fetchRewardHistories()
   }
 
+  walletDisconnect() {
+    this.state.saved.wallet.address = null;
+    this.state.saved.wallet.token = null;
+    dispatch('stateSaveImmediate');
+    this.killSession();
+  }
+
   checkWalletConnect () {
     const connector = new WalletConnect({
       bridge: "https://bridge.walletconnect.org",  // Required
@@ -237,6 +244,9 @@ module.exports = class WalletController {
       EthProvider.getStakedBalance(wallet.address).then(result => {
         this.state.wallet.stakedBalance = result;
       });
+
+      this.state.wallet.popBalance = 15
+      this.state.wallet.ethBalance = 12.0000000023
     }
   }
 

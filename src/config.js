@@ -58,6 +58,7 @@ module.exports = {
     GITHUB_URL_RAW: 'https://raw.githubusercontent.com/popnetwork/popnetwork-masternode/master',
     GITHUB_URL_RELEASES: 'https://github.com/popnetwork/popnetwork-masternode/releases',
     API_BASE_URL: 'https://masternode.popnet.work/api/v1',
+    DEV_API_BASE_URL: 'https://dev.popnet.work/api/v1/',
 
     HOME_PAGE_URL: 'https://thepopnetwork.org',
     HOME_PAGE_SHORTENED_URL: 'https://popnet.work',

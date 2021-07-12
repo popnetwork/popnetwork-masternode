@@ -139,6 +139,15 @@ module.exports = class TorrentController {
     dispatch('stateSave')
   }
 
+  torrentFileAddTimes (torrentKey, fileAddTimes) {
+    const torrentSummary = this.getTorrentSummary(torrentKey)
+    if (!torrentSummary) throw new Error('Not saving added times for deleted torrent ' + torrentKey)
+    if (!torrentSummary.fileAddTimes) {
+      torrentSummary.fileAddTimes = fileAddTimes
+      dispatch('stateSave')
+    }
+  }
+
   torrentFileSaved (torrentKey, torrentFileName) {
     console.log('torrent file saved %s: %s', torrentKey, torrentFileName)
     const torrentSummary = this.getTorrentSummary(torrentKey)

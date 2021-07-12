@@ -374,6 +374,7 @@ const dispatchHandlers = {
 
   // Wallet
   walletConnect: () => controllers.wallet().walletConnect(),
+  walletDisconnect: () => controllers.wallet().walletDisconnect(),
   stake: () => controllers.stake().show(),
   stakeFirst: () => controllers.stake().showFirst(),
 
@@ -433,6 +434,7 @@ function setupIpc () {
 
   ipcRenderer.on('pn-progress', (e, ...args) => tc.torrentProgress(...args))
   ipcRenderer.on('pn-file-modtimes', (e, ...args) => tc.torrentFileModtimes(...args))
+  ipcRenderer.on('pn-file-addtimes', (e, ...args) => tc.torrentFileAddTimes(...args))
   ipcRenderer.on('pn-file-saved', (e, ...args) => tc.torrentFileSaved(...args))
   ipcRenderer.on('pn-poster', (e, ...args) => tc.torrentPosterSaved(...args))
   ipcRenderer.on('pn-audio-metadata', (e, ...args) => tc.torrentAudioMetadata(...args))

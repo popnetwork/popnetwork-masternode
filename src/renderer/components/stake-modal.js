@@ -56,7 +56,8 @@ module.exports = class StakeModal extends React.Component {
             wallet.token,
             wallet.address,
             "Stake",
-            value
+            value,
+            txid
           );
           wallet.rewardHistories.push(response);
         } catch (e) {

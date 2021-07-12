@@ -1,13 +1,29 @@
 const React = require("react");
 
 const config = require("../../config");
+const { apiGetStakeConfig } = require('../services/api')
 const { dispatch, dispatcher } = require('../lib/dispatcher')
 const CustomButton = require("../components/custom-button");
 
 class StakePage extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      stakeConfig: {
+        apy: 0,
+        min_stake_amount: 0,
+      }
+    }
     this.onStake = this.onStake.bind(this)
+  }
+
+  componentDidMount() {
+    this.getStakeConfig()
+  }
+
+  async getStakeConfig() {
+    const config = await apiGetStakeConfig()
+    this.setState({ stakeConfig: config })
   }
 
   onStake() {
@@ -30,15 +46,15 @@ class StakePage extends React.Component {
             <div className="content-wrapper">
               <div className="content-item">
                 <div className="type">APR</div>
-                <div className="value">20%</div>
+                <div className="value">{this.state.stakeConfig.apy}</div>
               </div>
-              <div className="content-item">
+              {/* <div className="content-item">
                 <div className="type">Potential earnings</div>
                 <div className="value">12376543.000000 POP</div>
-              </div>
+              </div> */}
               <div className="content-item">
                 <div className="type">Min. to Stake</div>
-                <div className="value">15000 POP</div>
+                <div className="value">{`${this.state.stakeConfig.min_stake_amount} POP`}</div>
               </div>
             </div>
             <div className="content-text">

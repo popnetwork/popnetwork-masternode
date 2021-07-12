@@ -30,7 +30,6 @@ module.exports = class TorrentList extends React.Component {
       moreAnchorEl: null,
     }
     this.onAddVideo = this.onAddVideo.bind(this)
-    this.onChangeSort = this.onChangeSort.bind(this)
     this.onSelectAll = this.onSelectAll.bind(this)
     this.onSelectTorrent = this.onSelectTorrent.bind(this)
     this.onPauseSeeding = this.onPauseSeeding.bind(this)
@@ -44,10 +43,6 @@ module.exports = class TorrentList extends React.Component {
 
   onAddVideo() {
     dispatch('createTorrentDialog')
-  }
-
-  onChangeSort(value) {
-
   }
 
   onSelectAll() {
@@ -150,11 +145,7 @@ module.exports = class TorrentList extends React.Component {
     }
     const torrents = state.saved.torrents.sort((a, b) => {
       if (this.state.sort.value === 1) {
-        if (!a.fileModtimes || !b.fileModtimes)
-          return 0
-        if (a.fileModtimes.length === 0 || b.fileModtimes.length === 0)
-          return 0
-        return b.fileModtimes[0] - a.fileModtimes[0]
+        return b.fileAddTimes - a.fileAddTimes
       }
       else {
         let firstProgress = a.progress

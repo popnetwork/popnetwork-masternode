@@ -69,7 +69,7 @@ module.exports = class CreateIframCodeModal extends React.Component {
             fullWidth
             inputStyle={{ width: '440px', borderRadius: '12px', background: '#1F202A', border: '1px solid #2A2D3B', padding: '4px 20px', color: '#ffffff' }}
           />
-          {copied && <div className="copy-notification">Copied</div>}
+          {copied && <div className="copy-notification">iFrame has been copied</div>}
         </div>
         <div className="button-container">
           <CustomButton

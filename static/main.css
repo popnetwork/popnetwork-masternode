@@ -849,7 +849,7 @@ body.drag .app::after {
 
 .player .letterbox {
   width: 100%;
-  /* height: 100%; */
+  height: 100%;
   display: flex;
   background-size: cover;
   background-position: center;
@@ -1309,6 +1309,11 @@ video::-webkit-media-text-track-container {
   display: block;
 }
 
+.custom-button .label-content {
+  display: flex;
+  flex-direction: column;
+}
+
 .content-title {
   font-weight: 600;
   font-size: 32px;
@@ -1482,11 +1487,10 @@ video::-webkit-media-text-track-container {
 
 .create-magnet-modal .input-wrapper .copy-notification {
   position: absolute;
-  top: 7px;
-  right: 10px;
-  background: #B169F6;
-  padding: 6px;
-  border-radius: 12px;
+  top: -23px;
+  right: 3px;
+  font-size: 10px;
+  color: #B169F6;
 }
 
 .create-magnet-modal .input-wrapper .error-text {
@@ -1633,6 +1637,13 @@ video::-webkit-media-text-track-container {
 .custom-dropdown .menu-item {
   color: #9EA1C9 !important;
   font-weight: 500 !important;
+}
+
+.custom-dropdown .menu-item .img-content {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #ffffff !important;
 }
 
 .custom-dropdown .menu-item.selected {

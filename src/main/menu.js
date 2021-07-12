@@ -224,26 +224,26 @@ function getMenuTemplate() {
             label: 'Preferences',
             click: () => windows.main.dispatch('preferences')
         },
-        {
-            label: 'Wallet',
-            submenu: [
-                {
-                    label: 'Stake',
-                    click: () => windows.main.dispatch('stakeFirst')
-                },
-                {
-                    label: 'WalletConnect',
-                    click: () => windows.main.dispatch('walletConnect')
-                },
-            ]
-        },
+        // {
+        //     label: 'Wallet',
+        //     submenu: [
+        //         {
+        //             label: 'Stake',
+        //             click: () => windows.main.dispatch('stakeFirst')
+        //         },
+        //         {
+        //             label: 'WalletConnect',
+        //             click: () => windows.main.dispatch('walletConnect')
+        //         },
+        //     ]
+        // },
         {
             label: 'Developer',
             submenu: [
                 {
                     label: 'Developer Tools',
-                    accelerator: process.platform === 'darwin' ?
-                        'Alt+Command+I' : 'Ctrl+Shift+I',
+                    // accelerator: process.platform === 'darwin' ?
+                    //     'Alt+Command+I' : 'Ctrl+Shift+I',
                     click: () => windows.main.toggleDevTools()
                 },
                 // {
@@ -255,8 +255,8 @@ function getMenuTemplate() {
                 // },
                 {
                     label: 'POP Network Process',
-                    accelerator: process.platform === 'darwin' ?
-                        'Alt+Command+P' : 'Ctrl+Shift+P',
+                    // accelerator: process.platform === 'darwin' ?
+                    //     'Alt+Command+P' : 'Ctrl+Shift+P',
                     click: () => windows.popnetwork.toggleDevTools()
                 },
                 {

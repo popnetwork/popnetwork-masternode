@@ -159,6 +159,7 @@ function addTorrentEvents(torrent) {
     function torrentMetadata() {
         const info = getTorrentInfo(torrent)
         ipc.send('pn-metadata', torrent.key, info)
+        ipc.send('pn-file-addtimes', torrent.key, Date.now())
 
         updateTorrentProgress()
     }

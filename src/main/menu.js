@@ -77,6 +77,8 @@ function getMenuItem(label) {
         }) : { enabled: false }
         if (menuItem) return menuItem
     }
+
+    return { enabled: false }
 }
 
 function getMenuTemplate() {
@@ -85,178 +87,19 @@ function getMenuTemplate() {
             label: 'Home',
             click: () => windows.main.dispatch('home')
         },
-        // {
-        //     label: 'View',
-        //     submenu: [{
-        //             label: 'Full Screen',
-        //             type: 'checkbox',
-        //             accelerator: process.platform === 'darwin' ?
-        //                 'Ctrl+Command+F' : 'F11',
-        //             click: () => windows.main.toggleFullScreen()
-        //         },
-        //         {
-        //             label: 'Float on Top',
-        //             type: 'checkbox',
-        //             click: () => windows.main.toggleAlwaysOnTop()
-        //         },
-        //         {
-        //             type: 'separator'
-        //         },
-        //         {
-        //             label: 'Go Back',
-        //             accelerator: 'Esc',
-        //             click: () => windows.main.dispatch('escapeBack')
-        //         },
-        //         {
-        //             type: 'separator'
-        //         },
-        //         {
-        //             label: 'Developer',
-        //             submenu: [{
-        //                     label: 'Developer Tools',
-        //                     accelerator: process.platform === 'darwin' ?
-        //                         'Alt+Command+I' : 'Ctrl+Shift+I',
-        //                     click: () => windows.main.toggleDevTools()
-        //                 },
-        //                 {
-        //                     label: 'Show POP Network Process',
-        //                     accelerator: process.platform === 'darwin' ?
-        //                         'Alt+Command+P' : 'Ctrl+Shift+P',
-        //                     click: () => windows.popnetwork.toggleDevTools()
-        //                 }
-        //             ]
-        //         }
-        //     ]
-        // },
-        // {
-        //     label: 'Playback',
-        //     submenu: [{
-        //             label: 'Play/Pause',
-        //             accelerator: 'Space',
-        //             click: () => windows.main.dispatch('playPause'),
-        //             enabled: false
-        //         },
-        //         {
-        //             type: 'separator'
-        //         },
-        //         {
-        //             label: 'Skip Next',
-        //             accelerator: 'N',
-        //             click: () => windows.main.dispatch('nextTrack'),
-        //             enabled: false
-        //         },
-        //         {
-        //             label: 'Skip Previous',
-        //             accelerator: 'P',
-        //             click: () => windows.main.dispatch('previousTrack'),
-        //             enabled: false
-        //         },
-        //         {
-        //             type: 'separator'
-        //         },
-        //         {
-        //             label: 'Increase Volume',
-        //             accelerator: 'CmdOrCtrl+Up',
-        //             click: () => windows.main.dispatch('changeVolume', 0.1),
-        //             enabled: false
-        //         },
-        //         {
-        //             label: 'Decrease Volume',
-        //             accelerator: 'CmdOrCtrl+Down',
-        //             click: () => windows.main.dispatch('changeVolume', -0.1),
-        //             enabled: false
-        //         },
-        //         {
-        //             type: 'separator'
-        //         },
-        //         {
-        //             label: 'Step Forward',
-        //             accelerator: process.platform === 'darwin' ?
-        //                 'CmdOrCtrl+Alt+Right' : 'Alt+Right',
-        //             click: () => windows.main.dispatch('skip', 10),
-        //             enabled: false
-        //         },
-        //         {
-        //             label: 'Step Backward',
-        //             accelerator: process.platform === 'darwin' ?
-        //                 'CmdOrCtrl+Alt+Left' : 'Alt+Left',
-        //             click: () => windows.main.dispatch('skip', -10),
-        //             enabled: false
-        //         },
-        //         {
-        //             type: 'separator'
-        //         },
-        //         {
-        //             label: 'Increase Speed',
-        //             accelerator: 'CmdOrCtrl+=',
-        //             click: () => windows.main.dispatch('changePlaybackRate', 1),
-        //             enabled: false
-        //         },
-        //         {
-        //             label: 'Decrease Speed',
-        //             accelerator: 'CmdOrCtrl+-',
-        //             click: () => windows.main.dispatch('changePlaybackRate', -1),
-        //             enabled: false
-        //         },
-        //         {
-        //             type: 'separator'
-        //         },
-        //         {
-        //             label: 'Add Subtitles File...',
-        //             click: () => windows.main.dispatch('openSubtitles'),
-        //             enabled: false
-        //         }
-        //     ]
-        // },
-        // {
-        //     label: 'Transfers',
-        //     submenu: [{
-        //             label: 'Pause All',
-        //             click: () => windows.main.dispatch('pauseAllTorrents')
-        //         },
-        //         {
-        //             label: 'Resume All',
-        //             click: () => windows.main.dispatch('resumeAllTorrents')
-        //         }
-        //     ]
-        // },
         {
             label: 'Preferences',
-            click: () => windows.main.dispatch('preferences')
+            click: () => windows.main.dispatch('preferences'),
         },
-        // {
-        //     label: 'Wallet',
-        //     submenu: [
-        //         {
-        //             label: 'Stake',
-        //             click: () => windows.main.dispatch('stakeFirst')
-        //         },
-        //         {
-        //             label: 'WalletConnect',
-        //             click: () => windows.main.dispatch('walletConnect')
-        //         },
-        //     ]
-        // },
         {
             label: 'Developer',
             submenu: [
                 {
                     label: 'Developer Tools',
-                    // accelerator: process.platform === 'darwin' ?
-                    //     'Alt+Command+I' : 'Ctrl+Shift+I',
                     click: () => windows.main.toggleDevTools()
                 },
-                // {
-                //     label: 'Developers\' Wiki',
-                //     click: () => {
-                //         const shell = require('./shell')
-                //         shell.openExternal(config.HOME_PAGE_URL)
-                //     }
-                // },
                 {
                     label: 'POP Network Process',
-                    // accelerator: process.platform === 'darwin' ?
-                    //     'Alt+Command+P' : 'Ctrl+Shift+P',
                     click: () => windows.popnetwork.toggleDevTools()
                 },
                 {
@@ -299,6 +142,36 @@ function getMenuTemplate() {
 
     if (process.platform === 'darwin') {
         // popnetwork menu (Mac)
+        template.splice(0, 1, {
+            label: 'Home',
+            submenu: [
+                {
+                    label: 'Home',
+                    click: () => windows.main.dispatch('home')
+                }
+            ]
+        })
+        template.splice(1, 1, {
+            label: 'Preferences',
+            submenu: [
+                {
+                    label: 'Preferences',
+                    click: () => windows.main.dispatch('preferences'),
+                }
+            ]
+        })
+        template.splice(4, 1, {
+            label: 'About ' + config.APP_NAME,
+            submenu: [
+                {
+                    label: 'About ' + config.APP_NAME,
+                    click: () => {
+                        const dialog = require('./dialog')
+                        dialog.openAbout()
+                    }
+                }
+            ]
+        })
     }
 
     // On Windows and Linux, open dialogs do not support selecting both files and
@@ -310,10 +183,10 @@ function getMenuTemplate() {
     // missing will have a way to quit the app.
     if (process.platform === 'linux') {
         // File menu (Linux)
-        template[0].submenu.push({
-            label: 'Quit',
-            click: () => app.quit()
-        })
+        // template[0].submenu.push({
+        //     label: 'Quit',
+        //     click: () => app.quit()
+        // })
     }
 
     return template

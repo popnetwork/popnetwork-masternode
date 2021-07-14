@@ -76,7 +76,7 @@ module.exports = class CreateTorrentModal extends React.Component {
             <div className="open-item" onClick={this.onTorrentFileFromVideo}>
               <div className="item-wrapper">
                 <img src={`${config.STATIC_PATH}/MP4.png`} />
-                <span className="file-title">Open MP4 File</span>
+                <span className="file-title">Open MP4 Folder</span>
               </div>
               <img src={`${config.STATIC_PATH}/RightArrow.png`} />
             </div>

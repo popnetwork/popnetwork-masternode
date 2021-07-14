@@ -27,6 +27,7 @@ module.exports = class StakeModal extends React.Component {
 
   async onStake() {
     const { value } = this.state
+    if (value < MIN_VALUE) return
     const { wallet, nodeChannel } = this.props.state
     if (!!wallet.approval) {
       const balance = ethers.utils.parseUnits(

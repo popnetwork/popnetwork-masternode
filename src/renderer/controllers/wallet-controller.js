@@ -268,6 +268,9 @@ module.exports = class WalletController {
     wallet.token = null;
     wallet.accounts = [];
     wallet.rewardHistories = [];
+    wallet.popBalance = new BigNumber(0);
+    wallet.ethBalance = 0;
+    wallet.showWarning = true
     
     this.state.wallet = wallet;
   }

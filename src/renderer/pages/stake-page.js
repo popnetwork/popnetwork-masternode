@@ -105,6 +105,7 @@ class StakePage extends React.Component {
 
   render() {
     const { wallet, nodeChannel } = this.state;
+    const history = [...wallet.rewardHistories]
 
     return (
       <div className="stake-page">
@@ -138,7 +139,7 @@ class StakePage extends React.Component {
               onClick={() => this.claim(wallet, nodeChannel)}
               disabled={wallet.claimableRewards == 0 ? true : false}
               style={{
-                background: "#B169F6",
+                background: "#2A2D3B",
                 width: 150,
                 height: 40,
               }}
@@ -175,7 +176,7 @@ class StakePage extends React.Component {
             <img src={`${config.STATIC_PATH}/TicketStar.png`} />
           </div>
           <div className="title">Reward History</div>
-          {wallet.rewardHistories.map((rewardHistory, index) => (
+          {history.reverse().map((rewardHistory, index) => (
             <div className="reward-wrapper" key={index}>
               <div className="reward-item type">
                 <div className="text">Type</div>

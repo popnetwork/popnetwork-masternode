@@ -2051,6 +2051,14 @@ video::-webkit-media-text-track-container {
   margin-left: 35px;
 }
 
+#walletconnect-wrapper {
+  background: rgba(37, 41, 46, 0.95) !important;
+}
+
+#walletconnect-qrcode-modal {
+  background: unset !important;
+}
+
 @media screen and (min-width:1441px) {
   .app {
     padding-left: 90px;

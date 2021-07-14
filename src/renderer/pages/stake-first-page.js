@@ -12,9 +12,10 @@ class StakePage extends React.Component {
       stakeConfig: {
         apy: 0,
         min_stake_amount: 0,
-      }
+      },
     }
     this.onStake = this.onStake.bind(this)
+    this.onHideWarning = this.onHideWarning.bind(this)
   }
 
   componentDidMount() {
@@ -30,15 +31,22 @@ class StakePage extends React.Component {
     dispatch('stake')
   }
 
+  onHideWarning() {
+    this.props.state.wallet.showWarning = false
+  }
+
   render() {
+    const { wallet } = this.props.state
     return (
       <div className="stake-first-page">
-        <div className="header-content">
-          <div className="text">Warning: Pending ewwards will be initialized when you Stake/Claim/Unstake POP</div>
-          <div className="close-btn">
-            <img src={`${config.STATIC_PATH}/Close.png`} />
+        {wallet.showWarning && (
+          <div className="header-content">
+            <div className="text">Warning: Pending ewwards will be initialized when you Stake/Claim/Unstake POP</div>
+            <div className="close-btn" onClick={this.onHideWarning}>
+              <img src={`${config.STATIC_PATH}/Close.png`} />
+            </div>
           </div>
-        </div>
+        )}
         <div className="page-container">
           <div className="main-content">
             <div className="content-title">Staking POP</div>
@@ -48,10 +56,6 @@ class StakePage extends React.Component {
                 <div className="type">APR</div>
                 <div className="value">{this.state.stakeConfig.apy}</div>
               </div>
-              {/* <div className="content-item">
-                <div className="type">Potential earnings</div>
-                <div className="value">12376543.000000 POP</div>
-              </div> */}
               <div className="content-item">
                 <div className="type">Min. to Stake</div>
                 <div className="value">{`${this.state.stakeConfig.min_stake_amount} POP`}</div>

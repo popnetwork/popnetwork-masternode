@@ -38,7 +38,7 @@ class StakePage extends React.Component {
     if (!!txid) {
       nodeChannel.send({ type: "init_blocks" });
       const window = remote.BrowserWindow.getFocusedWindow();
-      const detail = "https://etherscan.io/tx/" + txid;
+      const detail = sConfig.ETHERSCAN_URL + "/tx/" + txid;
       remote.dialog.showMessageBox(window, {
         type: "info",
         buttons: ["OK"],
@@ -74,7 +74,7 @@ class StakePage extends React.Component {
     if (!!txid) {
       nodeChannel.send({ type: "init_blocks" });
       const window = remote.BrowserWindow.getFocusedWindow();
-      const detail = "https://etherscan.io/tx/" + txid;
+      const detail = sConfig.ETHERSCAN_URL + "/tx/" + txid;
       remote.dialog.showMessageBox(window, {
         type: "info",
         buttons: ["OK"],
@@ -194,7 +194,7 @@ class StakePage extends React.Component {
                   </div>
                 </div>
                 <div className="arrow">
-                  <div className="arrow-button" onClick={() => this.onTransaction(`https://etherscan.io/tx/${rewardHistory.txid}`)}>
+                  <div className="arrow-button" onClick={() => this.onTransaction(`${sConfig.ETHERSCAN_URL}/tx/${rewardHistory.txid}`)}>
                     <img src={`${config.STATIC_PATH}/LeftArrow.png`} />
                   </div>
                 </div>

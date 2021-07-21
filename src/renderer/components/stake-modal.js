@@ -44,7 +44,7 @@ module.exports = class StakeModal extends React.Component {
       if (!!txid) {
         nodeChannel.send({ type: "init_blocks" });
         const window = remote.BrowserWindow.getFocusedWindow();
-        const detail = "https://etherscan.io/tx/" + txid;
+        const detail = sConfig.ETHERSCAN_URL + "/tx/" + txid;
         remote.dialog.showMessageBox(window, {
           type: "info",
           buttons: ["OK"],
@@ -77,7 +77,7 @@ module.exports = class StakeModal extends React.Component {
       dispatch('exitModal')
       if (!!txid) {
         const window = remote.BrowserWindow.getFocusedWindow();
-        const detail = "https://etherscan.io/tx/" + txid;
+        const detail = sConfig.ETHERSCAN_URL + "/tx/" + txid;
         remote.dialog.showMessageBox(window, {
           type: "info",
           buttons: ["OK"],

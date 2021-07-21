@@ -75,8 +75,8 @@ class Header extends React.Component {
                 style={{ marginRight: 16 }}
               />
               <StakeButton
-                label={`${wallet.popBalance.toFixed(6)} POP`}
-                description={`${wallet.ethBalance} ETH`}
+                label={`${wallet.balance.toFixed(6)} POP`}
+                description={`${wallet.ethBalance.toFixed(6)} ETH`}
                 onClick={(event) => this.onPopup(event)}
                 img={`${config.STATIC_PATH}/Wallet.png`}
                 style={{ width: 188 }}

@@ -37,15 +37,8 @@ class StakePage extends React.Component {
     dispatch('exitModal')
     if (!!txid) {
       nodeChannel.send({ type: "init_blocks" });
-      const window = remote.BrowserWindow.getFocusedWindow();
       const detail = sConfig.ETHERSCAN_URL + "/tx/" + txid;
-      remote.dialog.showMessageBox(window, {
-        type: "info",
-        buttons: ["OK"],
-        title: "WalletConnect", 
-        message: "Transaction created successfully.",
-        detail: detail,
-      });
+      dispatch('createTransactionDialog', detail)
       try {
         const response = await apiCreateRewardHistory(
           wallet.token,
@@ -73,15 +66,8 @@ class StakePage extends React.Component {
     dispatch('exitModal')
     if (!!txid) {
       nodeChannel.send({ type: "init_blocks" });
-      const window = remote.BrowserWindow.getFocusedWindow();
       const detail = sConfig.ETHERSCAN_URL + "/tx/" + txid;
-      remote.dialog.showMessageBox(window, {
-        type: "info",
-        buttons: ["OK"],
-        title: "WalletConnect",
-        message: "Transaction created successfully.",
-        detail: detail,
-      });
+      dispatch('createTransactionDialog', detail)
       try {
         const response = await apiCreateRewardHistory(
           wallet.token,

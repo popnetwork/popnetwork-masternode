@@ -394,6 +394,7 @@ const dispatchHandlers = {
   confirmDialog: () => { state.modal = { id: 'confirm-modal' } },
   connectErrorDialog: () => { state.modal = { id: 'connect-error-modal' } },
   stakeDialog: (wallet, nodeChannel) => { state.modal = { id: 'stake-modal', wallet, nodeChannel } },
+  createTransactionDialog: (detail) => { state.modal = { id: 'create-transaction-modal', detail } },
 }
 
 // Events from the UI never modify state directly. Instead they call dispatch()

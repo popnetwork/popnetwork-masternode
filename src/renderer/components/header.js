@@ -50,6 +50,7 @@ class Header extends React.Component {
       openedPopover: false,
       moreAnchorEl: null,
     });
+    dispatch('home')
   }
 
   onSetting() {

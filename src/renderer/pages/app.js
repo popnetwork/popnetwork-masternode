@@ -39,6 +39,7 @@ const Modals = {
   'connect-error-modal': createGetter(() => require('../components/connect-error-modal')),
   'stake-modal': createGetter(() => require('../components/stake-modal')),
   'play-video-modal': createGetter(() => require('../components/play-video-modal')),
+  'create-transaction-modal': createGetter(() => require('../components/create-transaction-modal')),
 }
 
 const fontFamily = process.platform === 'win32'

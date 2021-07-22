@@ -189,7 +189,7 @@ module.exports = class TorrentList extends React.Component {
         {contents.length === 0
           ?
             <div className="empty-torrents">
-              <img src={`${config.STATIC_PATH}/EmptyTorrents.png`} className="empty-image" />
+              <img src={`${config.STATIC_PATH}/EmptyTorrents.png`} className="empty-image" draggable={false} />
               <div className="content-title">You don't have any videos yet.</div>
               <div className="gray-title">Share your video and earn real money from staking POP coin</div>
               <CustomButton

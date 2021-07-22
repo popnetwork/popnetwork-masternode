@@ -37,7 +37,7 @@ class StakePage extends React.Component {
     dispatch('exitModal')
     if (!!txid) {
       nodeChannel.send({ type: "init_blocks" });
-      const detail = "https://etherscan.io/tx/" + txid;
+      const detail = sConfig.ETHERSCAN_URL + "/tx/" + txid;
       dispatch('createTransactionDialog', detail)
       try {
         const response = await apiCreateRewardHistory(
@@ -66,7 +66,7 @@ class StakePage extends React.Component {
     dispatch('exitModal')
     if (!!txid) {
       nodeChannel.send({ type: "init_blocks" });
-      const detail = "https://etherscan.io/tx/" + txid;
+      const detail = sConfig.ETHERSCAN_URL + "/tx/" + txid;
       dispatch('createTransactionDialog', detail)
       try {
         const response = await apiCreateRewardHistory(
@@ -180,7 +180,7 @@ class StakePage extends React.Component {
                   </div>
                 </div>
                 <div className="arrow">
-                  <div className="arrow-button" onClick={() => this.onTransaction(`https://etherscan.io/tx/${rewardHistory.txid}`)}>
+                  <div className="arrow-button" onClick={() => this.onTransaction(`${sConfig.ETHERSCAN_URL}/tx/${rewardHistory.txid}`)}>
                     <img src={`${config.STATIC_PATH}/LeftArrow.png`} />
                   </div>
                 </div>

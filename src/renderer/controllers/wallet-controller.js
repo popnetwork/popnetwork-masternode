@@ -227,6 +227,9 @@ module.exports = class WalletController {
       });
     }
     if (!!wallet && !!wallet.connected) {
+      EthProvider.getEthBalance(wallet.address).then(result => {
+        this.state.wallet.ethBalance = result;
+      });
       EthProvider.getTokenBalance(wallet.address).then(result => {
         this.state.wallet.balance = result;
         EthProvider.getTokenAllowance(wallet.address, sConfig.STAKING_CONTRACT_ADDRESS, sConfig.POP_TOKEN_ADDRESS).then(result => {
@@ -244,9 +247,6 @@ module.exports = class WalletController {
       EthProvider.getStakedBalance(wallet.address).then(result => {
         this.state.wallet.stakedBalance = result;
       });
-
-      this.state.wallet.popBalance = 15
-      this.state.wallet.ethBalance = 12.0000000023
     }
   }
 
@@ -268,8 +268,7 @@ module.exports = class WalletController {
     wallet.token = null;
     wallet.accounts = [];
     wallet.rewardHistories = [];
-    wallet.popBalance = new BigNumber(0);
-    wallet.ethBalance = 0;
+    wallet.ethBalance = new BigNumber(0);
     wallet.showWarning = true
     
     this.state.wallet = wallet;

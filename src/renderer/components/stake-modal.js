@@ -43,8 +43,20 @@ module.exports = class StakeModal extends React.Component {
       dispatch('exitModal')
       if (!!txid) {
         nodeChannel.send({ type: "init_blocks" });
+<<<<<<< HEAD
         const detail = "https://etherscan.io/tx/" + txid;
         dispatch('createTransactionDialog', detail)
+=======
+        const window = remote.BrowserWindow.getFocusedWindow();
+        const detail = sConfig.ETHERSCAN_URL + "/tx/" + txid;
+        remote.dialog.showMessageBox(window, {
+          type: "info",
+          buttons: ["OK"],
+          title: "WalletConnect",
+          message: "Transaction created successfully.",
+          detail: detail,
+        });
+>>>>>>> 43116a5ccd752a20da48ee19ed43a873ac838fec
         try {
           const response = await apiCreateRewardHistory(
             wallet.token,
@@ -69,8 +81,20 @@ module.exports = class StakeModal extends React.Component {
       );
       dispatch('exitModal')
       if (!!txid) {
+<<<<<<< HEAD
         const detail = "https://etherscan.io/tx/" + txid;
         dispatch('createTransactionDialog', detail)
+=======
+        const window = remote.BrowserWindow.getFocusedWindow();
+        const detail = sConfig.ETHERSCAN_URL + "/tx/" + txid;
+        remote.dialog.showMessageBox(window, {
+          type: "info",
+          buttons: ["OK"],
+          title: "WalletConnect",
+          message: "Transaction created successfully.",
+          detail: detail,
+        });
+>>>>>>> 43116a5ccd752a20da48ee19ed43a873ac838fec
       } else {
         dispatch('connectErrorDialog')
       }

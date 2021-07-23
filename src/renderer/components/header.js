@@ -63,7 +63,7 @@ class Header extends React.Component {
     return (
       <div className='header'> 
         <div className="home-icon" onClick={this.onHome}>
-          <img src={`${config.STATIC_PATH}/Home.png`} />
+          <img src={`${config.STATIC_PATH}/Home.png`} draggable={false} />
         </div>
         <div className="wallet-wrapper">
           {(!!wallet && !!wallet.connected)
@@ -99,7 +99,7 @@ class Header extends React.Component {
                     style={{ borderRadius: 12, fontSize: 12 }}
                   >
                     <div className="img-content">
-                      <img src={`${config.STATIC_PATH}/Disconnect.png`} style={{ marginRight: 12 }} />
+                      <img src={`${config.STATIC_PATH}/Disconnect.png`} style={{ marginRight: 12 }} draggable={false} />
                       <span>Disconnect</span>
                     </div>
                   </MenuItem>
@@ -114,10 +114,10 @@ class Header extends React.Component {
             />
           }
           <div className="help-button">
-            <img src={`${config.STATIC_PATH}/Help.png`} />
+            <img src={`${config.STATIC_PATH}/Help.png`} draggable={false} />
           </div>
           <div className="setting-button" onClick={this.onSetting}>
-            <img src={`${config.STATIC_PATH}/Settings.png`} />
+            <img src={`${config.STATIC_PATH}/Settings.png`} draggable={false} />
           </div>
         </div>
       </div>
@@ -130,8 +130,8 @@ class StakeButton extends React.Component {
     const { label, description, onClick, style, className, img, hoverImg, disabled = false } = this.props
     return (
       <div className={`custom-button ${className}`} onClick={!disabled && onClick} style={style}>
-        {img && <img src={img} draggable="false" className={`${hoverImg ? 'normal' : null}`} />}
-        {hoverImg && <img src={hoverImg} className="hover" />}
+        {img && <img src={img} draggable={false} className={`${hoverImg ? 'normal' : null}`} />}
+        {hoverImg && <img src={hoverImg} className="hover" draggable={false} />}
         <div className="label-content">
           <span>{label}</span>
           <span style={{ fontSize: 10, color: '#7E8494' }}>{description}</span>

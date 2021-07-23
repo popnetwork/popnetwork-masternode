@@ -16,10 +16,10 @@ module.exports = class CreateMagnetModal extends React.Component {
     return (
       <div className='custom-modal create-magnet-modal' style={{ width: 678 }}>
         <div className="close-btn" onClick={dispatcher('exitModal')}>
-          <img src={`${config.STATIC_PATH}/Close.png`} />
+          <img src={`${config.STATIC_PATH}/Close.png`} draggable={false} />
         </div>
         <div className="icon-wrapper">
-          <img src={`${config.STATIC_PATH}/ShieldFail.png`} />
+          <img src={`${config.STATIC_PATH}/ShieldFail.png`} draggable={false} />
         </div>
         <span className='content-title'>Error</span>
         <div className="gray-title">User closed modal.</div>

@@ -126,21 +126,21 @@ class CreateTorrentPage extends React.Component {
               <div className="visibility-check" onClick={() => this.setState({ isPrivate: false })}>
                 {!this.state.isPrivate && <div className="active"></div>}  
               </div>
-              <img src={`${config.STATIC_PATH}/Visibility.png`} />
+              <img src={`${config.STATIC_PATH}/Visibility.png`} draggable={false} />
               <div>Visible to community</div>
             </div>
             <div className="visibility-wrapper private">
               <div className="visibility-check" onClick={() => this.setState({ isPrivate: true })}>
                 {this.state.isPrivate && <div className="active"></div>}  
               </div>
-              <img src={`${config.STATIC_PATH}/Hide.png`} />
+              <img src={`${config.STATIC_PATH}/Hide.png`} draggable={false} />
               <div>Private</div>
             </div>
             <div className="thumbnail-wrapper">
               <div className="title">Add thumbnail:</div>
               {this.state.thumbnailPath && (
                 <div className="dropzone">
-                  <img src={this.state.thumbnailPath} />
+                  <img src={this.state.thumbnailPath} draggable={false} />
                 </div>
               )}
             </div>

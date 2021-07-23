@@ -23,10 +23,10 @@ module.exports = class DeleteTorrentModal extends React.Component {
     return (
       <div className='custom-modal create-magnet-modal' style={{ width: 678 }}>
         <div className="close-btn" onClick={dispatcher('exitModal')}>
-          <img src={`${config.STATIC_PATH}/Close.png`} />
+          <img src={`${config.STATIC_PATH}/Close.png`} draggable={false} />
         </div>
         <div className="icon-wrapper">
-          <img src={`${config.STATIC_PATH}/ShieldFail.png`} />
+          <img src={`${config.STATIC_PATH}/ShieldFail.png`} draggable={false} />
         </div>
         <span className='content-title'>Are you sure to delete?</span>
         <div className='gray-title'>The video will be permanently deleted if you</div> 

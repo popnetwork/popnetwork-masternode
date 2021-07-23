@@ -33,10 +33,10 @@ module.exports = class CreateMagnetModal extends React.Component {
     return (
       <div className='custom-modal create-magnet-modal'>
         <div className="close-btn" onClick={dispatcher('exitModal')}>
-          <img src={`${config.STATIC_PATH}/Close.png`} />
+          <img src={`${config.STATIC_PATH}/Close.png`} draggable={false} />
         </div>
         <div className="icon-wrapper">
-          <img src={`${config.STATIC_PATH}/Light.png`} />
+          <img src={`${config.STATIC_PATH}/Light.png`} draggable={false} />
         </div>
         <span className='content-title'>Enter Torrent address or magnet link</span>
         <div>If you want to upload a torrent file using a torrent address or magnet link,</div>

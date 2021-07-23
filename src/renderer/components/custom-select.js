@@ -44,7 +44,7 @@ module.exports = class CustomSelect extends React.Component {
           <span className="sort-text">Sort by{' '} - </span>
           <span className="value-text">{` ${selectedData.text}`}</span>
         </div>
-        <img src={`${config.STATIC_PATH}/ArrowDown.png`} className={`${this.state.open ? 'expandIcon' : 'collapseIcon'}`} />
+        <img src={`${config.STATIC_PATH}/ArrowDown.png`} className={`${this.state.open ? 'expandIcon' : 'collapseIcon'}`} draggable={false} />
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
@@ -65,7 +65,7 @@ module.exports = class CustomSelect extends React.Component {
               >
                 <div className="menu-item-wrapper">
                   <span>{item.text}</span>
-                  {item.value === selectedData.value && <img src={`${config.STATIC_PATH}/Checked.png`} />}
+                  {item.value === selectedData.value && <img src={`${config.STATIC_PATH}/Checked.png`} draggable={false} />}
                 </div>
               </MenuItem>
             ))}

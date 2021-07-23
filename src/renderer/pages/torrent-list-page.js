@@ -203,7 +203,7 @@ module.exports = class TorrentList extends React.Component {
           <div className="list-container">
             <div className="list-toolbar">
               <div className="all-check" onClick={this.onSelectAll}>
-                <img src={`${config.STATIC_PATH}/${selectedTorrents.length !== torrents.length ? 'Checkbox.png' : 'CheckboxAllActive.png' }`} />
+                <img src={`${config.STATIC_PATH}/${selectedTorrents.length !== torrents.length ? 'Checkbox.png' : 'CheckboxAllActive.png' }`} draggable={false} />
               </div>
               <span className="selected-all">{`Select all`}</span>
               <span className="selected-value">{`Selected: ${selectedTorrents.length}`}</span>
@@ -297,16 +297,16 @@ module.exports = class TorrentList extends React.Component {
         <>
           <div className="summary-header">
             <div className="summary-check" onClick={() => this.onSelectTorrent(torrentSummary)}>
-              <img src={`${config.STATIC_PATH}/${!selectedTorrents.find((torrent) => torrent.infoHash === infoHash) ? 'Checkbox.png' : 'CheckboxActive.png' }`} />
+              <img src={`${config.STATIC_PATH}/${!selectedTorrents.find((torrent) => torrent.infoHash === infoHash) ? 'Checkbox.png' : 'CheckboxActive.png' }`} draggable={false} />
             </div>
             <div className="action-wrapper">
               {prog && <span className="peers">{`Peers: ${prog.numPeers}`}</span>}
               <div className="show">
-                <img src={`${config.STATIC_PATH}/${torrentSummary.private ? 'Hide.png' : 'Visibility.png'}`} />
+                <img src={`${config.STATIC_PATH}/${torrentSummary.private ? 'Hide.png' : 'Visibility.png'}`} draggable={false} />
               </div>
               <div className="more" onClick={(event) => this.onMoreOpen(event, infoHash)}>
-                <img src={`${config.STATIC_PATH}/More.png`} className="normal" />
-                <img src={`${config.STATIC_PATH}/MoreHover.png`} className="hover" />
+                <img src={`${config.STATIC_PATH}/More.png`} className="normal" draggable={false} />
+                <img src={`${config.STATIC_PATH}/MoreHover.png`} className="hover" draggable={false} />
                 <Popover
                   open={this.state.openedPopoverId === infoHash}
                   anchorEl={this.state.moreAnchorEl}
@@ -339,7 +339,7 @@ module.exports = class TorrentList extends React.Component {
             <span className="summary-title">{name}</span>
             <span className='size'>{`${prog ? prettyBytes(prog.length || 0) : ''}`}</span>
           </div>
-          <img src={imageUrl} className="cover-image" onClick={() => dispatch('playFile', infoHash)} />
+          <img src={imageUrl} className="cover-image" onClick={() => dispatch('playFile', infoHash)} draggable={false} />
           {/* {imageUrl && <img className="torrent-cover" src={imageUrl} />} */}
           <div className="horizontal-divider"></div>
           <div className="bottom-wrapper">
@@ -425,7 +425,7 @@ module.exports = class TorrentList extends React.Component {
         onContextMenu={infoHash && dispatcher('openTorrentContextMenu', infoHash)}
         onClick={infoHash && dispatcher('toggleSelectTorrent', infoHash)}
       >
-	  	{imageUrl && <img className="torrent-cover" src={imageUrl} />}
+	  	{imageUrl && <img className="torrent-cover" src={imageUrl} draggable={false} />}
         {this.renderTorrentMetadata(torrentSummary)}
         {infoHash ? this.renderTorrentButtons(torrentSummary) : null}
         {isSelected ? this.renderTorrentDetails(torrentSummary) : null}

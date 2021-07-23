@@ -14,10 +14,10 @@ module.exports = class ConfirmModal extends React.Component {
     return (
       <div className='custom-modal create-magnet-modal' style={{ width: 678 }}>
         <div className="close-btn" onClick={dispatcher('exitModal')}>
-          <img src={`${config.STATIC_PATH}/Close.png`} />
+          <img src={`${config.STATIC_PATH}/Close.png`} draggable={false} />
         </div>
         <div className="icon-wrapper">
-          <img src={`${config.STATIC_PATH}/Shield.png`} />
+          <img src={`${config.STATIC_PATH}/Shield.png`} draggable={false} />
         </div>
         <span className='content-title' style={{ marginBottom: 20 }}>Please Confirm</span>
         <div className="gray-title">Please confirm the transaction on the wallet app </div>

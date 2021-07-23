@@ -60,10 +60,10 @@ module.exports = class PlayVideoModal extends React.Component {
               </div>
               {prog && <span className="peers">{`Peers: ${prog.numPeers}`}</span>}
               <div className="show">
-                <img src={`${config.STATIC_PATH}/Show.png`} />
+                <img src={`${config.STATIC_PATH}/Show.png`} draggable={false} />
               </div>
               <div className="close-btn" onClick={dispatcher('exitModal')}>
-                <img src={`${config.STATIC_PATH}/Close.png`} />
+                <img src={`${config.STATIC_PATH}/Close.png`} draggable={false} />
               </div>
             </div>
           </div>

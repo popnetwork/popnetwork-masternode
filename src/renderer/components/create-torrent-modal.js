@@ -59,10 +59,10 @@ module.exports = class CreateTorrentModal extends React.Component {
     return (
       <div className='custom-modal create-torrent-modal'>
         <div className="close-btn" onClick={dispatcher('exitModal')}>
-          <img src={`${config.STATIC_PATH}/Close.png`} />
+          <img src={`${config.STATIC_PATH}/Close.png`} draggable={false} />
         </div>
         <div className="icon-wrapper">
-          <img src={`${config.STATIC_PATH}/Plus.png`} />
+          <img src={`${config.STATIC_PATH}/Plus.png`} draggable={false} />
         </div>
         <span className='content-title'>Create New Torrent from...</span>
         <div className="type-container">
@@ -75,24 +75,24 @@ module.exports = class CreateTorrentModal extends React.Component {
           <div className="fileopen-container">
             <div className="open-item" onClick={this.onTorrentFileFromVideo}>
               <div className="item-wrapper">
-                <img src={`${config.STATIC_PATH}/MP4.png`} />
+                <img src={`${config.STATIC_PATH}/MP4.png`} draggable={false} />
                 <span className="file-title">Open MP4 Folder</span>
               </div>
-              <img src={`${config.STATIC_PATH}/RightArrow.png`} />
+              <img src={`${config.STATIC_PATH}/RightArrow.png`} draggable={false} />
             </div>
             <div className="open-item" onClick={this.onTorrentFile}>
               <div className="item-wrapper">
-                <img src={`${config.STATIC_PATH}/Torrent.png`} />
+                <img src={`${config.STATIC_PATH}/Torrent.png`} draggable={false} />
                 <span className="file-title">Open Torrent File</span>
               </div>
-              <img src={`${config.STATIC_PATH}/RightArrow.png`} />
+              <img src={`${config.STATIC_PATH}/RightArrow.png`} draggable={false} />
             </div>
             <div className="open-item" onClick={this.onMagnetModal}>
               <div className="item-wrapper">
-                <img src={`${config.STATIC_PATH}/Magnetic.png`} />
+                <img src={`${config.STATIC_PATH}/Magnetic.png`} draggable={false} />
                 <span className="file-title">Enter Magnetic Link</span>
               </div>
-              <img src={`${config.STATIC_PATH}/RightArrow.png`} />
+              <img src={`${config.STATIC_PATH}/RightArrow.png`} draggable={false} />
             </div>
           </div>
         </div>

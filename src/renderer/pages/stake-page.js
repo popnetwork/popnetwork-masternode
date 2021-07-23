@@ -159,7 +159,7 @@ class StakePage extends React.Component {
         <div className="horizontal-divider"></div>
         <div className="reward-container">
           <div className="icon-wrapper">
-            <img src={`${config.STATIC_PATH}/TicketStar.png`} />
+            <img src={`${config.STATIC_PATH}/TicketStar.png`} draggable={false} />
           </div>
           <div className="title">Reward History</div>
           {history.reverse().map((rewardHistory, index) => (
@@ -181,7 +181,7 @@ class StakePage extends React.Component {
                 </div>
                 <div className="arrow">
                   <div className="arrow-button" onClick={() => this.onTransaction(`${sConfig.ETHERSCAN_URL}/tx/${rewardHistory.txid}`)}>
-                    <img src={`${config.STATIC_PATH}/LeftArrow.png`} />
+                    <img src={`${config.STATIC_PATH}/LeftArrow.png`} draggable={false} />
                   </div>
                 </div>
               </div>

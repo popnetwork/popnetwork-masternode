@@ -20,17 +20,17 @@ module.exports = class ConnectWalletModal extends React.Component {
     return (
       <div className='custom-modal connect-wallet-modal'>
         <div className="close-btn" onClick={dispatcher('exitModal')}>
-          <img src={`${config.STATIC_PATH}/Close.png`} />
+          <img src={`${config.STATIC_PATH}/Close.png`} draggable={false} />
         </div>
         <div className="icon-wrapper">
-          <img src={`${config.STATIC_PATH}/WalletPink.png`} />
+          <img src={`${config.STATIC_PATH}/WalletPink.png`} draggable={false} />
         </div>
         <span className='content-title'>Connect your wallet</span>
         <div className='gray-title'>Connect with one of available wallet</div>
         <div className='gray-title'>providers or create a new wallet.</div>
         <div className="input-wrapper" onClick={this.handleConnectWallet}>
           <div className="image-wrapper">
-            <img src={`${config.STATIC_PATH}/WalletConnect.png`} />
+            <img src={`${config.STATIC_PATH}/WalletConnect.png`} draggable={false} />
           </div>
           <div className="text-wrapper">
             <div className="text">WalletConnect</div>

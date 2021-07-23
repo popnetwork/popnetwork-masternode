@@ -43,7 +43,7 @@ class StakePage extends React.Component {
           <div className="header-content">
             <div className="text">Warning: Pending ewwards will be initialized when you Stake/Claim/Unstake POP</div>
             <div className="close-btn" onClick={this.onHideWarning}>
-              <img src={`${config.STATIC_PATH}/Close.png`} />
+              <img src={`${config.STATIC_PATH}/Close.png`} draggable={false} />
             </div>
           </div>
         )}

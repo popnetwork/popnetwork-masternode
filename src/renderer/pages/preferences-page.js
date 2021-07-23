@@ -291,7 +291,7 @@ class CustomCheckBox extends React.Component {
     return (
       <div className="custom-checkbox-wrapper" style={this.props.style}>
         <div className="custom-checkbox" onClick={(event) => this.props.onCheck(event, !this.props.checked)}>
-          <img src={`${config.STATIC_PATH}/${!this.props.checked ? 'Checkbox.png' : 'CheckboxActive.png' }`} />
+          <img src={`${config.STATIC_PATH}/${!this.props.checked ? 'Checkbox.png' : 'CheckboxActive.png' }`} draggable={false} />
         </div>
         <span className="check-label">{this.props.label}</span>
       </div>

@@ -83,10 +83,10 @@ module.exports = class StakeModal extends React.Component {
     return (
       <div className='custom-modal create-magnet-modal'>
         <div className="close-btn" onClick={dispatcher('exitModal')}>
-          <img src={`${config.STATIC_PATH}/Close.png`} />
+          <img src={`${config.STATIC_PATH}/Close.png`} draggable={false} />
         </div>
         <div className="icon-wrapper">
-          <img src={`${config.STATIC_PATH}/POP.png`} />
+          <img src={`${config.STATIC_PATH}/POP.png`} draggable={false} />
         </div>
         <span className='content-title'>Stake POP</span>
         <div>Pending rewards will be initialized when you will Stake at least min. </div>

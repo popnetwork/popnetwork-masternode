@@ -53,10 +53,10 @@ module.exports = class CreateIframCodeModal extends React.Component {
     return (
       <div className='custom-modal create-magnet-modal' style={{ width: 678 }}>
         <div className="close-btn" onClick={dispatcher('exitModal')}>
-          <img src={`${config.STATIC_PATH}/Close.png`} />
+          <img src={`${config.STATIC_PATH}/Close.png`} draggable={false} />
         </div>
         <div className="icon-wrapper">
-          <img src={`${config.STATIC_PATH}/Light.png`} />
+          <img src={`${config.STATIC_PATH}/Light.png`} draggable={false} />
         </div>
         <span className='content-title'>iFrame Code</span>
         <div className='gray-title'>If you want to upload a video file using iFrame, just copy the code in the </div>

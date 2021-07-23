@@ -20,7 +20,23 @@ class StakePage extends React.Component {
   }
 
   async stake(wallet, nodeChannel) {
-    dispatch('stakeDialog', wallet, nodeChannel)
+    if (!!wallet.approval) {
+      dispatch('stakeDialog', wallet, nodeChannel)
+    } else {
+      dispatch('confirmDialog')
+      const [txid, err] = await EthProvider.wcTokenApprove(
+        wallet.connector,
+        wallet.address,
+        sConfig.STAKING_CONTRACT_ADDRESS
+      );
+      dispatch('exitModal')
+      if (!!txid) {
+        const detail = sConfig.ETHERSCAN_URL + "/tx/" + txid;
+        dispatch('createTransactionDialog', detail)
+      } else {
+        dispatch('connectErrorDialog')
+      }
+    }
   }
 
   async unstake(wallet, nodeChannel) {

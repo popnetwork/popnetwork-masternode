@@ -60,20 +60,6 @@ module.exports = class StakeModal extends React.Component {
       } else {
         dispatch('connectErrorDialog')
       }
-    } else {
-      dispatch('confirmDialog')
-      const [txid, err] = await EthProvider.wcTokenApprove(
-        wallet.connector,
-        wallet.address,
-        sConfig.STAKING_CONTRACT_ADDRESS
-      );
-      dispatch('exitModal')
-      if (!!txid) {
-        const detail = sConfig.ETHERSCAN_URL + "/tx/" + txid;
-        dispatch('createTransactionDialog', detail)
-      } else {
-        dispatch('connectErrorDialog')
-      }
     }
   }
 

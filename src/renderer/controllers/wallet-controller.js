@@ -53,6 +53,13 @@ module.exports = class WalletController {
 	this.fetchRewardHistories()
   }
 
+  walletDisconnect() {
+    this.state.saved.wallet.address = null;
+    this.state.saved.wallet.token = null;
+    dispatch('stateSaveImmediate');
+    this.killSession();
+  }
+
   checkWalletConnect () {
     const connector = new WalletConnect({
       bridge: "https://bridge.walletconnect.org",  // Required
@@ -181,15 +188,11 @@ module.exports = class WalletController {
         const message = "MASTERNODE-TOKEN";
         const hexMsg = convertUtf8ToHex(message);
         const msgParams = [hexMsg, address];
-        openDialog('pendingDlg').then((result) => {
-        })
+        this.state.modal = {
+          id: 'confirm-modal',
+        }
         const result = await this.state.wallet.connector.signPersonalMessage(msgParams);
-        remote.BrowserWindow.getAllWindows()
-          .filter(b => {
-            if (b.getTitle() == "PENDING") {
-              b.close()
-            }
-          })
+        this.state.modal = null
         this.state.wallet.address = address;
         this.state.wallet.token = result;
         this.state.wallet.fetching = true;
@@ -198,6 +201,9 @@ module.exports = class WalletController {
         dispatch('stateSaveImmediate')
       } catch (err) {
         console.log('signMessageError: ', err)
+        this.state.modal = {
+          id: 'connect-error-modal',
+        }
       }
     }
     
@@ -221,6 +227,9 @@ module.exports = class WalletController {
       });
     }
     if (!!wallet && !!wallet.connected) {
+      EthProvider.getEthBalance(wallet.address).then(result => {
+        this.state.wallet.ethBalance = result;
+      });
       EthProvider.getTokenBalance(wallet.address).then(result => {
         this.state.wallet.balance = result;
         EthProvider.getTokenAllowance(wallet.address, sConfig.STAKING_CONTRACT_ADDRESS, sConfig.POP_TOKEN_ADDRESS).then(result => {
@@ -259,6 +268,8 @@ module.exports = class WalletController {
     wallet.token = null;
     wallet.accounts = [];
     wallet.rewardHistories = [];
+    wallet.ethBalance = new BigNumber(0);
+    wallet.showWarning = true
     
     this.state.wallet = wallet;
   }

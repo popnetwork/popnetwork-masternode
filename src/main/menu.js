@@ -72,244 +72,35 @@ function onToggleFullScreen(flag) {
 
 function getMenuItem(label) {
     for (let i = 0; i < menu.items.length; i++) {
-        const menuItem = menu.items[i].submenu.items.find(function(item) {
+        const menuItem = menu.items[i].submenu ? menu.items[i].submenu.items.find(function(item) {
             return item.label === label
-        })
+        }) : { enabled: false }
         if (menuItem) return menuItem
     }
+
+    return { enabled: false }
 }
 
 function getMenuTemplate() {
-    const template = [{
-            label: 'File',
-            submenu: [
-                // TODO we don't show these menus for now
-                // {
-                //     label: process.platform === 'darwin' ?
-                //         'Create New Torrent...' : 'Create New Torrent from Folder...',
-                //     accelerator: 'CmdOrCtrl+N',
-                //     click: () => {
-                //         const dialog = require('./dialog')
-                //         dialog.openSeedDirectory()
-                //     }
-                // },
-                // {
-                //     label: 'Open Torrent File...',
-                //     accelerator: 'CmdOrCtrl+O',
-                //     click: () => {
-                //         const dialog = require('./dialog')
-                //         dialog.openTorrentFile()
-                //     }
-                // },
-                // {
-                //     label: 'Open Torrent Address...',
-                //     accelerator: 'CmdOrCtrl+U',
-                //     click: () => {
-                //         const dialog = require('./dialog')
-                //         dialog.openTorrentAddress()
-                //     }
-                // },
-                // {
-                //     type: 'separator'
-                // },
-                {
-                    role: 'close'
-                }
-            ]
+    const template = [
+        {
+            label: 'Home',
+            click: () => windows.main.dispatch('home')
         },
         {
-            label: 'Edit',
-            submenu: [{
-                    role: 'undo'
-                },
-                {
-                    role: 'redo'
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    role: 'cut'
-                },
-                {
-                    role: 'copy'
-                },
-                {
-                    label: 'Paste Torrent Address',
-                    role: 'paste'
-                },
-                {
-                    role: 'delete'
-                },
-                {
-                    role: 'selectall'
-                }
-            ]
+            label: 'Preferences',
+            click: () => windows.main.dispatch('preferences'),
         },
         {
-            label: 'View',
-            submenu: [{
-                    label: 'Full Screen',
-                    type: 'checkbox',
-                    accelerator: process.platform === 'darwin' ?
-                        'Ctrl+Command+F' : 'F11',
-                    click: () => windows.main.toggleFullScreen()
-                },
-                {
-                    label: 'Float on Top',
-                    type: 'checkbox',
-                    click: () => windows.main.toggleAlwaysOnTop()
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    label: 'Go Back',
-                    accelerator: 'Esc',
-                    click: () => windows.main.dispatch('escapeBack')
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    label: 'Developer',
-                    submenu: [{
-                            label: 'Developer Tools',
-                            accelerator: process.platform === 'darwin' ?
-                                'Alt+Command+I' : 'Ctrl+Shift+I',
-                            click: () => windows.main.toggleDevTools()
-                        },
-                        {
-                            label: 'Show POP Network Process',
-                            accelerator: process.platform === 'darwin' ?
-                                'Alt+Command+P' : 'Ctrl+Shift+P',
-                            click: () => windows.popnetwork.toggleDevTools()
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            label: 'Playback',
-            submenu: [{
-                    label: 'Play/Pause',
-                    accelerator: 'Space',
-                    click: () => windows.main.dispatch('playPause'),
-                    enabled: false
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    label: 'Skip Next',
-                    accelerator: 'N',
-                    click: () => windows.main.dispatch('nextTrack'),
-                    enabled: false
-                },
-                {
-                    label: 'Skip Previous',
-                    accelerator: 'P',
-                    click: () => windows.main.dispatch('previousTrack'),
-                    enabled: false
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    label: 'Increase Volume',
-                    accelerator: 'CmdOrCtrl+Up',
-                    click: () => windows.main.dispatch('changeVolume', 0.1),
-                    enabled: false
-                },
-                {
-                    label: 'Decrease Volume',
-                    accelerator: 'CmdOrCtrl+Down',
-                    click: () => windows.main.dispatch('changeVolume', -0.1),
-                    enabled: false
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    label: 'Step Forward',
-                    accelerator: process.platform === 'darwin' ?
-                        'CmdOrCtrl+Alt+Right' : 'Alt+Right',
-                    click: () => windows.main.dispatch('skip', 10),
-                    enabled: false
-                },
-                {
-                    label: 'Step Backward',
-                    accelerator: process.platform === 'darwin' ?
-                        'CmdOrCtrl+Alt+Left' : 'Alt+Left',
-                    click: () => windows.main.dispatch('skip', -10),
-                    enabled: false
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    label: 'Increase Speed',
-                    accelerator: 'CmdOrCtrl+=',
-                    click: () => windows.main.dispatch('changePlaybackRate', 1),
-                    enabled: false
-                },
-                {
-                    label: 'Decrease Speed',
-                    accelerator: 'CmdOrCtrl+-',
-                    click: () => windows.main.dispatch('changePlaybackRate', -1),
-                    enabled: false
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    label: 'Add Subtitles File...',
-                    click: () => windows.main.dispatch('openSubtitles'),
-                    enabled: false
-                }
-            ]
-        },
-        {
-            label: 'Transfers',
-            submenu: [{
-                    label: 'Pause All',
-                    click: () => windows.main.dispatch('pauseAllTorrents')
-                },
-                {
-                    label: 'Resume All',
-                    click: () => windows.main.dispatch('resumeAllTorrents')
-                }
-            ]
-        },
-        {
-            label: 'Wallet',
+            label: 'Developer',
             submenu: [
                 {
-                    label: 'Stake',
-                    click: () => windows.main.dispatch('stake')
+                    label: 'Developer Tools',
+                    click: () => windows.main.toggleDevTools()
                 },
                 {
-                    label: 'WalletConnect',
-                    click: () => windows.main.dispatch('walletConnect')
-                },
-            ]
-        },
-        {
-            label: 'Help',
-            role: 'help',
-            submenu: [{
-                    label: 'Learn more about ' + config.APP_NAME,
-                    click: () => {
-                        const shell = require('./shell')
-                        shell.openExternal(config.HOME_PAGE_URL)
-                    }
-                },
-                {
-                    label: 'Release Notes',
-                    click: () => {
-                        const shell = require('./shell')
-                        shell.openExternal(config.GITHUB_URL_RELEASES)
-                    }
+                    label: 'POP Network Process',
+                    click: () => windows.popnetwork.toggleDevTools()
                 },
                 {
                     label: 'Contribute on GitHub',
@@ -318,94 +109,66 @@ function getMenuTemplate() {
                         shell.openExternal(config.GITHUB_URL)
                     }
                 },
+            ]
+        },
+        {
+            label: 'Help',
+            role: 'help',
+            submenu: [
                 {
-                    type: 'separator'
-                },
-                {
-                    label: 'Report an Issue...',
+                    label: 'Report an Issue',
                     click: () => {
                         const shell = require('./shell')
                         shell.openExternal(config.GITHUB_URL_ISSUES)
                     }
                 },
                 {
-                    label: 'Follow us on Twitter',
+                    label: 'Help center',
                     click: () => {
                         const shell = require('./shell')
                         shell.openExternal(config.TWITTER_PAGE_URL)
                     }
                 }
             ]
+        },
+        {
+            label: 'About ' + config.APP_NAME,
+            click: () => {
+                const dialog = require('./dialog')
+                dialog.openAbout()
+            }
         }
     ]
 
     if (process.platform === 'darwin') {
         // popnetwork menu (Mac)
-        template.unshift({
-            label: config.APP_NAME,
-            submenu: [{
-                    role: 'about'
-                },
+        template.splice(0, 1, {
+            label: 'Home',
+            submenu: [
                 {
-                    type: 'separator'
-                },
+                    label: 'Home',
+                    click: () => windows.main.dispatch('home')
+                }
+            ]
+        })
+        template.splice(1, 1, {
+            label: 'Preferences',
+            submenu: [
                 {
                     label: 'Preferences',
-                    accelerator: 'Cmd+,',
-                    click: () => windows.main.dispatch('preferences')
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    role: 'services'
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    role: 'hide'
-                },
-                {
-                    role: 'hideothers'
-                },
-                {
-                    role: 'unhide'
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    role: 'quit'
+                    click: () => windows.main.dispatch('preferences'),
                 }
             ]
         })
-
-        // Edit menu (Mac)
-        template[2].submenu.push({
-            type: 'separator'
-        }, {
-            label: 'Speech',
-            submenu: [{
-                    role: 'startspeaking'
-                },
+        template.splice(4, 1, {
+            label: 'About ' + config.APP_NAME,
+            submenu: [
                 {
-                    role: 'stopspeaking'
-                }
-            ]
-        })
-
-        // Window menu (Mac)
-        template.splice(7, 0, {
-            role: 'window',
-            submenu: [{
-                    role: 'minimize'
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    role: 'front'
+                    label: 'About ' + config.APP_NAME,
+                    click: () => {
+                        const dialog = require('./dialog')
+                        dialog.openAbout()
+                    }
                 }
             ]
         })
@@ -415,40 +178,15 @@ function getMenuTemplate() {
     // folders and files, so add an extra menu item so there is one for each type.
     if (process.platform === 'linux' || process.platform === 'win32') {
         // File menu (Windows, Linux)
-        // TODO we don't show this menu for now
-        // template[0].submenu.unshift({
-        //     label: 'Create New Torrent from File...',
-        //     click: () => {
-        //         const dialog = require('./dialog')
-        //         dialog.openSeedFile()
-        //     }
-        // })
-
-        // Edit menu (Windows, Linux)
-        template[1].submenu.push({
-            type: 'separator'
-        }, {
-            label: 'Preferences',
-            accelerator: 'CmdOrCtrl+,',
-            click: () => windows.main.dispatch('preferences')
-        })
-
-        // Help menu (Windows, Linux)
-        template[6].submenu.push({
-            type: 'separator'
-        }, {
-            label: 'About ' + config.APP_NAME,
-            click: () => windows.about.init()
-        })
     }
     // Add "File > Quit" menu item so Linux distros where the system tray icon is
     // missing will have a way to quit the app.
     if (process.platform === 'linux') {
         // File menu (Linux)
-        template[0].submenu.push({
-            label: 'Quit',
-            click: () => app.quit()
-        })
+        // template[0].submenu.push({
+        //     label: 'Quit',
+        //     click: () => app.quit()
+        // })
     }
 
     return template

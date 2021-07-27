@@ -58,6 +58,7 @@ module.exports = {
     GITHUB_URL_RAW: 'https://raw.githubusercontent.com/popnetwork/popnetwork-masternode/master',
     GITHUB_URL_RELEASES: 'https://github.com/popnetwork/popnetwork-masternode/releases',
     API_BASE_URL: 'https://masternode.popnet.work/api/v1',
+    DEV_API_BASE_URL: 'https://dev.popnet.work/api/v1/',
 
     HOME_PAGE_URL: 'https://thepopnetwork.org',
     HOME_PAGE_SHORTENED_URL: 'https://popnet.work',
@@ -84,8 +85,8 @@ module.exports = {
         width: 500,
         height: UI_HEADER_HEIGHT + (UI_TORRENT_HEIGHT * 6) // header + 6 torrents
     },
-    WINDOW_MIN_HEIGHT: UI_HEADER_HEIGHT + (UI_TORRENT_HEIGHT * 2), // header + 2 torrents
-    WINDOW_MIN_WIDTH: 425,
+    WINDOW_MIN_HEIGHT: UI_HEADER_HEIGHT + (UI_TORRENT_HEIGHT * 8), // header + 8 torrents
+    WINDOW_MIN_WIDTH: 992,
 
     UI_HEADER_HEIGHT: UI_HEADER_HEIGHT,
     UI_TORRENT_HEIGHT: UI_TORRENT_HEIGHT,

@@ -13,6 +13,7 @@ const provider = ethers.getDefaultProvider(sConfig.ETH_NETWORK, {
   alchemy: sConfig.ALCHEMY_API_KEY,
 });
 module.exports = {
+  getEthBalance,
   getTokenBalance,
   getTokenAllowance,
   tokenApprove,
@@ -25,6 +26,17 @@ module.exports = {
   getPopPerBlock,
   convertToWei
 }
+
+async function getEthBalance (address) {
+  try {
+    const weiBalance = await provider.getBalance(address) 
+    return new BigNumber(ethers.utils.formatEther(weiBalance))
+  } catch (err) {
+    console.log('getTokenBalance: ', err)
+    return new BigNumber(0)
+  }
+}
+
 async function getTokenBalance (address, tokenAddress = sConfig.POP_TOKEN_ADDRESS) {
   try {
     const contract = new ethers.Contract(tokenAddress, erc20ABI, provider) 
@@ -148,7 +160,7 @@ async function wcSendTransaction (connector, fromAddress, toAddress, data, value
       gas = await provider.estimateGas(tx);
       gas = gas.toHexString();
       gasPrices = await apiGetGasPrices();
-      const _gasPrice = gasPrices.average.price;
+      const _gasPrice = gasPrices.average.price * 1.2;
       gasPrice = ethers.utils.parseUnits(_gasPrice.toString(), 9).toHexString();
     } catch (e) {
       console.log('gas:', e)

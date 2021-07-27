@@ -18,6 +18,15 @@ module.exports = class TorrentListController {
     this.state = state
   }
 
+  showHome() {
+    this.state.location.go({
+      url: 'home', 
+      setup: (cb) => {
+        cb(null)
+      }
+    })
+  }
+
   // Adds a torrent to the list, starts downloading/seeding.
   // TorrentID can be a magnet URI, infohash, or torrent file: https://git.io/vik9M
   addTorrent (torrentId, torrentTitle, torrentImageLink) {

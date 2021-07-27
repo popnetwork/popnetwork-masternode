@@ -63,6 +63,7 @@ module.exports = class TorrentController {
     torrentSummary.status = 'downloading'
     torrentSummary.name = torrentSummary.displayName || torrentInfo.name
     torrentSummary.path = torrentInfo.path
+    torrentSummary.private = torrentInfo.private
     // TODO: make torrentInfo immutable, save separately as torrentSummary.info
     // For now, check whether torrentSummary.files has already been set:
     const hasDetailedFileInfo = torrentSummary.files && torrentSummary.files[0].path
@@ -136,6 +137,15 @@ module.exports = class TorrentController {
     if (!torrentSummary) throw new Error('Not saving modtimes for deleted torrent ' + torrentKey)
     torrentSummary.fileModtimes = fileModtimes
     dispatch('stateSave')
+  }
+
+  torrentFileAddTimes (torrentKey, fileAddTimes) {
+    const torrentSummary = this.getTorrentSummary(torrentKey)
+    if (!torrentSummary) throw new Error('Not saving added times for deleted torrent ' + torrentKey)
+    if (!torrentSummary.fileAddTimes) {
+      torrentSummary.fileAddTimes = fileAddTimes
+      dispatch('stateSave')
+    }
   }
 
   torrentFileSaved (torrentKey, torrentFileName) {

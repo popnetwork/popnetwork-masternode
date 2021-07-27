@@ -268,6 +268,7 @@ function updateElectron () {
 }
 
 const dispatchHandlers = {
+  home: () => controllers.torrentList().showHome(),
   // Torrent list: creating, deleting, selecting torrents
   openTorrentFile: () => ipcRenderer.send('openTorrentFile'),
   openFiles: () => ipcRenderer.send('openFiles'), /* shows the open file dialog */
@@ -298,6 +299,7 @@ const dispatchHandlers = {
   // Playback
   playFile: (infoHash, index) => controllers.playback().playFile(infoHash, index),
   playPause: () => controllers.playback().playPause(),
+  closePlayer: () => controllers.playback().closePlayer(),
   nextTrack: () => controllers.playback().nextTrack(),
   previousTrack: () => controllers.playback().previousTrack(),
   skip: (time) => controllers.playback().skip(time),
@@ -372,11 +374,27 @@ const dispatchHandlers = {
 
   // Wallet
   walletConnect: () => controllers.wallet().walletConnect(),
+  walletDisconnect: () => controllers.wallet().walletDisconnect(),
   stake: () => controllers.stake().show(),
+  stakeFirst: () => controllers.stake().showFirst(),
 
   // ActionCable
   connectActionCable: () => controllers.actionCable().connect(),
   disconnectActionCable: () => controllers.actionCable().disconnect(),
+
+  // About
+  openAbout: () => { state.modal = { id: 'about-modal' } },
+
+  // Create Torrent Dialog
+  createTorrentDialog: () => { state.modal = { id: 'create-torrent-modal' } },
+  createMagnetDialog: () => { state.modal = { id: 'create-magnet-modal' } },
+  createIframeDialog: (infoHash) => { state.modal = { id: 'create-iframe-modal', infoHash } },
+  connectWalletDialog: () => { state.modal = { id: 'connect-wallet-modal' } },
+  deleteTorrentDialog: (infoHash, deleteData) => { state.modal = { id: 'delete-torrent-modal', infoHash, deleteData } },
+  confirmDialog: () => { state.modal = { id: 'confirm-modal' } },
+  connectErrorDialog: () => { state.modal = { id: 'connect-error-modal' } },
+  stakeDialog: (wallet, nodeChannel) => { state.modal = { id: 'stake-modal', wallet, nodeChannel } },
+  createTransactionDialog: (detail) => { state.modal = { id: 'create-transaction-modal', detail } },
 }
 
 // Events from the UI never modify state directly. Instead they call dispatch()
@@ -417,6 +435,7 @@ function setupIpc () {
 
   ipcRenderer.on('pn-progress', (e, ...args) => tc.torrentProgress(...args))
   ipcRenderer.on('pn-file-modtimes', (e, ...args) => tc.torrentFileModtimes(...args))
+  ipcRenderer.on('pn-file-addtimes', (e, ...args) => tc.torrentFileAddTimes(...args))
   ipcRenderer.on('pn-file-saved', (e, ...args) => tc.torrentFileSaved(...args))
   ipcRenderer.on('pn-poster', (e, ...args) => tc.torrentPosterSaved(...args))
   ipcRenderer.on('pn-audio-metadata', (e, ...args) => tc.torrentAudioMetadata(...args))

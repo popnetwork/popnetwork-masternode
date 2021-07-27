@@ -12,7 +12,7 @@ const log = require('./log')
  * Open the given external protocol URL in the desktop’s default manner.
  */
 function openExternal (url) {
-  log(`openExternal: ${url}`)
+  // log(`openExternal: ${url}`)
   electron.shell.openExternal(url)
 }
 

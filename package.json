@@ -1,9 +1,9 @@
 {
     "name": "popnetwork-masternode",
-    "description": "popnetwork, the streaming torrent client. For Mac, Windows, and Linux.",
-    "version": "0.2.3",
+    "description": "POP Network, the streaming torrent client. For Mac, Windows, and Linux.",
+    "version": "1.0.0",
     "author": {
-        "name": "popnetwork, LLC",
+        "name": "POP Network, LLC",
         "email": "valerian@thepopnetwork.org",
         "url": "https://thepopnetwork.org"
     },

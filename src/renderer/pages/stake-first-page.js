@@ -41,7 +41,7 @@ class StakePage extends React.Component {
       <div className="stake-first-page">
         {wallet.showWarning && (
           <div className="header-content">
-            <div className="text">Warning: Pending ewwards will be initialized when you Stake/Claim/Unstake POP</div>
+            <div className="text">Warning: Pending Rewards will be initialized when you Stake/Claim/Unstake POP</div>
             <div className="close-btn" onClick={this.onHideWarning}>
               <img src={`${config.STATIC_PATH}/Close.png`} draggable={false} />
             </div>
@@ -50,20 +50,20 @@ class StakePage extends React.Component {
         <div className="page-container">
           <div className="main-content">
             <div className="content-title">Staking POP</div>
-            <div className="sub-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </div>
+            <div className="sub-title">Deposit your POP here and keep your Masternode running to earn POP rewards</div>
             <div className="content-wrapper">
               <div className="content-item">
-                <div className="type">APR</div>
+                <div className="type">APY</div>
                 <div className="value">{this.state.stakeConfig.apy}</div>
               </div>
               <div className="content-item">
-                <div className="type">Min. to Stake</div>
-                <div className="value">{`${this.state.stakeConfig.min_stake_amount} POP`}</div>
+                <div className="type">Minimum Stake</div>
+                <div className="value">{`50,000 POP`}</div>
               </div>
             </div>
             <div className="content-text">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tristique blandit sem eget dignissim. Sed ullamcorper elementum luctus. Donec eu lectus lobortis, rutrum justo ut, ullamcorper augue. <br /><br />
-              Pellentesque auctor porttitor porttitor. Sed dictum sem sit amet tortor lacinia consequat. Sed tellus massa, convallis vitae nisl in, eleifend dictum mi. Nunc finibus urna tempus dui condimentum egestas. Curabitur maximus velit tincidunt semper tempus.
+              Keeping your Masternode running while staking POP earns you rewards while strengthening our decentralized content distribution network. <br /><br />
+              You only earn rewards while your Masternode is running.
             </div>
             <CustomButton
               label="Stake"

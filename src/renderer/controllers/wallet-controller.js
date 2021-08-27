@@ -4,7 +4,7 @@ const WalletConnect = require('@walletconnect/client').default;
 const QRCodeModal = require('@walletconnect/qrcode-modal');
 const EthProvider = require('../services/eth/eth-provider')
 const { apiGetRewardHistories } = require('../services/api')
-const sConfig = require('../../sconfig');
+const ethConfig = require('../services/eth/config')
 const { dispatch } = require('../lib/dispatcher');
 const {normalizeAddress} = require('../services/utils');
 const { convertUtf8ToHex } = require('@walletconnect/utils');
@@ -232,7 +232,7 @@ module.exports = class WalletController {
       });
       EthProvider.getTokenBalance(wallet.address).then(result => {
         this.state.wallet.balance = result;
-        EthProvider.getTokenAllowance(wallet.address, sConfig.STAKING_CONTRACT_ADDRESS, sConfig.POP_TOKEN_ADDRESS).then(result => {
+        EthProvider.getTokenAllowance(wallet.address, ethConfig.STAKING_CONTRACT_ADDRESS[process.env.ETH_NETWORK], ethConfig.POP_TOKEN_ADDRESS[process.env.ETH_NETWORK]).then(result => {
           let approval = false;
           if (result.comparedTo(this.state.wallet.balance) == 1) {
             approval = true;

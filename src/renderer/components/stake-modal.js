@@ -6,7 +6,7 @@ const CustomButton = require('./custom-button')
 const TextField = require('material-ui/TextField').default
 const { dispatch, dispatcher } = require('../lib/dispatcher')
 
-const sConfig = require("../../sconfig");
+const ethConfig = require('../services/eth/config')
 const EthProvider = require("../services/eth/eth-provider");
 const { apiCreateRewardHistory } = require("../services/api");
 const remote = require("electron").remote;
@@ -32,7 +32,7 @@ module.exports = class StakeModal extends React.Component {
     if (!!wallet.approval) {
       const balance = ethers.utils.parseUnits(
         value.toString(),
-        sConfig.POP_TOKEN_DECIMALS
+        ethConfig.POP_TOKEN_DECIMALS[process.env.ETH_NETWORK]
       );
       dispatch('confirmDialog')
       const [txid, err] = await EthProvider.wcPopChefDeposit(
@@ -43,7 +43,7 @@ module.exports = class StakeModal extends React.Component {
       dispatch('exitModal')
       if (!!txid) {
         nodeChannel.send({ type: "init_blocks" });
-        const detail = sConfig.ETHERSCAN_URL + "/tx/" + txid;
+        const detail = ethConfig.ETHERSCAN_URL[process.env.ETH_NETWORK] + "/tx/" + txid;
         dispatch('createTransactionDialog', detail)
         try {
           const response = await apiCreateRewardHistory(

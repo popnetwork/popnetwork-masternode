@@ -6,7 +6,6 @@ const { dispatch } = require('../lib/dispatcher')
 const { TorrentKeyNotFoundError } = require('../lib/errors')
 const sound = require('../lib/sound')
 const TorrentSummary = require('../lib/torrent-summary')
-const { apiGetTorrents } = require('../services/api')
 
 const ipcRenderer = electron.ipcRenderer
 
@@ -96,46 +95,8 @@ module.exports = class TorrentListController {
 
   // Starts fetching torrents
   async fetchTorrents () {
-	const savedTorrents = this.state.saved.torrents
-	this.state.isFetchingTorrents = true
-	let serverTorrents = await apiGetTorrents() || []
-	this.state.isFetchingTorrents = false
-
-	serverTorrents = serverTorrents.map(torrentInfo => {
-		let torrentData = torrentInfo
-		try {
-			torrentData = {
-				...torrentData,
-				...parseTorrent(torrentInfo.magnet_link)
-			}
-		} catch (e) {
-			console.log(e)
-		}
-		return torrentData
-	})
-
-	if (serverTorrents.length > 0) {
-		serverTorrents.forEach(torrentInfo => {
-			let torrentId = torrentInfo.magnet_link
-			const foundTorrent = savedTorrents.find(torrent => torrentInfo.infoHash && torrent.infoHash === torrentInfo.infoHash)
-			if (!foundTorrent) {
-				if (torrentInfo.infoHash) {
-					torrentId = torrentId.replace(`dn=${torrentInfo.name}`, `dn=${torrentInfo.title}`)
-					this.addTorrent(torrentId, torrentInfo.title, torrentInfo.image_link)
-				}
-			} else {
-				foundTorrent.title = torrentInfo.title
-				foundTorrent.imageLink = torrentInfo.image_link
-			}
-		})
-	}
-
-	savedTorrents.forEach(torrent => {
-		const matchedTorrent = serverTorrents.find(torrentInfo => torrentInfo.infoHash && torrent.infoHash === torrentInfo.infoHash)
-		if (!matchedTorrent) {
-			this.deleteTorrent(torrent.infoHash, true)
-		}
-	})
+    this.state.isFetchingTorrents = true
+    this.state.isFetchingTorrents = false
   }
 
   // Starts downloading and/or seeding a given torrentSummary.

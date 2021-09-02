@@ -1985,6 +1985,7 @@ video::-webkit-media-text-track-container {
 
 .stake-first-page .page-container .main-content .sub-title {
   margin: 24px 0;
+  font-weight: 500;
 }
 
 .stake-first-page .page-container .main-content .content-wrapper {

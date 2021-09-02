@@ -50,7 +50,7 @@ class StakePage extends React.Component {
         <div className="page-container">
           <div className="main-content">
             <div className="content-title">Staking POP</div>
-            <div className="sub-title">Deposit your POP here and keep your Masternode running to earn POP rewards</div>
+            <div className="sub-title">Deposit your POP here and keep your<br/>Masternode running to earn POP rewards</div>
             <div className="content-wrapper">
               <div className="content-item">
                 <div className="type">APY</div>

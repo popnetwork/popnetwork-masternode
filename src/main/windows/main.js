@@ -22,7 +22,6 @@ const app = electron.app
 const config = require('../../config')
 const log = require('../log')
 const menu = require('../menu')
-const { prepareDialog } = require('electron-custom-dialog')
 require('dotenv').config()
 
 function init (state, options) {
@@ -46,44 +45,16 @@ function init (state, options) {
     width: initialBounds.width,
     webPreferences: {
       nodeIntegration: true,
-      enableBlinkFeatures: 'AudioVideoTracks'
+      contextIsolation: false,
+      enableBlinkFeatures: 'AudioVideoTracks',
+      enableRemoteModule: true,
+      backgroundThrottling: false,
     },
     x: initialBounds.x,
     y: initialBounds.y
   })
-  prepareDialog({
-      name: 'stakeDlg',
-      load(win) {
-          win.loadURL(config.DIALOG_STAKE)
-      }, 
-      parent: main.win,
-      windowOptions: {
-          width: 400,
-          height: 210,
-          center: true,
-          minimizable: false,
-          maximizable: false,
-          resizable: false,
-      }
-  })
-  prepareDialog({
-    name: 'pendingDlg',
-    load(win) {
-        win.loadURL(config.DIALOG_PENDING)
-    }, 
-    parent: main.win,
-    windowOptions: {
-        width: 420,
-        height: 170,
-        center: true,
-        minimizable: false,
-        maximizable: false,
-        resizable: false,
-        frame: false,
-    }
-  })
   win.loadURL(config.WINDOW_MAIN)
-
+  
   win.once('ready-to-show', () => {
     if (!options.hidden) win.show()
   })

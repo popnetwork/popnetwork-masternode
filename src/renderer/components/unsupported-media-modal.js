@@ -36,7 +36,7 @@ module.exports = class UnsupportedMediaModal extends React.Component {
   }
 
   onInstall () {
-    electron.shell.openExternal('http://www.videolan.org/vlc/')
+    electron.shell.openExternal('https://www.videolan.org/vlc/')
 
     // TODO: dcposch send a dispatch rather than modifying state directly
     const state = this.props.state

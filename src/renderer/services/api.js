@@ -25,7 +25,7 @@ async function apiGetTorrents () {
 }
 
 async function apiGetRewardHistories (address, token) {
-  const response = await api.get(`/reward_histories?address=${address}&token=${token}`);
+  const response = await api.get(`/reward_histories?address=${address}`);
 
   const { data } = response.data;
   return data;

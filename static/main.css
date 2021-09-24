@@ -2058,6 +2058,7 @@ video::-webkit-media-text-track-container {
 
 #walletconnect-qrcode-modal {
   background: unset !important;
+  animation-fill-mode: unset;
 }
 
 @media screen and (min-width:1441px) {

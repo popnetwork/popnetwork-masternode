@@ -3,6 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy"
+      content="default-src 'self' 'unsafe-eval';
+      style-src 'self' 'unsafe-inline';
+      media-src *;
+      img-src * data:;
+      connect-src *;
+      script-src 'sha256-HdC+CsqREqGTh3lTuDg7kq94o+dOodKT4MA0Db6hwhc='
+    ">
     <link rel="shortcut icon" href="https://masternode.popnet.work/favicon.ico">
     <title>POPNetwork-Masternode</title>
     <link rel="stylesheet" href="main.css">

@@ -75,11 +75,8 @@ module.exports = {
     STATIC_PATH: path.join(__dirname, '..', 'static'),
     TORRENT_PATH: path.join(getConfigPath(), 'Torrents'),
 
-    WINDOW_ABOUT: 'file://' + path.join(__dirname, '..', 'static', 'about.html'),
     WINDOW_MAIN: 'file://' + path.join(__dirname, '..', 'static', 'main.html'),
     WINDOW_POPNETWORK: 'file://' + path.join(__dirname, '..', 'static', 'popnetwork.html'),
-    DIALOG_STAKE: 'file://' + path.join(__dirname, '..', 'static', 'stake.html'),
-    DIALOG_PENDING: 'file://' + path.join(__dirname, '..', 'static', 'pending.html'),
     
     WINDOW_INITIAL_BOUNDS: {
         width: 500,

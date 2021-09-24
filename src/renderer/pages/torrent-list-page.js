@@ -350,7 +350,7 @@ module.exports = class TorrentList extends React.Component {
     }
 
     return (
-      <div className="torrent-summary-wrapper">
+      <div className="torrent-summary-wrapper" key={infoHash}>
         <div
           className={classes.join(' ')}
         >

@@ -14,15 +14,12 @@ const main = module.exports = {
   win: null
 }
 
-const electron = require('electron')
+const { app, BrowserWindow, screen } = require('electron')
 const debounce = require('debounce')
-
-const app = electron.app
 
 const config = require('../../config')
 const log = require('../log')
 const menu = require('../menu')
-const { prepareDialog } = require('electron-custom-dialog')
 require('dotenv').config()
 
 function init (state, options) {
@@ -32,7 +29,7 @@ function init (state, options) {
 
   const initialBounds = Object.assign(config.WINDOW_INITIAL_BOUNDS, state.saved.bounds)
 
-  const win = main.win = new electron.BrowserWindow({
+  const win = main.win = new BrowserWindow({
     backgroundColor: '#282828',
     darkTheme: true, // Forces dark theme (GTK+3)
     height: initialBounds.height,
@@ -46,44 +43,16 @@ function init (state, options) {
     width: initialBounds.width,
     webPreferences: {
       nodeIntegration: true,
-      enableBlinkFeatures: 'AudioVideoTracks'
+      contextIsolation: false,
+      enableBlinkFeatures: 'AudioVideoTracks',
+      enableRemoteModule: true,
+      backgroundThrottling: false,
     },
     x: initialBounds.x,
     y: initialBounds.y
   })
-  prepareDialog({
-      name: 'stakeDlg',
-      load(win) {
-          win.loadURL(config.DIALOG_STAKE)
-      }, 
-      parent: main.win,
-      windowOptions: {
-          width: 400,
-          height: 210,
-          center: true,
-          minimizable: false,
-          maximizable: false,
-          resizable: false,
-      }
-  })
-  prepareDialog({
-    name: 'pendingDlg',
-    load(win) {
-        win.loadURL(config.DIALOG_PENDING)
-    }, 
-    parent: main.win,
-    windowOptions: {
-        width: 420,
-        height: 170,
-        center: true,
-        minimizable: false,
-        maximizable: false,
-        resizable: false,
-        frame: false,
-    }
-  })
   win.loadURL(config.WINDOW_MAIN)
-
+  
   win.once('ready-to-show', () => {
     if (!options.hidden) win.show()
   })
@@ -192,7 +161,7 @@ function setBounds (bounds, maximize) {
     log(`setBounds: setting bounds to ${JSON.stringify(bounds)}`)
     if (bounds.x === null && bounds.y === null) {
       // X and Y not specified? By default, center on current screen
-      const scr = electron.screen.getDisplayMatching(main.win.getBounds())
+      const scr = screen.getDisplayMatching(main.win.getBounds())
       bounds.x = Math.round(scr.bounds.x + (scr.bounds.width / 2) - (bounds.width / 2))
       bounds.y = Math.round(scr.bounds.y + (scr.bounds.height / 2) - (bounds.height / 2))
       log(`setBounds: centered to ${JSON.stringify(bounds)}`)

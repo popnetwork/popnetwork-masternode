@@ -6,12 +6,12 @@ const popnetwork = module.exports = {
     win: null
 }
 
-const electron = require('electron')
+const { app, BrowserWindow } = require('electron')
 
 const config = require('../../config')
 
 function init() {
-    const win = popnetwork.win = new electron.BrowserWindow({
+    const win = popnetwork.win = new BrowserWindow({
         backgroundColor: '#1E1E1E',
         center: true,
         fullscreen: false,
@@ -26,7 +26,10 @@ function init() {
         useContentSize: true,
         webPreferences: {
             nodeIntegration: true,
-            enableBlinkFeatures: 'AudioVideoTracks'
+            contextIsolation: false,
+            enableBlinkFeatures: 'AudioVideoTracks',
+            enableRemoteModule: true,
+            backgroundThrottling: false,
         },
         width: 150
     })
@@ -35,7 +38,7 @@ function init() {
 
     // Prevent killing the popnetwork process
     win.on('close', function(e) {
-        if (electron.app.isQuitting) {
+        if (app.isQuitting) {
             return
         }
         e.preventDefault()

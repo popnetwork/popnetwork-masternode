@@ -11,9 +11,9 @@
         "url": "https://github.com/popnetwork/popnetwork-masternode/issues"
     },
     "dependencies": {
-        "@walletconnect/client": "^1.2.2",
-        "@walletconnect/core": "^1.2.2",
-        "@walletconnect/qrcode-modal": "^1.2.2",
+        "@walletconnect/client": "^1.6.5",
+        "@walletconnect/core": "^1.6.5",
+        "@walletconnect/qrcode-modal": "^1.6.5",
         "actioncable": "^5.2.4-4",
         "airplayer": "^2.0.0",
         "application-config": "^1.0.1",

@@ -295,6 +295,25 @@ module.exports = class TorrentList extends React.Component {
     } else {
       progElem = (
         <>
+          <div className="summary-title-wrapper">
+            <span className="summary-title">{name}</span>
+            <span className='size'>{`${prog ? prettyBytes(prog.length || 0) : ''}`}</span>
+          </div>
+          <img src={imageUrl} className="cover-image" onClick={() => dispatch('playFile', infoHash)} draggable={false} />
+          {/* {imageUrl && <img className="torrent-cover" src={imageUrl} />} */}
+          <div className="horizontal-divider"></div>
+          <div className="bottom-wrapper">
+            {renderProgress()}
+          </div>
+        </>
+      )
+    }
+
+    return (
+      <div className="torrent-summary-wrapper" key={infoHash}>
+        <div
+          className={classes.join(' ')}
+        >
           <div className="summary-header">
             <div className="summary-check" onClick={() => this.onSelectTorrent(torrentSummary)}>
               <img src={`${config.STATIC_PATH}/${!selectedTorrents.find((torrent) => torrent.infoHash === infoHash) ? 'Checkbox.png' : 'CheckboxActive.png' }`} draggable={false} />
@@ -335,25 +354,6 @@ module.exports = class TorrentList extends React.Component {
               </div>
             </div>
           </div>
-          <div className="summary-title-wrapper">
-            <span className="summary-title">{name}</span>
-            <span className='size'>{`${prog ? prettyBytes(prog.length || 0) : ''}`}</span>
-          </div>
-          <img src={imageUrl} className="cover-image" onClick={() => dispatch('playFile', infoHash)} draggable={false} />
-          {/* {imageUrl && <img className="torrent-cover" src={imageUrl} />} */}
-          <div className="horizontal-divider"></div>
-          <div className="bottom-wrapper">
-            {renderProgress()}
-          </div>
-        </>
-      )
-    }
-
-    return (
-      <div className="torrent-summary-wrapper" key={infoHash}>
-        <div
-          className={classes.join(' ')}
-        >
           {progElem}
         </div>
       </div>

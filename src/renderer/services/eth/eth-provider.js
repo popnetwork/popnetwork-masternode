@@ -5,12 +5,12 @@ const { erc20ABI } = require('./erc20.js');
 const { popchefABI } = require('./popchef.js');
 const {apiGetGasPrices} = require('./eth-api.js');
 var abi = require('ethereumjs-abi');
-const electron = require('electron')
-const remote = electron.remote
-const provider = ethers.getDefaultProvider(process.env.ETH_NETWORK, {
-  etherscan: process.env.ETHERSCAN_API_KEY,
-  infura: process.env.INFURA_API_KEY,
-  alchemy: process.env.ALCHEMY_API_KEY,
+const config = require('../../../config')
+
+const provider = ethers.getDefaultProvider(config.ETH_NETWORK, {
+  etherscan: config.ETHERSCAN_API_KEY,
+  infura: config.INFURA_API_KEY,
+  alchemy: config.ALCHEMY_API_KEY,
 });
 module.exports = {
   getEthBalance,
@@ -37,7 +37,7 @@ async function getEthBalance (address) {
   }
 }
 
-async function getTokenBalance (address, tokenAddress = ethConfig.POP_TOKEN_ADDRESS[process.env.ETH_NETWORK]) {
+async function getTokenBalance (address, tokenAddress = ethConfig.POP_TOKEN_ADDRESS[config.ETH_NETWORK]) {
   try {
     const contract = new ethers.Contract(tokenAddress, erc20ABI, provider) 
     const balance = await contract.balanceOf(address);
@@ -75,9 +75,9 @@ async function tokenApprove (spender, amount=0xfffffffffffffffffffffffffffffffff
 
 async function getClaimablePop(address) {
   try {
-    const contract = new ethers.Contract(ethConfig.STAKING_CONTRACT_ADDRESS[process.env.ETH_NETWORK], popchefABI, provider) 
+    const contract = new ethers.Contract(ethConfig.STAKING_CONTRACT_ADDRESS[config.ETH_NETWORK], popchefABI, provider) 
     const res = await contract.claimablePop(address)
-    const balance = ethers.utils.formatUnits(res, ethConfig.POP_TOKEN_DECIMALS[process.env.ETH_NETWORK])
+    const balance = ethers.utils.formatUnits(res, ethConfig.POP_TOKEN_DECIMALS[config.ETH_NETWORK])
     return new BigNumber(balance)
   } catch (err) {
     console.log('getClaimablePop: ', err)
@@ -87,9 +87,9 @@ async function getClaimablePop(address) {
 
 async function getStakedBalance(address) {
   try {
-    const contract = new ethers.Contract(ethConfig.STAKING_CONTRACT_ADDRESS[process.env.ETH_NETWORK], popchefABI, provider) 
+    const contract = new ethers.Contract(ethConfig.STAKING_CONTRACT_ADDRESS[config.ETH_NETWORK], popchefABI, provider) 
     const res = await contract.userInfo(address)
-    let balance = ethers.utils.formatUnits(res.amount, ethConfig.POP_TOKEN_DECIMALS[process.env.ETH_NETWORK])
+    let balance = ethers.utils.formatUnits(res.amount, ethConfig.POP_TOKEN_DECIMALS[config.ETH_NETWORK])
     return new BigNumber(balance)
   } catch (err) {
     console.log('getStakedBalance: ', err)
@@ -98,7 +98,7 @@ async function getStakedBalance(address) {
 }
 async function getPopPerBlock() {
   try {
-    const contract = new ethers.Contract(ethConfig.STAKING_CONTRACT_ADDRESS[process.env.ETH_NETWORK], popchefABI, provider) 
+    const contract = new ethers.Contract(ethConfig.STAKING_CONTRACT_ADDRESS[config.ETH_NETWORK], popchefABI, provider) 
     const res = await contract.popPerBlock()
     let balance = ethers.utils.formatUnits(res, 18)
     return new BigNumber(balance)
@@ -111,7 +111,7 @@ async function getPopPerBlock() {
 async function wcTokenApprove (connector, fromAddress, spender, amount='0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff') {
   try {
     const encoded = abi.simpleEncode("approve(address,uint256):(bool)", spender, amount)
-    const toAddress = ethConfig.POP_TOKEN_ADDRESS[process.env.ETH_NETWORK]
+    const toAddress = ethConfig.POP_TOKEN_ADDRESS[config.ETH_NETWORK]
     const data = '0x' + encoded.toString('hex')
     const value = '0x0'
     return (await wcSendTransaction(connector, fromAddress, toAddress, data, value))
@@ -123,7 +123,7 @@ async function wcTokenApprove (connector, fromAddress, spender, amount='0xffffff
 async function wcPopChefDeposit (connector, fromAddress, amount) {
   try {
     const encoded = abi.simpleEncode("deposit(uint256)", amount)
-    const toAddress = ethConfig.STAKING_CONTRACT_ADDRESS[process.env.ETH_NETWORK]
+    const toAddress = ethConfig.STAKING_CONTRACT_ADDRESS[config.ETH_NETWORK]
     const data = '0x' + encoded.toString('hex')
     const value = '0x0';
     return (await wcSendTransaction(connector, fromAddress, toAddress, data, value))
@@ -135,7 +135,7 @@ async function wcPopChefDeposit (connector, fromAddress, amount) {
 async function wcPopChefWithdraw (connector, fromAddress, amount) {
   try {
     const encoded = abi.simpleEncode("withdraw(uint256)", amount)
-    const toAddress = ethConfig.STAKING_CONTRACT_ADDRESS[process.env.ETH_NETWORK]
+    const toAddress = ethConfig.STAKING_CONTRACT_ADDRESS[config.ETH_NETWORK]
     const data = '0x' + encoded.toString('hex')
     const value = '0x0';
     return (await wcSendTransaction(connector, fromAddress, toAddress, data, value))
@@ -178,5 +178,5 @@ async function wcSendTransaction (connector, fromAddress, toAddress, data, value
 }
 
 function convertToWei(balance) {
-  return (new BigNumber(balance)).multipliedBy(Math.pow(10, ethConfig.POP_TOKEN_DECIMALS[process.env.ETH_NETWORK]))
+  return (new BigNumber(balance)).multipliedBy(Math.pow(10, ethConfig.POP_TOKEN_DECIMALS[config.ETH_NETWORK]))
 }

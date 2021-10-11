@@ -9,10 +9,10 @@ const { dispatch, dispatcher } = require('../lib/dispatcher')
 const ethConfig = require('../services/eth/config')
 const EthProvider = require("../services/eth/eth-provider");
 const { apiCreateRewardHistory } = require("../services/api");
-const remote = require("electron").remote;
 const { ethers } = require("ethers");
 
 const MIN_VALUE = 50000
+const MAX_VALUE = 2000000
 
 module.exports = class StakeModal extends React.Component {
   constructor(props) {
@@ -32,7 +32,7 @@ module.exports = class StakeModal extends React.Component {
     if (!!wallet.approval) {
       const balance = ethers.utils.parseUnits(
         value.toString(),
-        ethConfig.POP_TOKEN_DECIMALS[process.env.ETH_NETWORK]
+        ethConfig.POP_TOKEN_DECIMALS[config.ETH_NETWORK]
       );
       dispatch('confirmDialog')
       const [txid, err] = await EthProvider.wcPopChefDeposit(
@@ -43,7 +43,7 @@ module.exports = class StakeModal extends React.Component {
       dispatch('exitModal')
       if (!!txid) {
         nodeChannel.send({ type: "init_blocks" });
-        const detail = ethConfig.ETHERSCAN_URL[process.env.ETH_NETWORK] + "/tx/" + txid;
+        const detail = ethConfig.ETHERSCAN_URL[config.ETH_NETWORK] + "/tx/" + txid;
         dispatch('createTransactionDialog', detail)
         try {
           const response = await apiCreateRewardHistory(
@@ -87,12 +87,14 @@ module.exports = class StakeModal extends React.Component {
             floatingLabelText="Amount"
             step={MIN_VALUE}
             min={MIN_VALUE}
+            max={MAX_VALUE}
             floatingLabelStyle={{ padding: '0px 25px', color: '#9EA1C9'  }}
             floatingLabelFocusStyle={{ padding: '10px 25px 0' }}
             floatingLabelShrinkStyle={{ padding: '10px 25px 0' }}
             inputStyle={{ width: '440px', borderRadius: '12px', background: '#1F202A', border: '1px solid #2A2D3B', padding: '8px 20px', color: '#ffffff' }}
           />
           {value < MIN_VALUE && <div className="error-text">{`Minimum amount is ${MIN_VALUE}.`}</div>}
+          {value > MAX_VALUE && <div className="error-text">{`Maximum amount is ${MAX_VALUE}.`}</div>}
         </div>
         <div className="button-container">
           <CustomButton

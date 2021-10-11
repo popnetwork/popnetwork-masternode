@@ -7,7 +7,7 @@ const {apiGetGasPrices} = require('./eth-api.js');
 var abi = require('ethereumjs-abi');
 const config = require('../../../config')
 
-const provider = ethers.getDefaultProvider(config.ETH_NETWORK, {
+const provider = ethers.getDefaultProvider(config.ETH_NETWORK == "mainnet" ? "homestead" : config.ETH_NETWORK, {
   etherscan: config.ETHERSCAN_API_KEY,
   infura: config.INFURA_API_KEY,
   alchemy: config.ALCHEMY_API_KEY,
@@ -99,7 +99,7 @@ async function getStakedBalance(address) {
 async function getPopPerBlock() {
   try {
     const contract = new ethers.Contract(ethConfig.STAKING_CONTRACT_ADDRESS[config.ETH_NETWORK], popchefABI, provider) 
-    const res = await contract.popPerBlock()
+    const res = await contract.getPopPerBlock()
     let balance = ethers.utils.formatUnits(res, 18)
     return new BigNumber(balance)
   } catch (err) {

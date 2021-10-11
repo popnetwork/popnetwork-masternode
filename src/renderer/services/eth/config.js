@@ -8,7 +8,7 @@ module.exports = {
         'ropsten': 18,
     },
     STAKING_CONTRACT_ADDRESS: {
-        'mainnet': '',
+        'mainnet': '0x7ae7012912ac186bB0468006FcF06153b52Ce3ED',
         'ropsten': '0x6dfc87aaece856921879e29f04913f3bf08e3c99',
     },
     ETHERSCAN_URL: {

@@ -87,6 +87,12 @@ module.exports = {
 
     UI_HEADER_HEIGHT: UI_HEADER_HEIGHT,
     UI_TORRENT_HEIGHT: UI_TORRENT_HEIGHT,
+
+    ETHERSCAN_API_KEY: '1GZTXPFKCUIQA6QC9SYAA3GRM67EDTQ39X',
+    INFURA_API_KEY: '5ade6f42303b438aba643da76efaa82e',
+    ALCHEMY_API_KEY: '9i63IMz3fCrVxOgAZbV909bY4ZB33Mpc',
+    ETH_NETWORK: 'ropsten', // (ropsten or mainnet)
+    WEBSOCKET_URL: 'wss://dev.popnet.work/cable' // (dev: 'wss://dev.popnet.work/cable', prod: wss://masternode.popnet.work/cable)
 }
 
 function getConfigPath() {

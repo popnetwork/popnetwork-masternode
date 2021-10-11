@@ -8,8 +8,9 @@ const ethConfig = require('../services/eth/config')
 const { dispatch } = require('../lib/dispatcher');
 const {normalizeAddress} = require('../services/utils');
 const { convertUtf8ToHex } = require('@walletconnect/utils');
-const { openDialog } = require('electron-custom-dialog')
 const remote = electron.remote
+const config = require('../../config')
+
 module.exports = class WalletController {
   constructor (state) {
     this.state = state
@@ -232,7 +233,7 @@ module.exports = class WalletController {
       });
       EthProvider.getTokenBalance(wallet.address).then(result => {
         this.state.wallet.balance = result;
-        EthProvider.getTokenAllowance(wallet.address, ethConfig.STAKING_CONTRACT_ADDRESS[process.env.ETH_NETWORK], ethConfig.POP_TOKEN_ADDRESS[process.env.ETH_NETWORK]).then(result => {
+        EthProvider.getTokenAllowance(wallet.address, ethConfig.STAKING_CONTRACT_ADDRESS[config.ETH_NETWORK], ethConfig.POP_TOKEN_ADDRESS[config.ETH_NETWORK]).then(result => {
           let approval = false;
           if (result.comparedTo(this.state.wallet.balance) == 1) {
             approval = true;

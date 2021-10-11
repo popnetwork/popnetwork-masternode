@@ -7,7 +7,6 @@ const { dispatch } = require("../lib/dispatcher");
 const ethConfig = require('../services/eth/config');
 const EthProvider = require("../services/eth/eth-provider");
 const { apiCreateRewardHistory } = require("../services/api");
-const remote = require("electron").remote;
 const { ethers } = require("ethers");
 const shell = require('../../main/shell')
 
@@ -27,11 +26,11 @@ class StakePage extends React.Component {
       const [txid, err] = await EthProvider.wcTokenApprove(
         wallet.connector,
         wallet.address,
-        ethConfig.STAKING_CONTRACT_ADDRESS[process.env.ETH_NETWORK]
+        ethConfig.STAKING_CONTRACT_ADDRESS[config.ETH_NETWORK]
       );
       dispatch('exitModal')
       if (!!txid) {
-        const detail = ethConfig.ETHERSCAN_URL[process.env.ETH_NETWORK] + "/tx/" + txid;
+        const detail = ethConfig.ETHERSCAN_URL[config.ETH_NETWORK] + "/tx/" + txid;
         dispatch('createTransactionDialog', detail)
       } else {
         dispatch('connectErrorDialog')
@@ -42,7 +41,7 @@ class StakePage extends React.Component {
   async unstake(wallet, nodeChannel) {
     const balance = ethers.utils.parseUnits(
       wallet.stakedBalance.toString(),
-      ethConfig.POP_TOKEN_DECIMALS[process.env.ETH_NETWORK]
+      ethConfig.POP_TOKEN_DECIMALS[config.ETH_NETWORK]
     );
     dispatch('confirmDialog')
     const [txid, err] = await EthProvider.wcPopChefWithdraw(
@@ -53,7 +52,7 @@ class StakePage extends React.Component {
     dispatch('exitModal')
     if (!!txid) {
       nodeChannel.send({ type: "init_blocks" });
-      const detail = ethConfig.ETHERSCAN_URL[process.env.ETH_NETWORK] + "/tx/" + txid;
+      const detail = ethConfig.ETHERSCAN_URL[config.ETH_NETWORK] + "/tx/" + txid;
       dispatch('createTransactionDialog', detail)
       try {
         const response = await apiCreateRewardHistory(
@@ -82,7 +81,7 @@ class StakePage extends React.Component {
     dispatch('exitModal')
     if (!!txid) {
       nodeChannel.send({ type: "init_blocks" });
-      const detail = ethConfig.ETHERSCAN_URL[process.env.ETH_NETWORK] + "/tx/" + txid;
+      const detail = ethConfig.ETHERSCAN_URL[config.ETH_NETWORK] + "/tx/" + txid;
       dispatch('createTransactionDialog', detail)
       try {
         const response = await apiCreateRewardHistory(
@@ -196,7 +195,7 @@ class StakePage extends React.Component {
                   </div>
                 </div>
                 <div className="arrow">
-                  <div className="arrow-button" onClick={() => this.onTransaction(`${ethConfig.ETHERSCAN_URL[process.env.ETH_NETWORK]}/tx/${rewardHistory.txid}`)}>
+                  <div className="arrow-button" onClick={() => this.onTransaction(`${ethConfig.ETHERSCAN_URL[config.ETH_NETWORK]}/tx/${rewardHistory.txid}`)}>
                     <img src={`${config.STATIC_PATH}/LeftArrow.png`} draggable={false} />
                   </div>
                 </div>

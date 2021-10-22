@@ -160,7 +160,7 @@ async function wcSendTransaction (connector, fromAddress, toAddress, data, value
       gas = await provider.estimateGas(tx);
       gas = gas.toHexString();
       gasPrices = await apiGetGasPrices();
-      const _gasPrice = gasPrices.average.price * 1.2;
+      const _gasPrice = gasPrices.average.price;
       gasPrice = ethers.utils.parseUnits(_gasPrice.toString(), 9).toHexString();
     } catch (e) {
       console.log('gas:', e)

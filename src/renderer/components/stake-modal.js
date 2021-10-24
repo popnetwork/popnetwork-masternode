@@ -27,8 +27,10 @@ module.exports = class StakeModal extends React.Component {
 
   async onStake() {
     const { value } = this.state
-    if (value < MIN_VALUE) return
     const { wallet, nodeChannel } = this.props.state
+    const max_balance = Math.floor(wallet.balance.toFixed(6)) > MAX_VALUE ? MAX_VALUE : Math.floor(wallet.balance.toFixed(6))
+    if (value < MIN_VALUE) return
+    if (value > max_balance) return
     if (!!wallet.approval) {
       const balance = ethers.utils.parseUnits(
         value.toString(),
@@ -65,6 +67,8 @@ module.exports = class StakeModal extends React.Component {
 
   render () {
     const { value } = this.state
+    const { wallet } = this.props.state
+    const max_balance = Math.floor(wallet.balance.toFixed(6)) > MAX_VALUE ? MAX_VALUE : Math.floor(wallet.balance.toFixed(6))
 
     return (
       <div className='custom-modal create-magnet-modal'>
@@ -87,14 +91,14 @@ module.exports = class StakeModal extends React.Component {
             floatingLabelText="Amount"
             step={MIN_VALUE}
             min={MIN_VALUE}
-            max={MAX_VALUE}
+            max={max_balance}
             floatingLabelStyle={{ padding: '0px 25px', color: '#9EA1C9'  }}
             floatingLabelFocusStyle={{ padding: '10px 25px 0' }}
             floatingLabelShrinkStyle={{ padding: '10px 25px 0' }}
             inputStyle={{ width: '440px', borderRadius: '12px', background: '#1F202A', border: '1px solid #2A2D3B', padding: '8px 20px', color: '#ffffff' }}
           />
           {value < MIN_VALUE && <div className="error-text">{`Minimum amount is ${MIN_VALUE}.`}</div>}
-          {value > MAX_VALUE && <div className="error-text">{`Maximum amount is ${MAX_VALUE}.`}</div>}
+          {value > max_balance && <div className="error-text">{`Maximum amount is ${max_balance}.`}</div>}
         </div>
         <div className="button-container">
           <CustomButton

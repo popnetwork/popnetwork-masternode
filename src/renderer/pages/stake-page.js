@@ -80,7 +80,6 @@ class StakePage extends React.Component {
     );
     dispatch('exitModal')
     if (!!txid) {
-      nodeChannel.send({ type: "init_blocks" });
       const detail = ethConfig.ETHERSCAN_URL[config.ETH_NETWORK] + "/tx/" + txid;
       dispatch('createTransactionDialog', detail)
       try {

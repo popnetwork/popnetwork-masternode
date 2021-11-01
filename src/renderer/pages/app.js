@@ -35,6 +35,7 @@ const Modals = {
   'create-iframe-modal': createGetter(() => require('../components/create-iframe-modal')),
   'connect-wallet-modal': createGetter(() => require('../components/connect-wallet-modal')),
   'delete-torrent-modal': createGetter(() => require('../components/delete-torrent-modal')),
+  'max-stake-modal': createGetter(() => require('../components/max-stake-modal')),
   'confirm-modal': createGetter(() => require('../components/confirm-modal')),
   'connect-error-modal': createGetter(() => require('../components/connect-error-modal')),
   'stake-modal': createGetter(() => require('../components/stake-modal')),

@@ -80,8 +80,8 @@ module.exports = class WalletController {
         detail: "To use POPNetwork-Masternode service fully, \n login wallet with walletconnect first. \n Wallet->WalletConnect"
       })
     } else {
-	  this.subscribeToEvents();
-	  this.fetchRewardHistories()
+      this.subscribeToEvents();
+      this.fetchRewardHistories()
     }
   }
 
@@ -152,10 +152,10 @@ module.exports = class WalletController {
   async onConnect (payload) {
     console.log('onConnect', payload);
     const { chainId, accounts } = payload.params[0];
-	await this.onSessionUpdate(accounts, chainId);
+	  await this.onSessionUpdate(accounts, chainId);
     dispatch('disconnectActionCable');
-	dispatch('connectActionCable');
-	this.fetchRewardHistories();
+	  dispatch('connectActionCable');
+	  this.fetchRewardHistories();
   };
 
   async getAccountAssets () {
@@ -247,6 +247,13 @@ module.exports = class WalletController {
       });     
       EthProvider.getStakedBalance(wallet.address).then(result => {
         this.state.wallet.stakedBalance = result;
+        if (result > config.MAX_STAKE_BALANCE) {
+          dispatch('maxStakeDialog')
+          dispatch('disconnectActionCable');
+        } else if (this.state.cable && this.state.cable.connection.disconnected) {
+          // Reconnect when disconnected
+          dispatch('connectActionCable');
+        }
       });
     }
   }

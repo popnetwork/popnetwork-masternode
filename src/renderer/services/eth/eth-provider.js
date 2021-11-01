@@ -10,7 +10,6 @@ const config = require('../../../config')
 const provider = ethers.getDefaultProvider(config.ETH_NETWORK == "mainnet" ? "homestead" : config.ETH_NETWORK, {
   etherscan: config.ETHERSCAN_API_KEY,
   infura: config.INFURA_API_KEY,
-  alchemy: config.ALCHEMY_API_KEY,
 });
 module.exports = {
   getEthBalance,

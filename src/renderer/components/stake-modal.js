@@ -12,7 +12,6 @@ const { apiCreateRewardHistory } = require("../services/api");
 const { ethers } = require("ethers");
 
 const MIN_VALUE = 50000
-const MAX_VALUE = 2000000
 
 module.exports = class StakeModal extends React.Component {
   constructor(props) {
@@ -28,7 +27,7 @@ module.exports = class StakeModal extends React.Component {
   async onStake() {
     const { value } = this.state
     const { wallet, nodeChannel } = this.props.state
-    const max_balance = Math.floor(wallet.balance.toFixed(6)) > MAX_VALUE ? MAX_VALUE : Math.floor(wallet.balance.toFixed(6))
+    const max_balance = Math.floor(wallet.balance.toFixed(6)) > (config.MAX_STAKE_BALANCE - wallet.stakedBalance) ? (config.MAX_STAKE_BALANCE - wallet.stakedBalance) : Math.floor(wallet.balance.toFixed(6))
     if (value < MIN_VALUE) return
     if (value > max_balance) return
     if (!!wallet.approval) {
@@ -68,7 +67,7 @@ module.exports = class StakeModal extends React.Component {
   render () {
     const { value } = this.state
     const { wallet } = this.props.state
-    const max_balance = Math.floor(wallet.balance.toFixed(6)) > MAX_VALUE ? MAX_VALUE : Math.floor(wallet.balance.toFixed(6))
+    const max_balance = Math.floor(wallet.balance.toFixed(6)) > (config.MAX_STAKE_BALANCE - wallet.stakedBalance) ? (config.MAX_STAKE_BALANCE - wallet.stakedBalance) : Math.floor(wallet.balance.toFixed(6))
 
     return (
       <div className='custom-modal create-magnet-modal'>

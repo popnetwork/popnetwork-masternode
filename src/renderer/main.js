@@ -205,8 +205,8 @@ async function initWallet() {
 }
 
 async function updateWallet() {
-  await controllers.wallet().updateWallet(); 
-  setTimeout(updateWallet, 10000)
+  await controllers.wallet().updateWallet();
+  setTimeout(updateWallet, 300000);
 }
 
 // Runs a few seconds after the app loads, to avoid slowing down startup time
@@ -372,6 +372,7 @@ const dispatchHandlers = {
   // Wallet
   walletConnect: () => controllers.wallet().walletConnect(),
   walletDisconnect: () => controllers.wallet().walletDisconnect(),
+  updateWallet: () => controllers.wallet().updateWallet(),
   stake: () => controllers.stake().show(),
   stakeFirst: () => controllers.stake().showFirst(),
 

@@ -50,8 +50,8 @@ module.exports = class WalletController {
       } 
     }
 
-	await this.subscribeToEvents();
-	this.fetchRewardHistories()
+    await this.subscribeToEvents();
+    this.fetchRewardHistories()
   }
 
   walletDisconnect() {
@@ -135,10 +135,10 @@ module.exports = class WalletController {
   };
 
   async fetchRewardHistories() {
-  const { wallet }  = this.state
-	if (!wallet || !wallet.address) return
-	const rewardHistories = await apiGetRewardHistories(wallet.address, wallet.token)
-	wallet.rewardHistories = rewardHistories || []
+    const { wallet }  = this.state
+    if (!wallet || !wallet.address) return
+    const rewardHistories = await apiGetRewardHistories(wallet.address, wallet.token)
+    wallet.rewardHistories = rewardHistories || []
   }
 
   async killSession () {
@@ -153,6 +153,7 @@ module.exports = class WalletController {
     console.log('onConnect', payload);
     const { chainId, accounts } = payload.params[0];
 	  await this.onSessionUpdate(accounts, chainId);
+    this.updateWallet();
     dispatch('disconnectActionCable');
 	  dispatch('connectActionCable');
 	  this.fetchRewardHistories();
@@ -207,19 +208,16 @@ module.exports = class WalletController {
         }
       }
     }
-    
   };
 
   async initWallet() {
-    
     const { wallet } = this.state;
     if (!!wallet ) {
-      
     }
   }
 
   async updateWallet() {
-    
+    console.log('update wallet balance')
     const { wallet } = this.state;
     if (this.state.wallet.popPerBlock.isLessThanOrEqualTo(0)) {
       EthProvider.getPopPerBlock().then((result) => {
@@ -249,9 +247,11 @@ module.exports = class WalletController {
         this.state.wallet.stakedBalance = result;
         if (result > config.MAX_STAKE_BALANCE) {
           dispatch('maxStakeDialog')
+          console.log('2M disconnect cable');
           dispatch('disconnectActionCable');
         } else if (this.state.cable && this.state.cable.connection.disconnected) {
           // Reconnect when disconnected
+          console.log('reconnect cable');
           dispatch('connectActionCable');
         }
       });

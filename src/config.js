@@ -35,18 +35,18 @@ module.exports = {
 
     DEFAULT_TORRENTS: [
         // TODO we don't use static default torrents and fetch them from server now
-        // {
-        //     testID: 'pop',
-        //     name: 'POPNetwork',
-        //     posterFileName: 'popnetwork.png',
-        //     torrentFileName: 'popnetwork.torrent'
-        // },
-        // {
-        //     testID: 'psp',
-        //     name: 'POPNetwork-SGBW-panel',
-        //     posterFileName: 'POPNetwork-SGBW-panel.jpg',
-        //     torrentFileName: 'POPNetwork-SGBW-panel.torrent'
-        // },
+        {
+            testID: 'pop',
+            name: 'POPNetwork',
+            posterFileName: 'popnetwork.png',
+            torrentFileName: 'popnetwork.torrent'
+        },
+        {
+            testID: 'psp',
+            name: 'POPNetwork-SGBW-panel',
+            posterFileName: 'POPNetwork-SGBW-panel.jpg',
+            torrentFileName: 'POPNetwork-SGBW-panel.torrent'
+        },
      ],
 
     DELAYED_INIT: 3000 /* 3 seconds */ ,
@@ -91,7 +91,7 @@ module.exports = {
     MAX_STAKE_BALANCE: 2000000,
 
     ETHERSCAN_API_KEY: '1GZTXPFKCUIQA6QC9SYAA3GRM67EDTQ39X',
-    INFURA_API_KEY: '5ade6f42303b438aba643da76efaa82e',
+    INFURA_API_KEY: '',
     ETH_NETWORK: 'ropsten', // (ropsten or mainnet)
     WEBSOCKET_URL: 'wss://dev.popnet.work/cable' // (dev: 'wss://dev.popnet.work/cable', prod: wss://masternode.popnet.work/cable)
 }

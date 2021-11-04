@@ -30,6 +30,9 @@ class StakePage extends React.Component {
       );
       dispatch('exitModal')
       if (!!txid) {
+        setTimeout(() => {
+          dispatch('updateWallet')
+        }, 20000)
         const detail = ethConfig.ETHERSCAN_URL[config.ETH_NETWORK] + "/tx/" + txid;
         dispatch('createTransactionDialog', detail)
       } else {
@@ -51,6 +54,9 @@ class StakePage extends React.Component {
     );
     dispatch('exitModal')
     if (!!txid) {
+      setTimeout(() => {
+        dispatch('updateWallet')
+      }, 20000)
       nodeChannel.send({ type: "init_blocks" });
       const detail = ethConfig.ETHERSCAN_URL[config.ETH_NETWORK] + "/tx/" + txid;
       dispatch('createTransactionDialog', detail)
@@ -80,6 +86,9 @@ class StakePage extends React.Component {
     );
     dispatch('exitModal')
     if (!!txid) {
+      setTimeout(() => {
+        dispatch('updateWallet')
+      }, 20000)
       const detail = ethConfig.ETHERSCAN_URL[config.ETH_NETWORK] + "/tx/" + txid;
       dispatch('createTransactionDialog', detail)
       try {

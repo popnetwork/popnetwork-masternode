@@ -183,6 +183,7 @@ module.exports = class TorrentList extends React.Component {
               onClick={this.onAddVideo}
               img={`${config.STATIC_PATH}/Add.png`}
               style={{ background: '#B169F6', boxShadow: '0px 20px 31px #0D0E11', width: 150, height: 40, marginLeft: 20 }}
+              disabled
             />
           </div>
         </div>
@@ -197,6 +198,7 @@ module.exports = class TorrentList extends React.Component {
                 onClick={this.onAddVideo}
                 img={`${config.STATIC_PATH}/FirstAdd.png`}
                 style={{ background: '#1F202A', width: 210 }}
+                disabled
               />
             </div>
           :

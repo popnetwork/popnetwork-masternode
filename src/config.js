@@ -35,18 +35,18 @@ module.exports = {
 
     DEFAULT_TORRENTS: [
         // TODO we don't use static default torrents and fetch them from server now
-        {
-            testID: 'pop',
-            name: 'POPNetwork',
-            posterFileName: 'popnetwork.png',
-            torrentFileName: 'popnetwork.torrent'
-        },
-        {
-            testID: 'psp',
-            name: 'POPNetwork-SGBW-panel',
-            posterFileName: 'POPNetwork-SGBW-panel.jpg',
-            torrentFileName: 'POPNetwork-SGBW-panel.torrent'
-        },
+        // {
+        //     testID: 'pop',
+        //     name: 'POPNetwork',
+        //     posterFileName: 'popnetwork.png',
+        //     torrentFileName: 'popnetwork.torrent'
+        // },
+        // {
+        //     testID: 'psp',
+        //     name: 'POPNetwork-SGBW-panel',
+        //     posterFileName: 'POPNetwork-SGBW-panel.jpg',
+        //     torrentFileName: 'POPNetwork-SGBW-panel.torrent'
+        // },
      ],
 
     DELAYED_INIT: 3000 /* 3 seconds */ ,

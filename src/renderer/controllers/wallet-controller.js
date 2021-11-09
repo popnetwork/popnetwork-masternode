@@ -270,6 +270,7 @@ module.exports = class WalletController {
     wallet.pendingRewards = new BigNumber(0);
     wallet.claimableRewards = new BigNumber(0);
     wallet.pendingBlockCnt = 0;
+    wallet.pendingUpdatedTime = 0;
     wallet.popPerBlock = new BigNumber(0);
     wallet.approval = false;
     wallet.address = null;

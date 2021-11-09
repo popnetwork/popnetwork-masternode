@@ -39,8 +39,12 @@ module.exports = class ActionCableController {
       received(data) {
         if (data.type === "pending_blocks") {
           state.wallet.pendingBlockCnt = data.pending_block_cnt;
+          state.wallet.pendingUpdatedTime = data.timestamp;
         } else if (data.type === "new_blocks") {
-          state.wallet.pendingBlockCnt += data.new_block_cnt;
+          if (data.timestamp > state.wallet.pendingUpdatedTime) {
+            state.wallet.pendingBlockCnt += data.new_block_cnt;
+            state.wallet.pendingUpdatedTime = data.timestamp;
+          }
         }
         state.wallet.pendingRewards = state.wallet.stakedBalance.multipliedBy(state.wallet.popPerBlock.multipliedBy(state.wallet.pendingBlockCnt))
       }

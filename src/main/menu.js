@@ -126,7 +126,7 @@ function getMenuTemplate() {
                     label: 'Help center',
                     click: () => {
                         const shell = require('./shell')
-                        shell.openExternal(config.TWITTER_PAGE_URL)
+                        shell.openExternal(config.QUESTION_URL)
                     }
                 }
             ]

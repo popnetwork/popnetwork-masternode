@@ -1,5 +1,6 @@
 const React = require('react')
 
+const shell = require('../../main/shell')
 const config = require('../../config')
 const CustomButton = require('./custom-button')
 const Popover = require('material-ui/Popover').default
@@ -113,7 +114,7 @@ class Header extends React.Component {
               img={`${config.STATIC_PATH}/Wallet.png`}
             />
           }
-          <div className="help-button">
+          <div className="help-button" onClick={() => shell.openExternal(config.QUESTION_URL)}>
             <img src={`${config.STATIC_PATH}/Help.png`} draggable={false} />
           </div>
           <div className="setting-button" onClick={this.onSetting}>

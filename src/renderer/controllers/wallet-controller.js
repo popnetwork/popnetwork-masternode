@@ -220,39 +220,51 @@ module.exports = class WalletController {
     const { wallet } = this.state;
     if (this.state.wallet.popPerBlock.isLessThanOrEqualTo(0)) {
       EthProvider.getPopPerBlock().then((result) => {
-        this.state.wallet.popPerBlock = result;
-        this.state.wallet.pendingRewards = this.state.wallet.stakedBalance.multipliedBy(this.state.wallet.popPerBlock.multipliedBy(this.state.wallet.pendingBlockCnt))
+        if (!result.isLessThanOrEqualTo(config.ERROR_BALANCE)) {
+          this.state.wallet.popPerBlock = result;
+          this.state.wallet.pendingRewards = this.state.wallet.stakedBalance.multipliedBy(this.state.wallet.popPerBlock.multipliedBy(this.state.wallet.pendingBlockCnt))
+        }
       });
     }
     if (!!wallet && !!wallet.connected) {
       EthProvider.getEthBalance(wallet.address).then(result => {
-        this.state.wallet.ethBalance = result;
+        if (!result.isLessThanOrEqualTo(config.ERROR_BALANCE)) {
+          this.state.wallet.ethBalance = result;
+        }
       });
       EthProvider.getTokenBalance(wallet.address).then(result => {
-        this.state.wallet.balance = result;
-        EthProvider.getTokenAllowance(wallet.address, ethConfig.STAKING_CONTRACT_ADDRESS[config.ETH_NETWORK], ethConfig.POP_TOKEN_ADDRESS[config.ETH_NETWORK]).then(result => {
-          let approval = false;
-          if (result.comparedTo(this.state.wallet.balance) == 1) {
-            approval = true;
-          }
-          this.state.wallet.approval = approval;
-          this.state.wallet.fetching = false;
-        });
+        if (!result.isLessThanOrEqualTo(config.ERROR_BALANCE)) {
+          this.state.wallet.balance = result;
+          EthProvider.getTokenAllowance(wallet.address, ethConfig.STAKING_CONTRACT_ADDRESS[config.ETH_NETWORK], ethConfig.POP_TOKEN_ADDRESS[config.ETH_NETWORK]).then(result => {
+            if (!result.isLessThanOrEqualTo(config.ERROR_BALANCE)) {
+              let approval = false;
+              if (result.comparedTo(this.state.wallet.balance) == 1) {
+                approval = true;
+              }
+              this.state.wallet.approval = approval;
+              this.state.wallet.fetching = false;
+            }
+          });
+        }
       });
       EthProvider.getClaimablePop(wallet.address).then(result => {
-        this.state.wallet.claimableRewards = result;
+        if (!result.isLessThanOrEqualTo(config.ERROR_BALANCE)) {
+          this.state.wallet.claimableRewards = result;
+        }
       });     
       EthProvider.getStakedBalance(wallet.address).then(result => {
-        this.state.wallet.stakedBalance = result;
-        if (result > config.MAX_STAKE_BALANCE) {
-          dispatch('maxStakeDialog')
-          console.log('2M disconnect cable');
-          dispatch('disconnectActionCable');
-        } else if (this.state.cable && this.state.cable.connection.disconnected) {
-          // Reconnect when disconnected
-          console.log('reconnect cable');
-          dispatch('disconnectActionCable');
-          dispatch('connectActionCable');
+        if (!result.isLessThanOrEqualTo(config.ERROR_BALANCE)) {
+          this.state.wallet.stakedBalance = result;
+          if (result > config.MAX_STAKE_BALANCE) {
+            dispatch('maxStakeDialog')
+            console.log('2M disconnect cable');
+            dispatch('disconnectActionCable');
+          } else if (this.state.cable && this.state.cable.connection.disconnected) {
+            // Reconnect when disconnected
+            console.log('reconnect cable');
+            dispatch('disconnectActionCable');
+            dispatch('connectActionCable');
+          }
         }
       });
 

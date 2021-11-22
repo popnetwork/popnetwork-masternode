@@ -45,7 +45,7 @@ async function getTokenBalance (address, tokenAddress = ethConfig.POP_TOKEN_ADDR
     return new BigNumber(tokenBalance)
   } catch (err) {
     console.log('getTokenBalance: ', err)
-    return new BigNumber(0)
+    return new BigNumber(config.ERROR_BALANCE)
   }
 }
 
@@ -58,7 +58,7 @@ async function getTokenAllowance (tokenOwner, spender, tokenAddress) {
     return new BigNumber(remaining)
   } catch (err) {
     console.log('getTokenAllowance: ', err)
-    return new BigNumber(0)
+    return new BigNumber(config.ERROR_BALANCE)
   }
 }
 async function tokenApprove (spender, amount=0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff) {
@@ -80,7 +80,7 @@ async function getClaimablePop(address) {
     return new BigNumber(balance)
   } catch (err) {
     console.log('getClaimablePop: ', err)
-    return new BigNumber(0)
+    return new BigNumber(config.ERROR_BALANCE)
   }
 }
 
@@ -92,7 +92,7 @@ async function getStakedBalance(address) {
     return new BigNumber(balance)
   } catch (err) {
     console.log('getStakedBalance: ', err)
-    return new BigNumber(0)
+    return new BigNumber(config.ERROR_BALANCE)
   }
 }
 async function getPopPerBlock() {
@@ -103,7 +103,7 @@ async function getPopPerBlock() {
     return new BigNumber(balance)
   } catch (err) {
     console.log('getPopPerBlock: ', err)
-    return new BigNumber(0)
+    return new BigNumber(config.ERROR_BALANCE)
   }
 }
 

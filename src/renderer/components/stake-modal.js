@@ -30,6 +30,7 @@ module.exports = class StakeModal extends React.Component {
     const max_balance = Math.floor(wallet.balance.toFixed(6)) > (config.MAX_STAKE_BALANCE - wallet.stakedBalance) ? (config.MAX_STAKE_BALANCE - wallet.stakedBalance) : Math.floor(wallet.balance.toFixed(6))
     if (value < MIN_VALUE) return
     if (value > max_balance) return
+    if (value % MIN_VALUE !== 0) return
     if (!!wallet.approval) {
       const balance = ethers.utils.parseUnits(
         value.toString(),
@@ -67,7 +68,7 @@ module.exports = class StakeModal extends React.Component {
     }
   }
 
-  render () {
+  render() {
     const { value } = this.state
     const { wallet } = this.props.state
     const max_balance = Math.floor(wallet.balance.toFixed(6)) > (config.MAX_STAKE_BALANCE - wallet.stakedBalance) ? (config.MAX_STAKE_BALANCE - wallet.stakedBalance) : Math.floor(wallet.balance.toFixed(6))
@@ -94,13 +95,17 @@ module.exports = class StakeModal extends React.Component {
             step={MIN_VALUE}
             min={MIN_VALUE}
             max={max_balance}
-            floatingLabelStyle={{ padding: '0px 25px', color: '#9EA1C9'  }}
+            floatingLabelStyle={{ padding: '0px 25px', color: '#9EA1C9' }}
             floatingLabelFocusStyle={{ padding: '10px 25px 0' }}
             floatingLabelShrinkStyle={{ padding: '10px 25px 0' }}
             inputStyle={{ width: '440px', borderRadius: '12px', background: '#1F202A', border: '1px solid #2A2D3B', padding: '8px 20px', color: '#ffffff' }}
           />
-          {value < MIN_VALUE && <div className="error-text">{`Minimum amount is ${MIN_VALUE}.`}</div>}
-          {value > max_balance && <div className="error-text">{`Maximum amount is ${max_balance}.`}</div>}
+          {value < MIN_VALUE
+            ? <div className="error-text">{`Minimum amount is ${MIN_VALUE}.`}</div>
+            : value > max_balance
+              ? <div className="error-text">{`Maximum amount is ${max_balance}.`}</div>
+              : (value % MIN_VALUE) !== 0 && <div className="error-text">{`The amount must be a multiple of ${MIN_VALUE}.`}</div>
+          }
         </div>
         <div className="button-container">
           <CustomButton

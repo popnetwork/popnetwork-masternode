@@ -217,7 +217,6 @@ module.exports = class WalletController {
   }
 
   async updateWallet() {
-    console.log('update wallet balance')
     const { wallet } = this.state;
     if (this.state.wallet.popPerBlock.isLessThanOrEqualTo(0)) {
       EthProvider.getPopPerBlock().then((result) => {
@@ -252,9 +251,21 @@ module.exports = class WalletController {
         } else if (this.state.cable && this.state.cable.connection.disconnected) {
           // Reconnect when disconnected
           console.log('reconnect cable');
+          dispatch('disconnectActionCable');
           dispatch('connectActionCable');
         }
       });
+
+      // Disconnect Module
+      if (wallet.tempPendingBlockCnt === wallet.pendingBlockCnt) {
+        console.log('websocket broken')
+        dispatch('disconnectActionCable');
+        dispatch('connectActionCable');
+      } else if (wallet.tempPendingBlockCnt < wallet.pendingBlockCnt) {
+        console.log('check temp count', wallet.tempPendingBlockCnt)
+        console.log('check count', wallet.pendingBlockCnt)
+        wallet.tempPendingBlockCnt = wallet.pendingBlockCnt
+      }
     }
   }
 
@@ -270,6 +281,7 @@ module.exports = class WalletController {
     wallet.pendingRewards = new BigNumber(0);
     wallet.claimableRewards = new BigNumber(0);
     wallet.pendingBlockCnt = 0;
+    wallet.tempPendingBlockCnt = -1;
     wallet.pendingUpdatedTime = 0;
     wallet.popPerBlock = new BigNumber(0);
     wallet.approval = false;

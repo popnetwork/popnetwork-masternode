@@ -59,7 +59,9 @@ module.exports = {
     GITHUB_URL_RELEASES: 'https://github.com/popnetwork/popnetwork-masternode/releases',
     QUESTION_URL: 'https://help.thepopnetwork.org/',
     API_BASE_URL: 'https://masternode.popnet.work/api/v1',
+    AUTHORIZATION: 'e4cff05bee47a745122a8c783e63953b',
     DEV_API_BASE_URL: 'https://dev.popnet.work/api/v1/',
+    DEV_AUTHORIZATION: 'd3cff05bee47a745122a8c783e65653b',
 
     HOME_PAGE_URL: 'https://thepopnetwork.org',
     HOME_PAGE_SHORTENED_URL: 'https://popnet.work',

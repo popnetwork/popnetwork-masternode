@@ -194,7 +194,6 @@ function onState (err, _state) {
 
   controllers.wallet().checkWalletConnect();
   initWallet();
-  controllers.actionCable().connect();
   // Done! Ideally we want to get here < 500ms after the user clicks the app
   console.timeEnd('init')
 }
@@ -202,11 +201,19 @@ function onState (err, _state) {
 async function initWallet() {
   await controllers.wallet().initWallet(); 
   updateWallet();
+  setTimeout(() => {
+    updateWalletAPI();
+  }, [10000])
 }
 
 async function updateWallet() {
   await controllers.wallet().updateWallet();
   setTimeout(updateWallet, 300000);
+}
+
+async function updateWalletAPI() {
+  await controllers.wallet().updateWalletAPI();
+  setTimeout(updateWalletAPI, 60000);
 }
 
 // Runs a few seconds after the app loads, to avoid slowing down startup time
@@ -373,6 +380,7 @@ const dispatchHandlers = {
   walletConnect: () => controllers.wallet().walletConnect(),
   walletDisconnect: () => controllers.wallet().walletDisconnect(),
   updateWallet: () => controllers.wallet().updateWallet(),
+  updateWalletAPI: () => controllers.wallet().updateWalletAPI(),
   stake: () => controllers.stake().show(),
   stakeFirst: () => controllers.stake().showFirst(),
 

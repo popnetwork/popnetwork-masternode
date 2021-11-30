@@ -3,7 +3,7 @@ const {BigNumber} = require('bignumber.js')
 const WalletConnect = require('@walletconnect/client').default;
 const QRCodeModal = require('@walletconnect/qrcode-modal');
 const EthProvider = require('../services/eth/eth-provider')
-const { apiGetRewardHistories } = require('../services/api')
+const { apiGetRewardHistories, apiGetWallets } = require('../services/api')
 const ethConfig = require('../services/eth/config')
 const { dispatch } = require('../lib/dispatcher');
 const {normalizeAddress} = require('../services/utils');
@@ -154,8 +154,6 @@ module.exports = class WalletController {
     const { chainId, accounts } = payload.params[0];
 	  await this.onSessionUpdate(accounts, chainId);
     this.updateWallet();
-    dispatch('disconnectActionCable');
-	  dispatch('connectActionCable');
 	  this.fetchRewardHistories();
   };
 
@@ -177,7 +175,6 @@ module.exports = class WalletController {
   async onDisconnect () {
     this.killSession();
     // this.resetApp();
-    dispatch('disconnectActionCable');
   };
 
   async onSessionUpdate (accounts, chainId) {
@@ -222,7 +219,7 @@ module.exports = class WalletController {
       EthProvider.getPopPerBlock().then((result) => {
         if (!result.isLessThanOrEqualTo(config.ERROR_BALANCE)) {
           this.state.wallet.popPerBlock = result;
-          this.state.wallet.pendingRewards = this.state.wallet.stakedBalance.multipliedBy(this.state.wallet.popPerBlock.multipliedBy(this.state.wallet.pendingBlockCnt))
+          this.state.wallet.pendingRewards = this.state.wallet.stakedBalance.multipliedBy(this.state.wallet.popPerBlock.multipliedBy(this.state.wallet.cur_cycle_block_cnt))
         }
       });
     }
@@ -258,26 +255,26 @@ module.exports = class WalletController {
           if (result > config.MAX_STAKE_BALANCE) {
             dispatch('maxStakeDialog')
             console.log('2M disconnect cable');
-            dispatch('disconnectActionCable');
+            wallet.isAvailable = false;
           } else if (this.state.cable && this.state.cable.connection.disconnected) {
             // Reconnect when disconnected
-            console.log('reconnect cable');
-            dispatch('disconnectActionCable');
-            dispatch('connectActionCable');
+            console.log('API recall');
+            wallet.isAvailable = true;
           }
+
+          this.updateWalletAPI();
         }
       });
+    }
+  }
 
-      // Disconnect Module
-      if (wallet.tempPendingBlockCnt === wallet.pendingBlockCnt) {
-        console.log('websocket broken')
-        dispatch('disconnectActionCable');
-        dispatch('connectActionCable');
-      } else if (wallet.tempPendingBlockCnt < wallet.pendingBlockCnt) {
-        console.log('check temp count', wallet.tempPendingBlockCnt)
-        console.log('check count', wallet.pendingBlockCnt)
-        wallet.tempPendingBlockCnt = wallet.pendingBlockCnt
-      }
+  async updateWalletAPI() {
+    const { wallet } = this.state;
+    if (!!wallet && !!wallet.connected && wallet.isAvailable) {
+      const walletInfo = await apiGetWallets(wallet.address, wallet.token, wallet.stakedBalance.toFixed(0))
+      wallet.cur_cycle_block_cnt = walletInfo.cur_cycle_block_cnt;
+      console.log('walletInfo', wallet.cur_cycle_block_cnt)
+      state.wallet.pendingRewards = state.wallet.stakedBalance.multipliedBy(state.wallet.popPerBlock.multipliedBy(wallet.cur_cycle_block_cnt))
     }
   }
 
@@ -303,6 +300,8 @@ module.exports = class WalletController {
     wallet.rewardHistories = [];
     wallet.ethBalance = new BigNumber(0);
     wallet.showWarning = true
+    wallet.isAvailable = true
+    wallet.cur_cycle_block_cnt = 0;
     
     this.state.wallet = wallet;
   }

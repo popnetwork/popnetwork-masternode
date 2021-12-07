@@ -256,7 +256,7 @@ module.exports = class WalletController {
             dispatch('maxStakeDialog')
             console.log('2M disconnect cable');
             wallet.isAvailable = false;
-          } else if (this.state.cable && this.state.cable.connection.disconnected) {
+          } else if (!wallet.isAvailable) {
             // Reconnect when disconnected
             console.log('API recall');
             wallet.isAvailable = true;
@@ -270,11 +270,19 @@ module.exports = class WalletController {
 
   async updateWalletAPI() {
     const { wallet } = this.state;
+    console.log('call updateWalletAPI', new Date().getTime());
     if (!!wallet && !!wallet.connected && wallet.isAvailable) {
-      const walletInfo = await apiGetWallets(wallet.address, wallet.token, wallet.stakedBalance.toFixed(0))
-      wallet.cur_cycle_block_cnt = walletInfo.cur_cycle_block_cnt;
-      console.log('walletInfo', wallet.cur_cycle_block_cnt)
-      state.wallet.pendingRewards = state.wallet.stakedBalance.multipliedBy(state.wallet.popPerBlock.multipliedBy(wallet.cur_cycle_block_cnt))
+      try {
+        const walletInfo = await apiGetWallets(wallet.address, wallet.token, wallet.stakedBalance.toFixed(0))
+        if (walletInfo && walletInfo.cur_cycle_block_cnt) {
+          wallet.cur_cycle_block_cnt = walletInfo.cur_cycle_block_cnt;
+          console.log('walletInfo', wallet.cur_cycle_block_cnt, new Date().getTime(), new Date().getTime() - wallet.timestamp);
+          wallet.timestamp = new Date().getTime();
+          state.wallet.pendingRewards = state.wallet.stakedBalance.multipliedBy(state.wallet.popPerBlock.multipliedBy(wallet.cur_cycle_block_cnt))
+        }
+      } catch (e) {
+        console.log("Error GetWallets", e);
+      }
     }
   }
 
@@ -302,6 +310,7 @@ module.exports = class WalletController {
     wallet.showWarning = true
     wallet.isAvailable = true
     wallet.cur_cycle_block_cnt = 0;
+    wallet.timestamp = new Date().getTime();
     
     this.state.wallet = wallet;
   }

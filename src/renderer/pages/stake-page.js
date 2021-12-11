@@ -173,7 +173,7 @@ class StakePage extends React.Component {
             </div>
           </div>
           <div className="stake-item">
-            <div className="title">POP Earned</div>
+            <div className="title">Ready to Claim</div>
             <div className="value">
               {wallet.claimableRewards.toFixed(6) + " POP"}
             </div>

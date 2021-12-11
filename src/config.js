@@ -54,7 +54,7 @@ module.exports = {
     DEFAULT_DOWNLOAD_PATH: getDefaultDownloadPath(),
 
     GITHUB_URL: 'https://github.com/popnetwork/popnetwork-masternode',
-    GITHUB_URL_ISSUES: 'https://github.com/popnetwork/popnetwork-masternode/issues',
+    GITHUB_URL_ISSUES: 'https://github.com/popnetwork/masternode/issues',
     GITHUB_URL_RAW: 'https://raw.githubusercontent.com/popnetwork/popnetwork-masternode/master',
     GITHUB_URL_RELEASES: 'https://github.com/popnetwork/popnetwork-masternode/releases',
     QUESTION_URL: 'https://help.thepopnetwork.org/',

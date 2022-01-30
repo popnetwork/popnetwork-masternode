@@ -1289,6 +1289,10 @@ video::-webkit-media-text-track-container {
   border-radius: 12px;
 }
 
+.custom-button.add-wallet {
+  width: 188px;
+}
+
 .custom-button img {
   margin-right: 10px;
 }

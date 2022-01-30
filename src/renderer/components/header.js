@@ -9,11 +9,18 @@ const MenuItem = require('material-ui/MenuItem').default
 
 const { dispatch } = require('../lib/dispatcher')
 
+const NETWORK_DATA = [
+  { value: 1, text: 'Ethereum' },
+  { value: 2, text: 'BSC' },
+]
+
 class Header extends React.Component {
   constructor (props) {
     super(props)
 
     this.state = {
+      openWallectConnect: false,
+      anchorElWalletConnect: null,
       openedPopover: false,
       moreAnchorEl: null,
     }
@@ -24,6 +31,8 @@ class Header extends React.Component {
     this.onPopup = this.onPopup.bind(this)
     this.onStake = this.onStake.bind(this)
     this.onSetting = this.onSetting.bind(this)
+    this.handleClickConnect = this.handleClickConnect.bind(this)
+    this.handleCancelConnect = this.handleCancelConnect.bind(this)
   }
 
   onHome() {
@@ -57,9 +66,27 @@ class Header extends React.Component {
   onSetting() {
     dispatch('preferences')
   }
+
+  handleClickConnect(event) {
+    // This prevents ghost click.
+    event.preventDefault();
+
+    this.setState({
+      openWallectConnect: true,
+      anchorElWalletConnect: event.currentTarget,
+    });
+  };
+
+  handleCancelConnect(index) {
+    this.setState({
+      openWallectConnect: false,
+      anchorElWalletConnect: null,
+    });
+  }
   
   render () {
     const { wallet } = this.props.state
+    const isETH = wallet && (wallet.chainId === 1 || wallet.chainId === 3)
 
     return (
       <div className='header'> 
@@ -78,7 +105,7 @@ class Header extends React.Component {
               />
               <StakeButton
                 label={`${wallet.balance.toFixed(6)} POP`}
-                description={`${wallet.ethBalance.toFixed(6)} ETH`}
+                description={`${wallet.ethBalance.toFixed(6)} ${isETH ? 'ETH' : 'BNB'}`}
                 onClick={(event) => this.onPopup(event)}
                 img={`${config.STATIC_PATH}/Wallet.png`}
                 style={{ width: 188 }}
@@ -108,11 +135,40 @@ class Header extends React.Component {
               </Popover>
             </>
             :
-            <CustomButton
-              label="Add Wallet"
-              onClick={this.onAddWallet}
-              img={`${config.STATIC_PATH}/Wallet.png`}
-            />
+            <>
+              <CustomButton
+                className="add-wallet"
+                label="Add Wallet"
+                onClick={this.handleClickConnect}
+                img={`${config.STATIC_PATH}/Wallet.png`}
+              />
+              <Popover
+                open={this.state.openWallectConnect}
+                anchorEl={this.state.anchorElWalletConnect}
+                anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                onRequestClose={() => this.setState({
+                  openWallectConnect: false,
+                })}
+                className="custom-dropdown"
+              >
+                <Menu>
+                  {NETWORK_DATA.map((item, index) => (
+                    <MenuItem
+                      key={index}
+                      onClick={() => this.handleCancelConnect(index)}
+                      className={`menu-item`}
+                      style={{ borderRadius: 12, fontSize: 12 }}
+                    >
+                      <div className="menu-item-wrapper" onClick={this.onAddWallet}>
+                        <span>{item.text}</span>
+                        {/* {item.value === selectedData.value && <img src={`${config.STATIC_PATH}/Checked.png`} draggable={false} />} */}
+                      </div>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Popover>
+            </>
           }
           <div className="help-button" onClick={() => shell.openExternal(config.QUESTION_URL)}>
             <img src={`${config.STATIC_PATH}/Help.png`} draggable={false} />

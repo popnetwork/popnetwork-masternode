@@ -215,6 +215,8 @@ module.exports = class WalletController {
 
   async updateWallet() {
     const { wallet } = this.state;
+    const { chainId } = wallet;
+    EthProvider.getProvider(chainId)
     if (this.state.wallet.popPerBlock.isLessThanOrEqualTo(0)) {
       EthProvider.getPopPerBlock().then((result) => {
         if (!result.isLessThanOrEqualTo(config.ERROR_BALANCE)) {
@@ -232,7 +234,7 @@ module.exports = class WalletController {
       EthProvider.getTokenBalance(wallet.address).then(result => {
         if (!result.isLessThanOrEqualTo(config.ERROR_BALANCE)) {
           this.state.wallet.balance = result;
-          EthProvider.getTokenAllowance(wallet.address, ethConfig.STAKING_CONTRACT_ADDRESS[config.ETH_NETWORK], ethConfig.POP_TOKEN_ADDRESS[config.ETH_NETWORK]).then(result => {
+          EthProvider.getTokenAllowance(wallet.address, ethConfig.STAKING_CONTRACT_ADDRESS[chainId], ethConfig.POP_TOKEN_ADDRESS[chainId]).then(result => {
             if (!result.isLessThanOrEqualTo(config.ERROR_BALANCE)) {
               let approval = false;
               if (result.comparedTo(this.state.wallet.balance) == 1) {

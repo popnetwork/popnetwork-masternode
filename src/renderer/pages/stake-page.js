@@ -26,14 +26,14 @@ class StakePage extends React.Component {
       const [txid, err] = await EthProvider.wcTokenApprove(
         wallet.connector,
         wallet.address,
-        ethConfig.STAKING_CONTRACT_ADDRESS[config.ETH_NETWORK]
+        ethConfig.STAKING_CONTRACT_ADDRESS[wallet.chainId]
       );
       dispatch('exitModal')
       if (!!txid) {
         setTimeout(() => {
           dispatch('updateWallet')
         }, 20000)
-        const detail = ethConfig.ETHERSCAN_URL[config.ETH_NETWORK] + "/tx/" + txid;
+        const detail = ethConfig.ETHERSCAN_URL[wallet.chainId] + "/tx/" + txid;
         dispatch('createTransactionDialog', detail)
       } else {
         dispatch('connectErrorDialog')
@@ -44,7 +44,7 @@ class StakePage extends React.Component {
   async unstake(wallet, nodeChannel) {
     const balance = ethers.utils.parseUnits(
       wallet.stakedBalance.toString(),
-      ethConfig.POP_TOKEN_DECIMALS[config.ETH_NETWORK]
+      ethConfig.POP_TOKEN_DECIMALS[wallet.chainId]
     );
     dispatch('confirmDialog')
     const [txid, err] = await EthProvider.wcPopChefWithdraw(
@@ -58,7 +58,7 @@ class StakePage extends React.Component {
         dispatch('updateWallet')
       }, 20000)
       nodeChannel.send({ type: "init_blocks" });
-      const detail = ethConfig.ETHERSCAN_URL[config.ETH_NETWORK] + "/tx/" + txid;
+      const detail = ethConfig.ETHERSCAN_URL[wallet.chainId] + "/tx/" + txid;
       dispatch('createTransactionDialog', detail)
       try {
         const response = await apiCreateRewardHistory(
@@ -89,7 +89,7 @@ class StakePage extends React.Component {
       setTimeout(() => {
         dispatch('updateWallet')
       }, 20000)
-      const detail = ethConfig.ETHERSCAN_URL[config.ETH_NETWORK] + "/tx/" + txid;
+      const detail = ethConfig.ETHERSCAN_URL[wallet.chainId] + "/tx/" + txid;
       dispatch('createTransactionDialog', detail)
       try {
         const response = await apiCreateRewardHistory(
@@ -203,7 +203,7 @@ class StakePage extends React.Component {
                   </div>
                 </div>
                 <div className="arrow">
-                  <div className="arrow-button" onClick={() => this.onTransaction(`${ethConfig.ETHERSCAN_URL[config.ETH_NETWORK]}/tx/${rewardHistory.txid}`)}>
+                  <div className="arrow-button" onClick={() => this.onTransaction(`${ethConfig.ETHERSCAN_URL[wallet.chainId]}/tx/${rewardHistory.txid}`)}>
                     <img src={`${config.STATIC_PATH}/LeftArrow.png`} draggable={false} />
                   </div>
                 </div>

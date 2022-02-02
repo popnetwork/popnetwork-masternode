@@ -115,6 +115,7 @@ class StakePage extends React.Component {
   render() {
     const { wallet, nodeChannel } = this.state;
     const history = [...wallet.rewardHistories]
+    const isETH = wallet.chainId === 1 || wallet.chainId === 3;
 
     return (
       <div className="stake-page">
@@ -135,7 +136,7 @@ class StakePage extends React.Component {
             <CustomButton
               label={!!wallet.approval ? "Stake" : "Approve"}
               onClick={() => this.stake(wallet, nodeChannel)}
-              disabled={!!wallet.fetching ? true : false}
+              disabled={isETH || !!wallet.fetching ? true : false}
               style={{
                 background: "#2A2D3B",
                 width: 150,

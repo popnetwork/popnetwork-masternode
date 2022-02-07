@@ -96,7 +96,7 @@ module.exports = {
 
     ETHERSCAN_API_KEY: '1GZTXPFKCUIQA6QC9SYAA3GRM67EDTQ39X',
     INFURA_API_KEY: 'f62a2ab0fdc04a5fb781312062a46817',
-    ETH_NETWORK: 'ropsten', // (ropsten or mainnet)
+    IS_DEV_NETWORK: true,
     WEBSOCKET_URL: 'wss://dev.popnet.work/cable' // (dev: 'wss://dev.popnet.work/cable', prod: wss://masternode.popnet.work/cable)
 }
 

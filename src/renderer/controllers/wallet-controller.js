@@ -19,6 +19,11 @@ module.exports = class WalletController {
     this.state.wallet.token = this.state.saved.wallet.token;
   }
 
+  selectWalletNetwork(walletNetwork) {
+    this.state.saved.wallet.walletNetwork = walletNetwork;
+    dispatch('stateSaveImmediate')
+  }
+
   async walletConnect () {
     const connector = new WalletConnect({
       bridge: "https://bridge.walletconnect.org",  // Required
@@ -181,6 +186,19 @@ module.exports = class WalletController {
     const address = normalizeAddress(accounts[0]);
     this.state.wallet.accounts = accounts;
     this.state.wallet.chainId = chainId;
+    const walletNetwork = this.state.saved.wallet.walletNetwork
+    const isCorrectNetwork = (config.IS_DEV_NETWORK && chainId === 3 && walletNetwork === 'Ethereum')
+    || (!config.IS_DEV_NETWORK && chainId === 1 && walletNetwork === 'Ethereum')
+    || (config.IS_DEV_NETWORK && chainId === 97 && walletNetwork === 'BSC')
+    || (!config.IS_DEV_NETWORK && chainId === 56 && walletNetwork === 'BSC')
+    
+    if (!isCorrectNetwork) {
+      this.state.modal = {
+        id: 'wrong-network-modal',
+      }
+      this.killSession();
+      return
+    }
     this.state.wallet.connected = true;
     if (this.state.wallet.address !== address) {
       try {
@@ -275,7 +293,8 @@ module.exports = class WalletController {
     console.log('call updateWalletAPI', new Date().getTime());
     if (!!wallet && !!wallet.connected && wallet.isAvailable) {
       try {
-        const walletInfo = await apiGetWallets(wallet.address, wallet.token, wallet.stakedBalance.toFixed(0))
+        const isETH = wallet.chainId === 1 || wallet.chainId === 3
+        const walletInfo = await apiGetWallets(wallet.address, wallet.token, wallet.stakedBalance.toFixed(0), isETH ? 'eth' : 'bsc')
         if (walletInfo && walletInfo.cur_cycle_block_cnt) {
           wallet.cur_cycle_block_cnt = walletInfo.cur_cycle_block_cnt;
           console.log('walletInfo', wallet.cur_cycle_block_cnt, new Date().getTime(), new Date().getTime() - wallet.timestamp);

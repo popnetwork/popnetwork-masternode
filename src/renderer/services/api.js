@@ -52,13 +52,14 @@ async function apiGetStakeConfig() {
   return data;
 }
 
-async function apiGetWallets(address, token, staked_balance) {
+async function apiGetWallets(address, token, staked_balance, network) {
   const params = {
     token,
     address,
     staked_balance,
     version: config.APP_VERSION,
-    platform: process.platform // "win32", "darwin", "linux"
+    platform: process.platform, // "win32", "darwin", "linux",
+    network
   };
   const response = await api.post('/wallets', params);
   const { data } = response.data;

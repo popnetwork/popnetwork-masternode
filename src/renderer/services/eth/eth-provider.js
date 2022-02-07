@@ -52,8 +52,6 @@ async function getEthBalance (address) {
 
 async function getTokenBalance (address) {
   try {
-    console.log('ballance chainId', chainId)
-    console.log('tokenaddress', ethConfig.POP_TOKEN_ADDRESS[chainId])
     const tokenAddress = ethConfig.POP_TOKEN_ADDRESS[chainId]
     const contract = new ethers.Contract(tokenAddress, erc20ABI, provider) 
     const balance = await contract.balanceOf(address);

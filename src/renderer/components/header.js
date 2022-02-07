@@ -39,12 +39,18 @@ class Header extends React.Component {
     dispatch('home')
   }
 
-  onAddWallet() {
+  onAddWallet(walletNetwork) {
+    dispatch('selectWalletNetwork', walletNetwork)
     dispatch('connectWalletDialog')
   }
 
   onStake() {
-    dispatch('stakeFirst')
+    const { wallet } = this.props.state
+    const isETH = wallet.chainId === 1 || wallet.chainId === 3
+    if (isETH)
+      dispatch('stake')
+    else
+      dispatch('stakeFirst')
   }
 
   onPopup(event) {
@@ -160,9 +166,8 @@ class Header extends React.Component {
                       className={`menu-item`}
                       style={{ borderRadius: 12, fontSize: 12 }}
                     >
-                      <div className="menu-item-wrapper" onClick={this.onAddWallet}>
+                      <div className="menu-item-wrapper" onClick={() => this.onAddWallet(item.text)}>
                         <span>{item.text}</span>
-                        {/* {item.value === selectedData.value && <img src={`${config.STATIC_PATH}/Checked.png`} draggable={false} />} */}
                       </div>
                     </MenuItem>
                   ))}

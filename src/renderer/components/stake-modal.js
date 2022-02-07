@@ -47,16 +47,18 @@ module.exports = class StakeModal extends React.Component {
         setTimeout(() => {
           dispatch('updateWallet')
         }, 20000)
-        nodeChannel.send({ type: "init_blocks" });
+        // nodeChannel.send({ type: "init_blocks" });
         const detail = ethConfig.ETHERSCAN_URL[wallet.chainId] + "/tx/" + txid;
         dispatch('createTransactionDialog', detail)
         try {
+          const isETH = wallet.chainId === 1 || wallet.chainId === 3
           const response = await apiCreateRewardHistory(
             wallet.token,
             wallet.address,
             "Stake",
             value,
-            txid
+            txid,
+            isETH ? 'eth' : 'bsc'
           );
           wallet.rewardHistories.push(response);
         } catch (e) {

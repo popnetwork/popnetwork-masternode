@@ -1835,6 +1835,12 @@ video::-webkit-media-text-track-container {
   padding: 60px 110px;
 }
 
+.stake-page .notify-wrapper {
+  font-size: 16px;
+  color: red;
+  margin-bottom: 30px;
+}
+
 .stake-page .header-wrapper {
   display: flex;
   align-items: center;

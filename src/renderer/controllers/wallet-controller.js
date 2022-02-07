@@ -142,7 +142,8 @@ module.exports = class WalletController {
   async fetchRewardHistories() {
     const { wallet }  = this.state
     if (!wallet || !wallet.address) return
-    const rewardHistories = await apiGetRewardHistories(wallet.address, wallet.token)
+    const isETH = wallet.chainId === 1 || wallet.chainId === 3
+    const rewardHistories = await apiGetRewardHistories(wallet.address, isETH ? 'eth' : 'bsc')
     wallet.rewardHistories = rewardHistories || []
   }
 

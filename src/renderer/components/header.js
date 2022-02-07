@@ -10,8 +10,8 @@ const MenuItem = require('material-ui/MenuItem').default
 const { dispatch } = require('../lib/dispatcher')
 
 const NETWORK_DATA = [
-  { value: 1, text: 'Ethereum' },
-  { value: 2, text: 'BSC' },
+  { value: 1, text: 'BSC' },
+  { value: 2, text: 'Ethereum' },
 ]
 
 class Header extends React.Component {

@@ -57,16 +57,18 @@ class StakePage extends React.Component {
       setTimeout(() => {
         dispatch('updateWallet')
       }, 20000)
-      nodeChannel.send({ type: "init_blocks" });
+      // nodeChannel.send({ type: "init_blocks" });
       const detail = ethConfig.ETHERSCAN_URL[wallet.chainId] + "/tx/" + txid;
       dispatch('createTransactionDialog', detail)
       try {
+        const isETH = wallet.chainId === 1 || wallet.chainId === 3
         const response = await apiCreateRewardHistory(
           wallet.token,
           wallet.address,
           "Unstake",
           parseFloat(wallet.stakedBalance.toString()),
-          txid
+          txid,
+          isETH ? 'eth' : 'bsc'
         );
         wallet.rewardHistories.push(response);
       } catch (e) {
@@ -92,12 +94,14 @@ class StakePage extends React.Component {
       const detail = ethConfig.ETHERSCAN_URL[wallet.chainId] + "/tx/" + txid;
       dispatch('createTransactionDialog', detail)
       try {
+        const isETH = wallet.chainId === 1 || wallet.chainId === 3
         const response = await apiCreateRewardHistory(
           wallet.token,
           wallet.address,
           "Claim",
           parseFloat(wallet.claimableRewards.toString()),
-          txid
+          txid,
+          isETH ? 'eth' : 'bsc'
         );
         wallet.rewardHistories.push(response);
       } catch (e) {
@@ -119,6 +123,13 @@ class StakePage extends React.Component {
 
     return (
       <div className="stake-page">
+        {isETH &&
+          <div className="notify-wrapper">
+            Staking POP on ethereum has now been disabled. <br />
+            You couldn't get POP rewards on ethereum. <br />
+            Please unstake and try on BSC.
+          </div>
+        }
         <div className="header-wrapper">
           <div className="content-title">Staking POP</div>
           <div className="button-wrapper">

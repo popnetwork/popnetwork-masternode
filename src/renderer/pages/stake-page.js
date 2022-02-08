@@ -14,7 +14,6 @@ class StakePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = props.state;
-    this.state.showWarning = true;
 
     this.onTransaction = this.onTransaction.bind(this)
     this.onHideWarning = this.onHideWarning.bind(this)
@@ -119,7 +118,7 @@ class StakePage extends React.Component {
   }
 
   onHideWarning() {
-    this.setState({ showWarning: false })
+    this.props.state.wallet.ethShowWarning = false
   }
 
   render() {
@@ -129,7 +128,7 @@ class StakePage extends React.Component {
 
     return (
       <>
-        {isETH && this.state.showWarning && (
+        {isETH && wallet.ethShowWarning && (
           <div className="stake-header-content">
             <div className="text">
               Staking POP on ethereum has now been disabled. You couldn't get POP rewards on ethereum. <br />

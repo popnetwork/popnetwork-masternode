@@ -330,6 +330,7 @@ module.exports = class WalletController {
     wallet.rewardHistories = [];
     wallet.ethBalance = new BigNumber(0);
     wallet.showWarning = true
+    wallet.ethShowWarning = true
     wallet.isAvailable = true
     wallet.cur_cycle_block_cnt = 0;
     wallet.timestamp = new Date().getTime();

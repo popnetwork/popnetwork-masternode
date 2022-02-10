@@ -377,6 +377,7 @@ const dispatchHandlers = {
   update: () => {}, // No-op, just trigger an update
 
   // Wallet
+  selectWalletNetwork: (walletNetwork) => controllers.wallet().selectWalletNetwork(walletNetwork),
   walletConnect: () => controllers.wallet().walletConnect(),
   walletDisconnect: () => controllers.wallet().walletDisconnect(),
   updateWallet: () => controllers.wallet().updateWallet(),
@@ -402,6 +403,7 @@ const dispatchHandlers = {
   stakeDialog: (wallet, nodeChannel) => { state.modal = { id: 'stake-modal', wallet, nodeChannel } },
   createTransactionDialog: (detail) => { state.modal = { id: 'create-transaction-modal', detail } },
   maxStakeDialog: () => { state.modal = { id: 'max-stake-modal' } },
+  wrongNetworkDialog: () => { state.modal = { id: 'wrong-network-modal' } },
 }
 
 // Events from the UI never modify state directly. Instead they call dispatch()

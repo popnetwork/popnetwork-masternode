@@ -19,6 +19,11 @@ module.exports = class WalletController {
     this.state.wallet.token = this.state.saved.wallet.token;
   }
 
+  selectWalletNetwork(walletNetwork) {
+    this.state.saved.wallet.walletNetwork = walletNetwork;
+    dispatch('stateSaveImmediate')
+  }
+
   async walletConnect () {
     const connector = new WalletConnect({
       bridge: "https://bridge.walletconnect.org",  // Required
@@ -137,7 +142,8 @@ module.exports = class WalletController {
   async fetchRewardHistories() {
     const { wallet }  = this.state
     if (!wallet || !wallet.address) return
-    const rewardHistories = await apiGetRewardHistories(wallet.address, wallet.token)
+    const isETH = wallet.chainId === 1 || wallet.chainId === 3
+    const rewardHistories = await apiGetRewardHistories(wallet.address, isETH ? 'eth' : 'bsc')
     wallet.rewardHistories = rewardHistories || []
   }
 
@@ -181,6 +187,19 @@ module.exports = class WalletController {
     const address = normalizeAddress(accounts[0]);
     this.state.wallet.accounts = accounts;
     this.state.wallet.chainId = chainId;
+    const walletNetwork = this.state.saved.wallet.walletNetwork
+    const isCorrectNetwork = (config.IS_DEV_NETWORK && chainId === 3 && walletNetwork === 'Ethereum')
+    || (!config.IS_DEV_NETWORK && chainId === 1 && walletNetwork === 'Ethereum')
+    || (config.IS_DEV_NETWORK && chainId === 97 && walletNetwork === 'BSC')
+    || (!config.IS_DEV_NETWORK && chainId === 56 && walletNetwork === 'BSC')
+    
+    if (!isCorrectNetwork) {
+      this.state.modal = {
+        id: 'wrong-network-modal',
+      }
+      this.killSession();
+      return
+    }
     this.state.wallet.connected = true;
     if (this.state.wallet.address !== address) {
       try {
@@ -215,6 +234,8 @@ module.exports = class WalletController {
 
   async updateWallet() {
     const { wallet } = this.state;
+    const { chainId } = wallet;
+    EthProvider.getProvider(chainId)
     if (this.state.wallet.popPerBlock.isLessThanOrEqualTo(0)) {
       EthProvider.getPopPerBlock().then((result) => {
         if (!result.isLessThanOrEqualTo(config.ERROR_BALANCE)) {
@@ -232,7 +253,7 @@ module.exports = class WalletController {
       EthProvider.getTokenBalance(wallet.address).then(result => {
         if (!result.isLessThanOrEqualTo(config.ERROR_BALANCE)) {
           this.state.wallet.balance = result;
-          EthProvider.getTokenAllowance(wallet.address, ethConfig.STAKING_CONTRACT_ADDRESS[config.ETH_NETWORK], ethConfig.POP_TOKEN_ADDRESS[config.ETH_NETWORK]).then(result => {
+          EthProvider.getTokenAllowance(wallet.address, ethConfig.STAKING_CONTRACT_ADDRESS[chainId], ethConfig.POP_TOKEN_ADDRESS[chainId]).then(result => {
             if (!result.isLessThanOrEqualTo(config.ERROR_BALANCE)) {
               let approval = false;
               if (result.comparedTo(this.state.wallet.balance) == 1) {
@@ -273,7 +294,8 @@ module.exports = class WalletController {
     console.log('call updateWalletAPI', new Date().getTime());
     if (!!wallet && !!wallet.connected && wallet.isAvailable) {
       try {
-        const walletInfo = await apiGetWallets(wallet.address, wallet.token, wallet.stakedBalance.toFixed(0))
+        const isETH = wallet.chainId === 1 || wallet.chainId === 3
+        const walletInfo = await apiGetWallets(wallet.address, wallet.token, wallet.stakedBalance.toFixed(0), isETH ? 'eth' : 'bsc')
         if (walletInfo && walletInfo.cur_cycle_block_cnt) {
           wallet.cur_cycle_block_cnt = walletInfo.cur_cycle_block_cnt;
           console.log('walletInfo', wallet.cur_cycle_block_cnt, new Date().getTime(), new Date().getTime() - wallet.timestamp);
@@ -308,6 +330,7 @@ module.exports = class WalletController {
     wallet.rewardHistories = [];
     wallet.ethBalance = new BigNumber(0);
     wallet.showWarning = true
+    wallet.ethShowWarning = true
     wallet.isAvailable = true
     wallet.cur_cycle_block_cnt = 0;
     wallet.timestamp = new Date().getTime();

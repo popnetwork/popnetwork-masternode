@@ -41,6 +41,7 @@ const Modals = {
   'stake-modal': createGetter(() => require('../components/stake-modal')),
   'play-video-modal': createGetter(() => require('../components/play-video-modal')),
   'create-transaction-modal': createGetter(() => require('../components/create-transaction-modal')),
+  'wrong-network-modal': createGetter(() => require('../components/wrong-network-modal')),
 }
 
 const fontFamily = process.platform === 'win32'

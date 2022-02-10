@@ -26,20 +26,21 @@ async function apiGetTorrents () {
   return data;
 }
 
-async function apiGetRewardHistories (address, token) {
-  const response = await api.get(`/reward_histories?address=${address}`);
+async function apiGetRewardHistories (address, network) {
+  const response = await api.get(`/reward_histories?address=${address}&network=${network}`);
 
   const { data } = response.data;
   return data;
 }
 
-async function apiCreateRewardHistory (token, address, actionType, amount, txid) {
+async function apiCreateRewardHistory (token, address, actionType, amount, txid, network) {
   const params = {
     token,
     address,
     action_type: actionType,
     amount,
     txid,
+    network,
   };
   const response = await api.post('/reward_histories', params);
   const { data } = response.data;
@@ -52,13 +53,14 @@ async function apiGetStakeConfig() {
   return data;
 }
 
-async function apiGetWallets(address, token, staked_balance) {
+async function apiGetWallets(address, token, staked_balance, network) {
   const params = {
     token,
     address,
     staked_balance,
     version: config.APP_VERSION,
-    platform: process.platform // "win32", "darwin", "linux"
+    platform: process.platform, // "win32", "darwin", "linux",
+    network
   };
   const response = await api.post('/wallets', params);
   const { data } = response.data;

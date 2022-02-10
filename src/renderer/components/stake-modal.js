@@ -34,7 +34,7 @@ module.exports = class StakeModal extends React.Component {
     if (!!wallet.approval) {
       const balance = ethers.utils.parseUnits(
         value.toString(),
-        ethConfig.POP_TOKEN_DECIMALS[config.ETH_NETWORK]
+        ethConfig.POP_TOKEN_DECIMALS[wallet.chainId]
       );
       dispatch('confirmDialog')
       const [txid, err] = await EthProvider.wcPopChefDeposit(
@@ -47,16 +47,18 @@ module.exports = class StakeModal extends React.Component {
         setTimeout(() => {
           dispatch('updateWallet')
         }, 20000)
-        nodeChannel.send({ type: "init_blocks" });
-        const detail = ethConfig.ETHERSCAN_URL[config.ETH_NETWORK] + "/tx/" + txid;
+        // nodeChannel.send({ type: "init_blocks" });
+        const detail = ethConfig.ETHERSCAN_URL[wallet.chainId] + "/tx/" + txid;
         dispatch('createTransactionDialog', detail)
         try {
+          const isETH = wallet.chainId === 1 || wallet.chainId === 3
           const response = await apiCreateRewardHistory(
             wallet.token,
             wallet.address,
             "Stake",
             value,
-            txid
+            txid,
+            isETH ? 'eth' : 'bsc'
           );
           wallet.rewardHistories.push(response);
         } catch (e) {

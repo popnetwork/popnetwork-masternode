@@ -53,10 +53,6 @@ class StakePage extends React.Component {
             <div className="sub-title">Deposit your POP here and keep your<br/>Masternode running to earn POP rewards</div>
             <div className="content-wrapper">
               <div className="content-item">
-                <div className="type">APY</div>
-                <div className="value">{this.state.stakeConfig.apy}</div>
-              </div>
-              <div className="content-item">
                 <div className="type">Minimum Stake</div>
                 <div className="value">{`50,000 POP`}</div>
               </div>

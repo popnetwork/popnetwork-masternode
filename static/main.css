@@ -2016,7 +2016,7 @@ video::-webkit-media-text-track-container {
 .stake-first-page .page-container .main-content .content-wrapper {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .stake-first-page .page-container .main-content .content-wrapper .content-item .type {

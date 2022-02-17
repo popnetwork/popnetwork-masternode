@@ -11,12 +11,12 @@ module.exports = {
 const axios = require('axios');
 
 const api = axios.create({
-  baseURL: config.DEV_API_BASE_URL,
+  baseURL: config.API_BASE_URL,
   timeout: 30000, // 30 secs
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
-    "Authorization": config.DEV_AUTHORIZATION,
+    "Authorization": config.AUTHORIZATION,
   },
 });
 

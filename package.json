@@ -1,10 +1,10 @@
 {
     "name": "popnetwork-masternode",
-    "description": "POP Network, the streaming torrent client. For Mac, Windows, and Linux.",
+    "description": "POP Network is decentralized infrastructure for the Creator Economy",
     "version": "1.0.7",
     "author": {
-        "name": "POP Network, LLC",
-        "email": "valerian@thepopnetwork.org",
+        "name": "The Pop Network Foundation Ltd",
+        "email": "foundation@thepopnetwork.org",
         "url": "https://thepopnetwork.org"
     },
     "bugs": {

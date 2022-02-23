@@ -236,14 +236,12 @@ module.exports = class WalletController {
     const { wallet } = this.state;
     const { chainId } = wallet;
     EthProvider.getProvider(chainId)
-    if (this.state.wallet.popPerBlock.isLessThanOrEqualTo(0)) {
-      EthProvider.getPopPerBlock().then((result) => {
-        if (!result.isLessThanOrEqualTo(config.ERROR_BALANCE)) {
-          this.state.wallet.popPerBlock = result;
-          this.state.wallet.pendingRewards = this.state.wallet.stakedBalance.multipliedBy(this.state.wallet.popPerBlock.multipliedBy(this.state.wallet.cur_cycle_block_cnt))
-        }
-      });
-    }
+    EthProvider.getPopPerBlock().then((result) => {
+      if (!result.isLessThanOrEqualTo(config.ERROR_BALANCE)) {
+        this.state.wallet.popPerBlock = result;
+        this.state.wallet.pendingRewards = this.state.wallet.stakedBalance.multipliedBy(this.state.wallet.popPerBlock.multipliedBy(this.state.wallet.cur_cycle_block_cnt))
+      }
+    });
     if (!!wallet && !!wallet.connected) {
       EthProvider.getEthBalance(wallet.address).then(result => {
         if (!result.isLessThanOrEqualTo(config.ERROR_BALANCE)) {
@@ -298,7 +296,7 @@ module.exports = class WalletController {
         const walletInfo = await apiGetWallets(wallet.address, wallet.token, wallet.stakedBalance.toFixed(0), isETH ? 'eth' : 'bsc')
         if (walletInfo && walletInfo.cur_cycle_block_cnt) {
           wallet.cur_cycle_block_cnt = walletInfo.cur_cycle_block_cnt;
-          console.log('walletInfo', wallet.cur_cycle_block_cnt, new Date().getTime(), new Date().getTime() - wallet.timestamp);
+          console.log('walletInfo', state.wallet.stakedBalance, state.wallet.popPerBlock, wallet.cur_cycle_block_cnt);
           wallet.timestamp = new Date().getTime();
           state.wallet.pendingRewards = state.wallet.stakedBalance.multipliedBy(state.wallet.popPerBlock.multipliedBy(wallet.cur_cycle_block_cnt))
         }

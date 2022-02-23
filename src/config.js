@@ -58,8 +58,8 @@ module.exports = {
     GITHUB_URL_RAW: 'https://raw.githubusercontent.com/popnetwork/popnetwork-masternode/master',
     GITHUB_URL_RELEASES: 'https://github.com/popnetwork/popnetwork-masternode/releases',
     QUESTION_URL: 'https://help.thepopnetwork.org/',
-    API_BASE_URL: 'https://masternode.popnet.work/api/v1',
-    AUTHORIZATION: 'e4cff05bee47a745122a8c783e63953b',
+    API_BASE_URL: 'https://staging.popnet.work/api/v1',
+    AUTHORIZATION: 'd3cff05bee47a745122a8c783e65653b',
     DEV_API_BASE_URL: 'https://dev.popnet.work/api/v1/',
     DEV_AUTHORIZATION: 'd3cff05bee47a745122a8c783e65653b',
 
@@ -96,7 +96,7 @@ module.exports = {
 
     ETHERSCAN_API_KEY: '1GZTXPFKCUIQA6QC9SYAA3GRM67EDTQ39X',
     INFURA_API_KEY: 'f62a2ab0fdc04a5fb781312062a46817',
-    IS_DEV_NETWORK: true,
+    IS_DEV_NETWORK: false,
     WEBSOCKET_URL: 'wss://dev.popnet.work/cable' // (dev: 'wss://dev.popnet.work/cable', prod: wss://masternode.popnet.work/cable)
 }
 
